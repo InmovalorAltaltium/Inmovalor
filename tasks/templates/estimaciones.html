@@ -1,272 +1,479 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <style>
+    :root {
+        --primary-color: #00CCCC;
+        --secondary-color: #009999;
+        --accent-color: #CCF5F5;
+        --dark-color: #003035;
+        --light-color: #FFFFFF;
+        --error-color: #FF6B6B;
+        --success-color: #66CC99;
+    }
+
     body {
         background: linear-gradient(-45deg, #fefcef, #bfc6c7, #52b3c0, #00cccc);
         background-size: 400% 400%;
         animation: gradientBG 15s ease infinite;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     @keyframes gradientBG {
         0% {
             background-position: 0% 50%;
         }
-
         50% {
             background-position: 100% 50%;
         }
-
         100% {
             background-position: 0% 50%;
         }
     }
 
     .form-container {
-        background-color: #ffffffdd;
-        backdrop-filter: blur(10px);
-        padding: 2.5rem;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        border-left: 6px solid #00cccc;
-        height: 100%;
+        background-color: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(8px);
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        border-left: 3px solid var(--primary-color);
+        height: 450px;
+        overflow-y: auto;
+        transition: all 0.3s ease;
+        scroll-behavior: smooth;
+    }
+
+    .form-container:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
     }
 
     .form-title {
-        color: #003035;
+        color: var(--dark-color);
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+        margin-top: 0.5rem;
+        position: relative;
+        padding-bottom: 0.2rem;
+        text-align: center;
+        font-size: 1.4rem;
+    }
+
+    .form-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 2px;
+        background: var(--primary-color);
+        border-radius: 2px;
     }
 
     .form-label {
         font-weight: 600;
-        color: #003035;
+        color: var(--dark-color);
+        margin-bottom: 0.2rem;
+        font-size: 0.8rem;
     }
 
     .required-field::after {
         content: " *";
-        color: red;
+        color: var(--error-color);
     }
 
     .section-title {
-        color: #cc0000;
-        font-weight: bold;
-        font-size: 1.4rem;
-        margin-top: 2rem;
+        color: var(--dark-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-top: 0.8rem;
+        margin-bottom: 0.4rem;
+        position: relative;
+        padding-left: 0.6rem;
+    }
+
+    .section-title::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 50%;
+        width: 3px;
+        background: var(--primary-color);
+        border-radius: 2px;
     }
 
     .btn-calculate {
-        background-color: #00cccc;
+        background-color: var(--primary-color);
         border: none;
         color: white;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
+        font-weight: 600;
+        padding: 0.4rem 1rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 204, 204, 0.2);
     }
 
     .btn-calculate:hover {
-        background-color: #52b3c0;
-        color: #003035;
+        background-color: var(--secondary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 204, 204, 0.3);
     }
 
     .btn-secondary {
-        background-color: #6c757d;
+        background-color: var(--dark-color);
         color: white;
+        font-weight: 500;
+        border-radius: 5px;
+        padding: 0.3rem 0.8rem;
+        transition: all 0.3s ease;
     }
 
     .btn-secondary:hover {
-        background-color: #5a6268;
+        background-color: var(--secondary-color);
         color: white;
+        transform: translateY(-2px);
     }
 
     #map {
-        height: 100%;
+        height: 450px;
         width: 100%;
-        min-height: 600px;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    #map:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
 
     .map-message {
-        padding: 10px;
+        padding: 6px 12px;
         background: white;
         border-radius: 5px;
         text-align: center;
-        margin-bottom: 5px;
+        margin-bottom: 6px;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        color: black;
     }
 
     .error-message {
-        color: red;
+        color: white;
+        background-color: var(--error-color);
     }
 
     .success-message {
-        color: green;
+        color: white;
+        background-color: var(--success-color);
+    }
+
+    .form-status-message {
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-align: center;
+        margin-top: 0.5rem;
+        padding: 0.4rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .form-status-message.success {
+        color: var(--success-color);
+        background-color: rgba(102, 204, 153, 0.1);
+    }
+
+    .form-status-message.error {
+        color: var(--error-color);
+        background-color: rgba(255, 107, 107, 0.1);
+    }
+
+    .form-control, .form-select {
+        border-radius: 5px;
+        padding: 0.4rem 0.7rem;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 0.15rem rgba(0, 204, 204, 0.25);
+        background: var(--light-color);
+    }
+
+    .invalid-feedback {
+        font-size: 0.7rem;
+        color: var(--error-color);
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0px); }
+    }
+
+    .input-group-text {
+        background-color: var(--accent-color);
+        color: var(--dark-color);
+        border-radius: 5px 0 0 5px;
+        transition: all 0.3s ease;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .input-group:focus-within .input-group-text {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .loading-spinner {
+        display: none;
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .form-control.is-loading {
+        padding-right: 30px;
+    }
+
+    .pulse-animation {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(0, 204, 204, 0.7); }
+        70% { box-shadow: 0 0 0 6px rgba(0, 204, 204, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 204, 204, 0); }
+    }
+
+    .container-fluid {
+        padding: 0.5rem;
     }
 </style>
 
-<div class="full-width-container mt-5 animate__animated animate__fadeIn">
-    <div class="row">
+<div class="container-fluid py-2 animate-fade-in">
+    <div class="row g-2">
         <!-- Formulario -->
-<div class="col-md-6 col-no-padding">
-    <div class="form-container animate__animated animate__zoomIn">
-        <h1 class="text-center form-title mb-4">Estimación de Propiedad</h1>
-
-        <form method="POST" class="row g-3 needs-validation" novalidate>
-            {% csrf_token %}        
-            <div class="col-md-4">
-                <label class="form-label required-field">Tipo de propiedad</label>
-                <select id="tipo_propiedad" name="tipo_propiedad" class="form-select" required>
-                    <option selected disabled value="">Elige una opción...</option>
-                    <option>Casa</option>
-                    <option>Departamento</option>
-                    <option>Terreno</option>
-                </select>
-                <div class="invalid-feedback">Selecciona una opción válida.</div>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label required-field">Estado</label>
-                <select class="form-control" id="estado" name="estado" required>
-                    <option selected disabled value="">Elige una opción...</option>
-                    {% for estado in estados %}
-                    <option value="{{ estado.id_estado }}">{{ estado.nombre }}</option>
-                    {% endfor %}
-                </select>
-                <div class="invalid-feedback">Selecciona una opción válida.</div>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label required-field">Alcaldía/Municipio</label>
-                <select class="form-control" id="municipio" name="municipio" required>
-                    <option selected disabled value="">Elige una opción...</option>
-                    {% for municipio in municipios %}
-                    <option value="{{ municipio.id_municipio }}">{{ municipio.nombre }}</option>
-                    {% endfor %}
-                </select>
-                <div class="invalid-feedback">Selecciona una opción válida.</div>
-            </div>
-                                    
-            <div class="col-md-4">
-                <label class="form-label required-field">Colonia</label>
-                <select id="colonia" name="colonia" class="form-control" required>
-                    <option selected disabled value="">Elige una opción...</option>
-                    {% for colonia in colonias %}
-                    <option value="{{ colonia.id_colonia }}">{{ colonia.nombre }}</option>
-                    {% endfor %}
-                </select>
-                <div class="invalid-feedback">Selecciona una opción válida.</div>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label required-field">Código Postal</label>
-                <select id="cp" name="cp" class="form-control" required>
-                    <option selected disabled value="">Elige una opción...</option>
-                    <!-- Las opciones se llenarán dinámicamente vía JavaScript o backend -->
-                </select>
-                <div class="invalid-feedback">Selecciona una opción válida.</div>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label required-field">Calle</label>
-                <input id="calle" name="calle" type="text" class="form-control" placeholder="Introduce una calle válida." required>
-                <div class="invalid-feedback">Introduce una calle válida.</div>
-            </div>
-
-            <!-- Botón para ubicar en mapa -->
-            <div class="col-12 mb-3">
-                <button type="button" id="btnUbicar" class="btn btn-secondary">
-                    <i class="fas fa-map-marker-alt"></i> Ubicar en mapa
-                </button>
-            </div>
-
-            <div class="col-md-2">
-                <label class="form-label required-field">Recámaras</label>
-                <input id="recamaras" name="recamaras" type="number" class="form-control" min="0" required>
-                <div class="invalid-feedback">Campo requerido.</div>
-            </div>
-
-            <div class="col-md-2">
-                <label class="form-label required-field">Sanitarios</label>
-                <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" required>
-                <div class="invalid-feedback">Campo requerido.</div>
-            </div>
-
-            <div class="col-md-3">
-                <label class="form-label required-field">Estacionamiento</label>
-                <input id="estacionamiento" name="estacionamiento" type="number" class="form-control" min="0" required>
-                <div class="invalid-feedback">Campo requerido.</div>
-            </div>
-
-            <div class="col-md-5">
-                <label class="form-label">Comentarios</label>
-                <textarea id="comentarios" name="comentarios" class="form-control" rows="2" placeholder="Opcional..."></textarea>
-            </div>
-
-            <!-- Sección de metraje -->
-            <div class="col-12 mt-4">
-                <span class="section-title">Metraje</span>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label required-field">Terreno (m²)</label>
-                <input id="terreno" name="terreno" type="number" class="form-control" min="0" required>
-                <div class="invalid-feedback">Campo requerido.</div>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label required-field">Construcción (m²)</label>
-                <input id="construccion" name="construccion" type="number" class="form-control" min="0" required>
-                <div class="invalid-feedback">Campo requerido.</div>
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label required-field">Estado de conservación</label>
-                <select id="estado_conservacion" name="estado_conservacion" class="form-select" required>
-                    <option selected disabled value="">Selecciona un nivel...</option>
-                    <option>Muy bueno</option>
-                    <option>Bueno</option>
-                    <option>Regular</option>
-                    <option>Malo</option>
-                    <option>Muy malo</option>
-                </select>
-                <div class="invalid-feedback">Selecciona un estado de conservación.</div>
-            </div>
-
-            <div class="col-12 text-end mt-4">
-                <button type="submit" class="btn btn-calculate btn-lg animate__animated animate__pulse">Calcular</button>
-            </div>
-        </form>    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        <div class="col-lg-6">
+            <div class="form-container">
+                <h1 class="form-title">Estimación de Propiedad</h1>
+                <form method="POST" class="row g-2 needs-validation" novalidate>
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Tipo de propiedad</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-building"></i></span>
+                            <select id="tipo_propiedad" name="tipo_propiedad" class="form-select" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                <option value="Casa">Casa</option>
+                                <option value="Departamento">Departamento</option>
+                                <option value="Terreno">Terreno</option>
+                            </select>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Estado</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                            <select class="form-control" id="estado" name="estado" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                {% for estado in estados %}
+                                <option value="{{ estado.id_estado }}">{{ estado.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Alcaldía/Municipio</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-city"></i></span>
+                            <select class="form-control" id="municipio" name="municipio" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                {% for municipio in municipios %}
+                                <option value="{{ municipio.id_municipio }}">{{ municipio.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="loading-spinner" id="municipio-spinner">
+                                <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Colonia</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
+                            <select id="colonia" name="colonia" class="form-control" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                {% for colonia in colonias %}
+                                <option value="{{ colonia.id_colonia }}">{{ colonia.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="loading-spinner" id="colonia-spinner">
+                                <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Código Postal</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
+                            <select id="cp" name="cp" class="form-control" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                            </select>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Calle</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-road"></i></span>
+                            <input id="calle" name="calle" type="text" class="form-control" placeholder="Ej. Av. Revolución 123" required>
+                            <div class="invalid-feedback">Introduce una calle válida.</div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-1">
+                        <button type="button" id="btnUbicar" class="btn btn-secondary animate-float">
+                            <i class="fas fa-map-marker-alt me-2"></i> Ubicar en mapa
+                        </button>
+                    </div>
+                    <div class="col-12">
+                        <span class="section-title">Características de la propiedad</span>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label required-field">Recámaras</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-bed"></i></span>
+                            <input id="recamaras" name="recamaras" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label required-field">Sanitarios</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-bath"></i></span>
+                            <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label required-field">Estacionamiento</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-car"></i></span>
+                            <input id="estacionamiento" name="estacionamiento" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Comentarios adicionales</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-comment-alt"></i></span>
+                            <textarea id="comentarios" name="comentarios" class="form-control" rows="2" placeholder="Ej. Terraza, jardín, amenidades..."></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-1">
+                        <span class="section-title">Metraje</span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Terreno (m²)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-vector-square"></i></span>
+                            <input id="terreno" name="terreno" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Construcción (m²)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-building"></i></span>
+                            <input id="construccion" name="construccion" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label required-field">Estado de conservación</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
+                            <select id="estado_conservacion" name="estado_conservacion" class="form-select" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                <option value="Muy bueno">Muy bueno</option>
+                                <option value="Bueno">Bueno</option>
+                                <option value="Regular">Regular</option>
+                                <option value="Malo">Malo</option>
+                                <option value="Muy malo">Muy malo</option>
+                            </select>
+                            <div class="invalid-feedback">Selecciona un estado de conservación.</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div id="form-status" class="form-status-message error">
+                            <i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.
+                        </div>
+                    </div>
+                    <div class="col-12 text-end mt-2">
+                        <button type="submit" class="btn btn-calculate btn-lg">
+                            <i class="fas fa-calculator me-2"></i> Calcular valor
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-
         <!-- Mapa -->
-        <div class="col-md-6">
+        <div class="col-lg-6">
+            <div class="input-group mb-2">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input id="searchBox" type="text" class="form-control" placeholder="Buscar dirección...">
+            </div>
             <div id="map"></div>
         </div>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
 <script>
-    // Variables globales
     let map, marker, geocoder, circle, currentPolygon;
+    let tooltipTriggerList = [];
 
-    // Ubicaciones conocidas con sus coordenadas exactas
     const ubicacionesConocidas = {
         "Milpa Alta": { lat: 19.1929, lng: -99.0236 },
         "Alcaldía Milpa Alta": { lat: 19.1929, lng: -99.0236 },
@@ -287,83 +494,160 @@
         "Xochimilco": { lat: 19.2578, lng: -99.1056 }
     };
 
-    $(document).ready(function () {        
-                
-        // Cambiar municipios cuando se selecciona un estado
+    $(document).ready(function () {
+        tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+
+        function checkFormValidity() {
+            const form = document.querySelector('.needs-validation');
+            const requiredFields = form.querySelectorAll('[required]');
+            let allValid = true;
+            requiredFields.forEach(field => {
+                if (!field.value || field.value === '' || (field.tagName === 'SELECT' && field.value === '')) {
+                    allValid = false;
+                }
+            });
+            const statusDiv = $('#form-status');
+            if (allValid) {
+                statusDiv.html('<i class="fas fa-check-circle me-1"></i> ¡Todos los campos requeridos están completos!')
+                        .removeClass('error').addClass('success');
+            } else {
+                statusDiv.html('<i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.')
+                        .removeClass('success').addClass('error');
+            }
+        }
+
+        function scrollToNextField(currentField) {
+            const form = document.querySelector('.form-container');
+            const fields = Array.from(form.querySelectorAll('input[required], select[required]'));
+            const calleIndex = fields.findIndex(field => field.id === 'calle');
+            const relevantFields = fields.slice(calleIndex);
+            const firstEmptyField = relevantFields.find(field => !field.value || (field.tagName === 'SELECT' && field.value === ''));
+            if (firstEmptyField && firstEmptyField !== currentField) {
+                setTimeout(() => {
+                    const offset = 20;
+                    const fieldPosition = firstEmptyField.getBoundingClientRect().top + form.scrollTop - form.getBoundingClientRect().top;
+                    form.scrollTo({
+                        top: fieldPosition - offset,
+                        behavior: 'smooth'
+                    });
+                    firstEmptyField.focus();
+                }, 100);
+            }
+        }
+
+        const finalFields = ['calle', 'recamaras', 'sanitarios', 'estacionamiento', 'terreno', 'construccion', 'estado_conservacion'];
+        const requiredFields = document.querySelectorAll('input[required], select[required]');
+        requiredFields.forEach(field => {
+            field.addEventListener('change', function() {
+                checkFormValidity();
+                if (finalFields.includes(this.id)) {
+                    scrollToNextField(this);
+                }
+            });
+            field.addEventListener('input', function() {
+                checkFormValidity();
+                if (finalFields.includes(this.id) && this.type !== 'number') {
+                    scrollToNextField(this);
+                }
+            });
+        });
+
+        checkFormValidity();
+
         $('#estado').on('change', function () {
             const estadoId = $(this).val();
+            const estadoNombre = $(this).find('option:selected').text().trim();
             if (estadoId) {
+                $('#municipio-spinner').show();
+                $('#municipio').addClass('is-loading');
                 $.ajax({
                     url: '/obtener_municipios/',
                     data: { 'estado_id': estadoId },
                     success: function (data) {
-                        $('#municipio').empty().append('<option selected disabled value="">Elige una opción...</option>');
+                        $('#municipio').empty().append('<option selected disabled value="">Seleccionar...</option>');
                         $.each(data, function (index, municipio) {
                             $('#municipio').append(`<option value="${municipio.id_municipio}">${municipio.nombre}</option>`);
                         });
-                        // Limpiar colonias y códigos postales
-                        $('#colonia').empty().append('<option selected disabled value="">Elige una opción...</option>');
-                        $('#cp').empty().append('<option selected disabled value="">Elige una opción...</option>');
+                        $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                        $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                        actualizarMapaConEstado(estadoNombre);
                     },
                     error: function (xhr, status, error) {
                         console.error('Error al obtener municipios:', status, error);
                         mostrarErrorEnMapa('Error al cargar municipios');
+                    },
+                    complete: function() {
+                        $('#municipio-spinner').hide();
+                        $('#municipio').removeClass('is-loading');
                     }
                 });
             } else {
-                $('#municipio').empty().append('<option selected disabled value="">Elige una opción...</option>');
-                $('#colonia').empty().append('<option selected disabled value="">Elige una opción...</option>');
-                $('#cp').empty().append('<option selected disabled value="">Elige una opción...</option>');
+                $('#municipio').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
             }
         });
 
-        // Filtrar colonias cuando se selecciona un municipio
         $('#municipio').on('change', function () {
             const municipioId = $(this).val();
             const municipioNombre = $(this).find('option:selected').text().trim();
-
             if (municipioId && municipioNombre) {
-                // Actualizar el mapa con el municipio seleccionado
+                $('#colonia-spinner').show();
+                $('#colonia').addClass('is-loading');
                 actualizarMapaConMunicipio(municipioNombre);
-
-                // Filtrar colonias según el municipio
                 $.ajax({
                     url: '/obtener_colonias/',
                     data: { 'municipio_id': municipioId },
                     success: function (data) {
-                        $('#colonia').empty().append('<option selected disabled value="">Elige una opción...</option>');
+                        $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
                         $.each(data, function (index, colonia) {
                             $('#colonia').append(`<option value="${colonia.id_colonia}">${colonia.nombre}</option>`);
                         });
-                        // Limpiar códigos postales
-                        $('#cp').empty().append('<option selected disabled value="">Elige una opción...</option>');
+                        $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
                     },
                     error: function (xhr, status, error) {
                         console.error('Error al obtener colonias:', status, error);
                         mostrarErrorEnMapa('Error al cargar colonias');
-                        $('#colonia').empty().append('<option selected disabled value="">Error al cargar colonias</option>');
+                        $('#colonia').empty().append('<option selected disabled value="">Error al cargar</option>');
+                    },
+                    complete: function() {
+                        $('#colonia-spinner').hide();
+                        $('#colonia').removeClass('is-loading');
                     }
                 });
             } else {
-                $('#colonia').empty().append('<option selected disabled value="">Elige una opción...</option>');
-                $('#cp').empty().append('<option selected disabled value="">Elige una opción...</option>');
+                $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
             }
         });
 
-        // Filtrar códigos postales cuando se selecciona una colonia
         $('#colonia').on('change', function () {
             const coloniaId = $(this).val();
             const coloniaNombre = $(this).find('option:selected').text().trim();
-
             if (coloniaId) {
-                // Actualizar el mapa con la colonia seleccionada
                 actualizarMapaConColonia(coloniaNombre);
-
                 $.ajax({
                     url: '/obtener_codigos_postales/',
                     data: { 'colonia_id': coloniaId },
                     success: function (data) {
-                        $('#cp').empty().append('<option selected disabled value="">Elige una opción...</option>');
+                        $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
                         $.each(data, function (index, cp) {
                             $('#cp').append(`<option value="${cp.id_codigo_postal}">${cp.codigo}</option>`);
                         });
@@ -371,15 +655,14 @@
                     error: function (xhr, status, error) {
                         console.error('Error al obtener códigos postales:', status, error);
                         mostrarErrorEnMapa('Error al cargar códigos postales');
-                        $('#cp').empty().append('<option selected disabled value="">Error al cargar códigos postales</option>');
+                        $('#cp').empty().append('<option selected disabled value="">Error al cargar</option>');
                     }
                 });
             } else {
-                $('#cp').empty().append('<option selected disabled value="">Elige una opción...</option>');
+                $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
             }
         });
 
-        // Autocompletar campos cuando se selecciona un código postal
         $('#cp').on('change', function () {
             const cpId = $(this).val();
             if (cpId) {
@@ -407,7 +690,6 @@
             }
         });
 
-        // Botón para ubicar en el mapa
         $('#btnUbicar').click(function () {
             const colonia = $('#colonia option:selected').text().trim();
             if (colonia) {
@@ -417,14 +699,19 @@
                 if (municipio) {
                     actualizarMapaConMunicipio(municipio);
                 } else {
-                    mostrarErrorEnMapa('Seleccione al menos un municipio o colonia');
+                    const estado = $('#estado option:selected').text().trim();
+                    if (estado) {
+                        actualizarMapaConEstado(estado);
+                    } else {
+                        mostrarErrorEnMapa('Seleccione al menos un estado, municipio o colonia');
+                    }
                 }
             }
         });
     });
 
     function initMap() {
-        const centro = { lat: 19.4326, lng: -99.1332 }; // Centro de la CDMX
+        const centro = { lat: 19.4326, lng: -99.1332 };
         map = new google.maps.Map(document.getElementById("map"), {
             zoom: 10,
             center: centro,
@@ -434,19 +721,86 @@
                 mapTypeIds: ["roadmap", "satellite", "hybrid"]
             },
             streetViewControl: false,
-            fullscreenControl: true
+            fullscreenControl: true,
+            styles: [
+                {
+                    "featureType": "administrative",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        { "color": "#444444" }
+                    ]
+                },
+                {
+                    "featureType": "landscape",
+                    "elementType": "all",
+                    "stylers": [
+                        { "color": "#f2f2f2" }
+                    ]
+                },
+                {
+                    "featureType": "poi",
+                    "elementType": "all",
+                    "stylers": [
+                        { "visibility": "off" }
+                    ]
+                },
+                {
+                    "featureType": "road",
+                    "elementType": "all",
+                    "stylers": [
+                        { "saturation": -100 },
+                        { "lightness": 45 }
+                    ]
+                },
+                {
+                    "featureType": "road.highway",
+                    "elementType": "all",
+                    "stylers": [
+                        { "visibility": "simplified" }
+                    ]
+                },
+                {
+                    "featureType": "road.arterial",
+                    "elementType": "labels.icon",
+                    "stylers": [
+                        { "visibility": "off" }
+                    ]
+                },
+                {
+                    "featureType": "transit",
+                    "elementType": "all",
+                    "stylers": [
+                        { "visibility": "off" }
+                    ]
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "all",
+                    "stylers": [
+                        { "color": "#00CCCC" },
+                        { "visibility": "on" }
+                    ]
+                }
+            ]
         });
 
         marker = new google.maps.Marker({
             position: centro,
             map: map,
             title: "Ubicación seleccionada",
-            draggable: true
+            draggable: true,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 10,
+                fillColor: "#00CCCC",
+                fillOpacity: 1,
+                strokeWeight: 2,
+                strokeColor: "#ffffff"
+            }
         });
 
         geocoder = new google.maps.Geocoder();
 
-        // Configurar el buscador de direcciones
         const input = document.getElementById("searchBox");
         const autocomplete = new google.maps.places.Autocomplete(input, {
             componentRestrictions: { country: "mx" },
@@ -460,15 +814,15 @@
                 mostrarSugerenciasDeDireccion(input.value);
                 return;
             }
-
             manejarLugarSeleccionado(place);
         });
 
-        // Escuchar cambios en los campos para actualizar el mapa
         ["calle", "colonia", "cp", "municipio"].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.addEventListener("change", actualizarMapa);
         });
+
+        mostrarMensajeEnMapa('Seleccione una ubicación para comenzar');
     }
 
     function mostrarSugerenciasDeDireccion(busqueda) {
@@ -481,12 +835,10 @@
                 const suggestionsDiv = document.createElement('div');
                 suggestionsDiv.className = 'map-message';
                 suggestionsDiv.innerHTML = '<strong>¿Quiso decir alguna de estas direcciones?</strong>';
-
                 const suggestionsList = document.createElement('ul');
                 suggestionsList.style.listStyle = 'none';
                 suggestionsList.style.padding = '0';
                 suggestionsList.style.marginTop = '5px';
-
                 predictions.slice(0, 3).forEach(prediction => {
                     const li = document.createElement('li');
                     li.style.padding = '3px 0';
@@ -499,7 +851,6 @@
                     });
                     suggestionsList.appendChild(li);
                 });
-
                 suggestionsDiv.appendChild(suggestionsList);
                 map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(suggestionsDiv);
@@ -509,35 +860,28 @@
 
     function manejarLugarSeleccionado(place) {
         map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
-
         mostrarMensajeEnMapa(`Ubicación encontrada: ${place.name || 'Dirección seleccionada'}`, 'success-message');
-
         map.setCenter(place.geometry.location);
         map.setZoom(16);
         marker.setPosition(place.geometry.location);
-
         actualizarFormularioDesdeGeocoding(place.address_components);
     }
 
     function actualizarFormularioDesdeGeocoding(components) {
         const getComp = (type) => components.find((comp) => comp.types.includes(type))?.long_name || "";
-
         const calle = getComp("route");
         const numero = getComp("street_number");
         document.getElementById("calle").value = `${calle || ''} ${numero || ''}`.trim();
-
         const colonia = getComp("sublocality_level_1") || getComp("neighborhood") || "";
         if (colonia) {
             document.getElementById("colonia").value = colonia;
             $('#colonia').trigger('change');
         }
-
         const cp = getComp("postal_code") || "";
         if (cp) {
             document.getElementById("cp").value = cp;
             $('#cp').trigger('change');
         }
-
         const municipio = getComp("administrative_area_level_2") || "";
         if (municipio) {
             const municipioOption = $(`#municipio option:contains("${municipio}")`).first();
@@ -545,7 +889,6 @@
                 $('#municipio').val(municipioOption.val()).trigger('change');
             }
         }
-
         const estado = getComp("administrative_area_level_1") || "";
         if (estado) {
             const estadoOption = $(`#estado option:contains("${estado}")`).first();
@@ -555,43 +898,66 @@
         }
     }
 
+    function actualizarMapaConEstado(estadoNombre) {
+        const direccion = `${estadoNombre}, México`;
+        mostrarMensajeEnMapa(`Buscando ubicación para ${estadoNombre}...`);
+        if (circle) circle.setMap(null);
+        if (currentPolygon) currentPolygon.setMap(null);
+        geocoder.geocode({ address: direccion }, function (results, status) {
+            if (status === "OK" && results[0]) {
+                const location = results[0].geometry.location;
+                mostrarMensajeEnMapa(`Ubicación aproximada de ${estadoNombre}`, 'success-message');
+                map.setCenter(location);
+                marker.setPosition(location);
+                map.setZoom(8);
+                circle = new google.maps.Circle({
+                    strokeColor: '#00CCCC',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#00CCCC',
+                    fillOpacity: 0.1,
+                    map: map,
+                    center: location,
+                    radius: 50000
+                });
+            } else {
+                console.error('Geocoding error:', status, results);
+                mostrarErrorEnMapa(`No se pudo encontrar la ubicación exacta de ${estadoNombre}.`);
+            }
+        });
+    }
+
     function actualizarMapaConMunicipio(municipioNombre) {
         if (ubicacionesConocidas[municipioNombre]) {
             const location = new google.maps.LatLng(
                 ubicacionesConocidas[municipioNombre].lat,
                 ubicacionesConocidas[municipioNombre].lng
             );
-
             mostrarMensajeEnMapa(`Ubicación conocida de ${municipioNombre}`, 'success-message');
             map.setCenter(location);
             marker.setPosition(location);
             map.setZoom(12);
-
             if (circle) circle.setMap(null);
             circle = new google.maps.Circle({
-                strokeColor: '#00cccc',
+                strokeColor: '#00CCCC',
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
-                fillColor: '#00cccc',
+                fillColor: '#00CCCC',
                 fillOpacity: 0.2,
                 map: map,
                 center: location,
                 radius: 2000
             });
-            if (currentPolygon) currentPolygon.setMap(null); // Limpiar polígono si existe
+            if (currentPolygon) currentPolygon.setMap(null);
             return;
         }
-
         const esCDMX = $('#estado option:selected').text().trim() === "Ciudad de México";
         const prefijo = esCDMX ? "Alcaldía " : "";
         const estado = $('#estado option:selected').text().trim() || "Ciudad de México";
         const direccion = `${prefijo}${municipioNombre}, ${estado}, México`;
-
         mostrarMensajeEnMapa(`Buscando ubicación para ${municipioNombre}...`);
-
         if (circle) circle.setMap(null);
         if (currentPolygon) currentPolygon.setMap(null);
-
         geocoder.geocode({ address: direccion }, function (results, status) {
             if (status === "OK" && results[0]) {
                 const location = results[0].geometry.location;
@@ -599,12 +965,11 @@
                 map.setCenter(location);
                 marker.setPosition(location);
                 map.setZoom(12);
-
                 circle = new google.maps.Circle({
-                    strokeColor: '#00cccc',
+                    strokeColor: '#00CCCC',
                     strokeOpacity: 0.8,
                     strokeWeight: 2,
-                    fillColor: '#00cccc',
+                    fillColor: '#00CCCC',
                     fillOpacity: 0.2,
                     map: map,
                     center: location,
@@ -628,17 +993,13 @@
         const estado = $('#estado option:selected').text().trim() || "Ciudad de México";
         const calle = $('#calle').val().trim() || "";
         const cp = $('#cp option:selected').text().trim() || "";
-
         let direccion = `${calle ? calle + ', ' : ''}${coloniaNombre}, ${municipio}, ${estado}, México`;
         if (cp) {
             direccion += `, ${cp}`;
         }
-
         mostrarMensajeEnMapa(`Buscando ubicación para ${coloniaNombre}...`);
-
         if (circle) circle.setMap(null);
         if (currentPolygon) currentPolygon.setMap(null);
-
         geocoder.geocode({
             address: direccion,
             componentRestrictions: { country: "mx" }
@@ -649,19 +1010,16 @@
                 map.setCenter(location);
                 marker.setPosition(location);
                 map.setZoom(15);
-
                 circle = new google.maps.Circle({
-                    strokeColor: '#FF0000',
+                    strokeColor: '#00CCCC',
                     strokeOpacity: 0.8,
                     strokeWeight: 2,
-                    fillColor: '#FF0000',
+                    fillColor: '#00CCCC',
                     fillOpacity: 0.2,
                     map: map,
                     center: location,
                     radius: 500
                 });
-
-                // Cargar el polígono de la colonia
                 cargarPoligonoColonia(coloniaNombre, municipio, estado);
             } else {
                 console.error('Error al geocodificar la colonia:', status, results);
@@ -684,25 +1042,23 @@
                     if (currentPolygon) {
                         currentPolygon.setMap(null);
                     }
-
+                    const paths = data.geojson.coordinates.map(coord => {
+                        return { lat: coord[1], lng: coord[0] };
+                    });
                     currentPolygon = new google.maps.Polygon({
-                        paths: data.geojson.coordinates,
-                        strokeColor: '#00cccc',
+                        paths: paths,
+                        strokeColor: '#00CCCC',
                         strokeOpacity: 0.8,
                         strokeWeight: 2,
-                        fillColor: '#00cccc',
+                        fillColor: '#00CCCC',
                         fillOpacity: 0.3,
                         map: map
                     });
-
                     const bounds = new google.maps.LatLngBounds();
-                    data.geojson.coordinates.forEach(path => {
-                        path.forEach(coord => {
-                            bounds.extend(new google.maps.LatLng(coord[1], coord[0]));
-                        });
+                    paths.forEach(coord => {
+                        bounds.extend(coord);
                     });
                     map.fitBounds(bounds);
-
                     mostrarMensajeEnMapa(`Mostrando límites de ${coloniaNombre}`, 'success-message');
                 } else {
                     mostrarErrorEnMapa('No se encontraron límites para esta colonia');
@@ -721,12 +1077,9 @@
         const cp = document.getElementById("cp")?.value || "";
         const municipio = $('#municipio option:selected').text().trim() || "";
         const estado = $('#estado option:selected').text().trim() || "Ciudad de México";
-
         let direccion = `${calle}, ${colonia}, ${cp}, ${municipio}, ${estado}, México`.trim();
-
         if (direccion) {
             mostrarMensajeEnMapa('Buscando ubicación...');
-
             geocoder.geocode({ address: direccion }, function (results, status) {
                 if (status === "OK" && results[0]) {
                     const location = results[0].geometry.location;
@@ -734,21 +1087,20 @@
                     map.setCenter(location);
                     marker.setPosition(location);
                     map.setZoom(16);
-
                     if (circle) circle.setMap(null);
                     if (currentPolygon) currentPolygon.setMap(null);
-
                     if (colonia) {
                         cargarPoligonoColonia(colonia, municipio, estado);
                     }
                 } else {
                     console.error('Error al geocodificar:', status, results);
                     mostrarErrorEnMapa('No se pudo encontrar la ubicación exacta. Intente con más detalles.');
-
                     if (colonia) {
                         actualizarMapaConColonia(colonia);
                     } else if (municipio) {
                         actualizarMapaConMunicipio(municipio);
+                    } else if (estado) {
+                        actualizarMapaConEstado(estado);
                     }
                 }
             });
@@ -759,7 +1111,6 @@
         const messageDiv = document.createElement('div');
         messageDiv.className = `map-message ${clase}`;
         messageDiv.textContent = mensaje;
-
         map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(messageDiv);
     }
@@ -775,5 +1126,4 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDldEaEtV3NdG-fY-us0SmbBSh8RHibnpU&libraries=places,geometry&callback=initMap"
     async defer>
 </script>
-
 {% endblock %}
