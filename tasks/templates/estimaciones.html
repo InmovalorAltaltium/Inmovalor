@@ -12,32 +12,26 @@
         --success-color: #66CC99;
     }
 
-    body {
+    .estimacion-propiedad {
         background: linear-gradient(-45deg, #fefcef, #bfc6c7, #52b3c0, #00cccc);
         background-size: 400% 400%;
         animation: gradientBG 15s ease infinite;
         min-height: 100vh;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding: 0.5rem;
     }
 
     @keyframes gradientBG {
-        0% {
-            background-position: 0% 50%;
-        }
-        50% {
-            background-position: 100% 50%;
-        }
-        100% {
-            background-position: 0% 50%;
-        }
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 
-    .form-container {
+    .estimacion-propiedad .form-container {
         background-color: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(8px);
         padding: 1rem;
@@ -50,12 +44,12 @@
         scroll-behavior: smooth;
     }
 
-    .form-container:hover {
+    .estimacion-propiedad .form-container:hover {
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         transform: translateY(-2px);
     }
 
-    .form-title {
+    .estimacion-propiedad .form-title {
         color: var(--dark-color);
         font-weight: 700;
         margin-bottom: 0.8rem;
@@ -66,7 +60,7 @@
         font-size: 1.4rem;
     }
 
-    .form-title::after {
+    .estimacion-propiedad .form-title::after {
         content: '';
         position: absolute;
         bottom: 0;
@@ -78,19 +72,19 @@
         border-radius: 2px;
     }
 
-    .form-label {
+    .estimacion-propiedad .form-label {
         font-weight: 600;
         color: var(--dark-color);
         margin-bottom: 0.2rem;
         font-size: 0.8rem;
     }
 
-    .required-field::after {
+    .estimacion-propiedad .required-field::after {
         content: " *";
         color: var(--error-color);
     }
 
-    .section-title {
+    .estimacion-propiedad .section-title {
         color: var(--dark-color);
         font-weight: 600;
         font-size: 0.9rem;
@@ -100,7 +94,7 @@
         padding-left: 0.6rem;
     }
 
-    .section-title::before {
+    .estimacion-propiedad .section-title::before {
         content: '';
         position: absolute;
         left: 0;
@@ -112,7 +106,7 @@
         border-radius: 2px;
     }
 
-    .btn-calculate {
+    .estimacion-propiedad .btn-calculate {
         background-color: var(--primary-color);
         border: none;
         color: white;
@@ -123,14 +117,14 @@
         box-shadow: 0 2px 4px rgba(0, 204, 204, 0.2);
     }
 
-    .btn-calculate:hover {
+    .estimacion-propiedad .btn-calculate:hover {
         background-color: var(--secondary-color);
         color: white;
         transform: translateY(-2px);
         box-shadow: 0 4px 6px rgba(0, 204, 204, 0.3);
     }
 
-    .btn-secondary {
+    .estimacion-propiedad .btn-secondary {
         background-color: var(--dark-color);
         color: white;
         font-weight: 500;
@@ -139,13 +133,13 @@
         transition: all 0.3s ease;
     }
 
-    .btn-secondary:hover {
+    .estimacion-propiedad .btn-secondary:hover {
         background-color: var(--secondary-color);
         color: white;
         transform: translateY(-2px);
     }
 
-    #map {
+    .estimacion-propiedad #map {
         height: 450px;
         width: 100%;
         border-radius: 10px;
@@ -153,11 +147,11 @@
         transition: all 0.3s ease;
     }
 
-    #map:hover {
+    .estimacion-propiedad #map:hover {
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
 
-    .map-message {
+    .estimacion-propiedad .map-message {
         padding: 6px 12px;
         background: white;
         border-radius: 5px;
@@ -171,17 +165,17 @@
         color: black;
     }
 
-    .error-message {
+    .estimacion-propiedad .error-message {
         color: white;
         background-color: var(--error-color);
     }
 
-    .success-message {
+    .estimacion-propiedad .success-message {
         color: white;
         background-color: var(--success-color);
     }
 
-    .form-status-message {
+    .estimacion-propiedad .form-status-message {
         font-size: 0.8rem;
         font-weight: 500;
         text-align: center;
@@ -191,17 +185,18 @@
         transition: all 0.3s ease;
     }
 
-    .form-status-message.success {
+    .estimacion-propiedad .form-status-message.success {
         color: var(--success-color);
         background-color: rgba(102, 204, 153, 0.1);
     }
 
-    .form-status-message.error {
+    .estimacion-propiedad .form-status-message.error {
         color: var(--error-color);
         background-color: rgba(255, 107, 107, 0.1);
     }
 
-    .form-control, .form-select {
+    .estimacion-propiedad .form-control,
+    .estimacion-propiedad .form-select {
         border-radius: 5px;
         padding: 0.4rem 0.7rem;
         border: 1px solid #ced4da;
@@ -209,19 +204,20 @@
         font-size: 0.85rem;
     }
 
-    .form-control:focus, .form-select:focus {
+    .estimacion-propiedad .form-control:focus,
+    .estimacion-propiedad .form-select:focus {
         border-color: var(--primary-color);
         outline: none;
         box-shadow: 0 0 0 0.15rem rgba(0, 204, 204, 0.25);
         background: var(--light-color);
     }
 
-    .invalid-feedback {
+    .estimacion-propiedad .invalid-feedback {
         font-size: 0.7rem;
         color: var(--error-color);
     }
 
-    .animate-fade-in {
+    .estimacion-propiedad .animate-fade-in {
         animation: fadeIn 0.6s ease-in-out;
     }
 
@@ -230,7 +226,7 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .animate-float {
+    .estimacion-propiedad .animate-float {
         animation: float 3s ease-in-out infinite;
     }
 
@@ -240,7 +236,7 @@
         100% { transform: translateY(0px); }
     }
 
-    .input-group-text {
+    .estimacion-propiedad .input-group-text {
         background-color: var(--accent-color);
         color: var(--dark-color);
         border-radius: 5px 0 0 5px;
@@ -248,12 +244,12 @@
         padding: 0.4rem 0.6rem;
     }
 
-    .input-group:focus-within .input-group-text {
+    .estimacion-propiedad .input-group:focus-within .input-group-text {
         background-color: var(--primary-color);
         color: white;
     }
 
-    .loading-spinner {
+    .estimacion-propiedad .loading-spinner {
         display: none;
         position: absolute;
         right: 6px;
@@ -261,11 +257,11 @@
         transform: translateY(-50%);
     }
 
-    .form-control.is-loading {
+    .estimacion-propiedad .form-control.is-loading {
         padding-right: 30px;
     }
 
-    .pulse-animation {
+    .estimacion-propiedad .pulse-animation {
         animation: pulse 2s infinite;
     }
 
@@ -275,192 +271,190 @@
         100% { box-shadow: 0 0 0 0 rgba(0, 204, 204, 0); }
     }
 
-    .container-fluid {
+    .estimacion-propiedad .container-fluid {
         padding: 0.5rem;
     }
 </style>
 
-<div class="container-fluid py-2 animate-fade-in">
-    <div class="row g-2">
-        <!-- Formulario -->
-        <div class="col-lg-6">
-            <div class="form-container">
-                <h1 class="form-title">Estimación de Propiedad</h1>
-                <form method="POST" class="row g-2 needs-validation" novalidate>
-                    {% csrf_token %}
-                    <div class="col-md-6">
-                        <label class="form-label required-field">Tipo de propiedad</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-building"></i></span>
-                            <select id="tipo_propiedad" name="tipo_propiedad" class="form-select" required>
-                                <option selected disabled value="">Seleccionar...</option>
-                                <option value="Casa">Casa</option>
-                                <option value="Departamento">Departamento</option>
-                                <option value="Terreno">Terreno</option>
-                            </select>
-                            <div class="invalid-feedback">Selecciona una opción válida.</div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required-field">Estado</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                            <select class="form-control" id="estado" name="estado" required>
-                                <option selected disabled value="">Seleccionar...</option>
-                                {% for estado in estados %}
-                                <option value="{{ estado.id_estado }}">{{ estado.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                            <div class="invalid-feedback">Selecciona una opción válida.</div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required-field">Alcaldía/Municipio</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-city"></i></span>
-                            <select class="form-control" id="municipio" name="municipio" required>
-                                <option selected disabled value="">Seleccionar...</option>
-                                {% for municipio in municipios %}
-                                <option value="{{ municipio.id_municipio }}">{{ municipio.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                            <div class="loading-spinner" id="municipio-spinner">
-                                <div class="spinner-border spinner-border-sm text-secondary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
+<div class="estimacion-propiedad">
+    <div class="container-fluid py-2 animate-fade-in">
+        <div class="row g-2">
+            <!-- Formulario -->
+            <div class="col-lg-6">
+                <div class="form-container">
+                    <h1 class="form-title">Estimación de Propiedad</h1>
+                    <form method="POST" class="row g-2 needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Tipo de propiedad</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                <select id="tipo_propiedad" name="tipo_propiedad" class="form-select" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    <option value="Casa">Casa</option>
+                                    <option value="Departamento">Departamento</option>
+                                    <option value="Terreno">Terreno</option>
+                                </select>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
                             </div>
-                            <div class="invalid-feedback">Selecciona una opción válida.</div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required-field">Colonia</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
-                            <select id="colonia" name="colonia" class="form-control" required>
-                                <option selected disabled value="">Seleccionar...</option>
-                                {% for colonia in colonias %}
-                                <option value="{{ colonia.id_colonia }}">{{ colonia.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                            <div class="loading-spinner" id="colonia-spinner">
-                                <div class="spinner-border spinner-border-sm text-secondary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Estado</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                <select class="form-control" id="estado" name="estado" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    {% for estado in estados %}
+                                    <option value="{{ estado.id_estado }}">{{ estado.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
                             </div>
-                            <div class="invalid-feedback">Selecciona una opción válida.</div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required-field">Código Postal</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
-                            <select id="cp" name="cp" class="form-control" required>
-                                <option selected disabled value="">Seleccionar...</option>
-                            </select>
-                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Alcaldía/Municipio</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-city"></i></span>
+                                <select class="form-control" id="municipio" name="municipio" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    {% for municipio in municipios %}
+                                    <option value="{{ municipio.id_municipio }}">{{ municipio.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="loading-spinner" id="municipio-spinner">
+                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required-field">Calle</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-road"></i></span>
-                            <input id="calle" name="calle" type="text" class="form-control" placeholder="Ej. Av. Revolución 123" required>
-                            <div class="invalid-feedback">Introduce una calle válida.</div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Colonia</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
+                                <select id="colonia" name="colonia" class="form-control" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    {% for colonia in colonias %}
+                                    <option value="{{ colonia.id_colonia }}">{{ colonia.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="loading-spinner" id="colonia-spinner">
+                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 mb-1">
-                        <button type="button" id="btnUbicar" class="btn btn-secondary animate-float">
-                            <i class="fas fa-map-marker-alt me-2"></i> Ubicar en mapa
-                        </button>
-                    </div>
-                    <div class="col-12">
-                        <span class="section-title">Características de la propiedad</span>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required-field">Recámaras</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-bed"></i></span>
-                            <input id="recamaras" name="recamaras" type="number" class="form-control" min="0" required>
-                            <div class="invalid-feedback">Campo requerido.</div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Código Postal</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
+                                <select id="cp" name="cp" class="form-control" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                </select>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required-field">Sanitarios</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-bath"></i></span>
-                            <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" required>
-                            <div class="invalid-feedback">Campo requerido.</div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Calle</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-road"></i></span>
+                                <input id="calle" name="calle" type="text" class="form-control" placeholder="Ej. Av. Revolución 123" required>
+                                <div class="invalid-feedback">Introduce una calle válida.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label required-field">Estacionamiento</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-car"></i></span>
-                            <input id="estacionamiento" name="estacionamiento" type="number" class="form-control" min="0" required>
-                            <div class="invalid-feedback">Campo requerido.</div>
+                        <div class="col-12 mb-1">
+                            <button type="button" id="btnUbicar" class="btn btn-secondary animate-float">
+                                <i class="fas fa-map-marker-alt me-2"></i> Ubicar en mapa
+                            </button>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">Comentarios adicionales</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-comment-alt"></i></span>
-                            <textarea id="comentarios" name="comentarios" class="form-control" rows="2" placeholder="Ej. Terraza, jardín, amenidades..."></textarea>
+                        <div class="col-12">
+                            <span class="section-title">Características de la propiedad</span>
                         </div>
-                    </div>
-                    <div class="col-12 mt-1">
-                        <span class="section-title">Metraje</span>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required-field">Terreno (m²)</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-vector-square"></i></span>
-                            <input id="terreno" name="terreno" type="number" class="form-control" min="0" required>
-                            <div class="invalid-feedback">Campo requerido.</div>
+                        <div class="col-md-4">
+                            <label class="form-label required-field">Recámaras</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-bed"></i></span>
+                                <input id="recamaras" name="recamaras" type="number" class="form-control" min="0" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label required-field">Construcción (m²)</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-building"></i></span>
-                            <input id="construccion" name="construccion" type="number" class="form-control" min="0" required>
-                            <div class="invalid-feedback">Campo requerido.</div>
+                        <div class="col-md-4">
+                            <label class="form-label required-field">Sanitarios</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-bath"></i></span>
+                                <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label required-field">Estado de conservación</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
-                            <select id="estado_conservacion" name="estado_conservacion" class="form-select" required>
-                                <option selected disabled value="">Seleccionar...</option>
-                                <option value="Muy bueno">Muy bueno</option>
-                                <option value="Bueno">Bueno</option>
-                                <option value="Regular">Regular</option>
-                                <option value="Malo">Malo</option>
-                                <option value="Muy malo">Muy malo</option>
-                            </select>
-                            <div class="invalid-feedback">Selecciona un estado de conservación.</div>
+                        <div class="col-md-4">
+                            <label class="form-label required-field">Estacionamiento</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                <input id="estacionamiento" name="estacionamiento" type="number" class="form-control" min="0" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <div id="form-status" class="form-status-message error">
-                            <i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.
+                        <div class="col-12">
+                            <label class="form-label">Comentarios adicionales</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-comment-alt"></i></span>
+                                <textarea id="comentarios" name="comentarios" class="form-control" rows="2" placeholder="Ej. Terraza, jardín, amenidades..."></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 text-end mt-2">
-                        <button type="submit" class="btn btn-calculate btn-lg">
-                            <i class="fas fa-calculator me-2"></i> Calcular valor
-                        </button>
-                    </div>
-                </form>
+                        <div class="col-12 mt-1">
+                            <span class="section-title">Metraje</span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Terreno (m²)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-vector-square"></i></span>
+                                <input id="terreno" name="terreno" type="number" class="form-control" min="0" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Construcción (m²)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                <input id="construccion" name="construccion" type="number" class="form-control" min="0" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label required-field">Estado de conservación</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
+                                <select id="estado_conservacion" name="estado_conservacion" class="form-select" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    <option value="Muy bueno">Muy bueno</option>
+                                    <option value="Bueno">Bueno</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Malo">Malo</option>
+                                    <option value="Muy malo">Muy malo</option>
+                                </select>
+                                <div class="invalid-feedback">Selecciona un estado de conservación.</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div id="form-status" class="form-status-message error">
+                                <i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.
+                            </div>
+                        </div>
+                        <div class="col-12 text-end mt-2">
+                            <button type="submit" class="btn btn-calculate btn-lg">
+                                <i class="fas fa-calculator me-2"></i> Calcular valor
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-        <!-- Mapa -->
-        <div class="col-lg-6">
-            <div class="input-group mb-2">
-                <span class="input-group-text"><i class="fas fa-search"></i></span>
-                <input id="searchBox" type="text" class="form-control" placeholder="Buscar dirección...">
+            <!-- Mapa -->
+            <div class="col-lg-6">
+                <div id="map"></div>
             </div>
-            <div id="map"></div>
         </div>
     </div>
 </div>
@@ -726,60 +720,42 @@
                 {
                     "featureType": "administrative",
                     "elementType": "labels.text.fill",
-                    "stylers": [
-                        { "color": "#444444" }
-                    ]
+                    "stylers": [{ "color": "#444444" }]
                 },
                 {
                     "featureType": "landscape",
                     "elementType": "all",
-                    "stylers": [
-                        { "color": "#f2f2f2" }
-                    ]
+                    "stylers": [{ "color": "#f2f2f2" }]
                 },
                 {
                     "featureType": "poi",
                     "elementType": "all",
-                    "stylers": [
-                        { "visibility": "off" }
-                    ]
+                    "stylers": [{ "visibility": "off" }]
                 },
                 {
                     "featureType": "road",
                     "elementType": "all",
-                    "stylers": [
-                        { "saturation": -100 },
-                        { "lightness": 45 }
-                    ]
+                    "stylers": [{ "saturation": -100 }, { "lightness": 45 }]
                 },
                 {
                     "featureType": "road.highway",
                     "elementType": "all",
-                    "stylers": [
-                        { "visibility": "simplified" }
-                    ]
+                    "stylers": [{ "visibility": "simplified" }]
                 },
                 {
                     "featureType": "road.arterial",
                     "elementType": "labels.icon",
-                    "stylers": [
-                        { "visibility": "off" }
-                    ]
+                    "stylers": [{ "visibility": "off" }]
                 },
                 {
                     "featureType": "transit",
                     "elementType": "all",
-                    "stylers": [
-                        { "visibility": "off" }
-                    ]
+                    "stylers": [{ "visibility": "off" }]
                 },
                 {
                     "featureType": "water",
                     "elementType": "all",
-                    "stylers": [
-                        { "color": "#00CCCC" },
-                        { "visibility": "on" }
-                    ]
+                    "stylers": [{ "color": "#00CCCC" }, { "visibility": "on" }]
                 }
             ]
         });
@@ -801,101 +777,12 @@
 
         geocoder = new google.maps.Geocoder();
 
-        const input = document.getElementById("searchBox");
-        const autocomplete = new google.maps.places.Autocomplete(input, {
-            componentRestrictions: { country: "mx" },
-            fields: ["address_components", "geometry", "name"],
-            types: ["address"]
-        });
-
-        autocomplete.addListener("place_changed", () => {
-            const place = autocomplete.getPlace();
-            if (!place.geometry) {
-                mostrarSugerenciasDeDireccion(input.value);
-                return;
-            }
-            manejarLugarSeleccionado(place);
-        });
-
         ["calle", "colonia", "cp", "municipio"].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.addEventListener("change", actualizarMapa);
         });
 
         mostrarMensajeEnMapa('Seleccione una ubicación para comenzar');
-    }
-
-    function mostrarSugerenciasDeDireccion(busqueda) {
-        const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({
-            input: busqueda,
-            componentRestrictions: { country: "mx" }
-        }, (predictions, status) => {
-            if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
-                const suggestionsDiv = document.createElement('div');
-                suggestionsDiv.className = 'map-message';
-                suggestionsDiv.innerHTML = '<strong>¿Quiso decir alguna de estas direcciones?</strong>';
-                const suggestionsList = document.createElement('ul');
-                suggestionsList.style.listStyle = 'none';
-                suggestionsList.style.padding = '0';
-                suggestionsList.style.marginTop = '5px';
-                predictions.slice(0, 3).forEach(prediction => {
-                    const li = document.createElement('li');
-                    li.style.padding = '3px 0';
-                    li.style.cursor = 'pointer';
-                    li.textContent = prediction.description;
-                    li.addEventListener('click', () => {
-                        document.getElementById("searchBox").value = prediction.description;
-                        const event = new KeyboardEvent('keydown', { key: 'Enter' });
-                        document.getElementById("searchBox").dispatchEvent(event);
-                    });
-                    suggestionsList.appendChild(li);
-                });
-                suggestionsDiv.appendChild(suggestionsList);
-                map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
-                map.controls[google.maps.ControlPosition.TOP_CENTER].push(suggestionsDiv);
-            }
-        });
-    }
-
-    function manejarLugarSeleccionado(place) {
-        map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
-        mostrarMensajeEnMapa(`Ubicación encontrada: ${place.name || 'Dirección seleccionada'}`, 'success-message');
-        map.setCenter(place.geometry.location);
-        map.setZoom(16);
-        marker.setPosition(place.geometry.location);
-        actualizarFormularioDesdeGeocoding(place.address_components);
-    }
-
-    function actualizarFormularioDesdeGeocoding(components) {
-        const getComp = (type) => components.find((comp) => comp.types.includes(type))?.long_name || "";
-        const calle = getComp("route");
-        const numero = getComp("street_number");
-        document.getElementById("calle").value = `${calle || ''} ${numero || ''}`.trim();
-        const colonia = getComp("sublocality_level_1") || getComp("neighborhood") || "";
-        if (colonia) {
-            document.getElementById("colonia").value = colonia;
-            $('#colonia').trigger('change');
-        }
-        const cp = getComp("postal_code") || "";
-        if (cp) {
-            document.getElementById("cp").value = cp;
-            $('#cp').trigger('change');
-        }
-        const municipio = getComp("administrative_area_level_2") || "";
-        if (municipio) {
-            const municipioOption = $(`#municipio option:contains("${municipio}")`).first();
-            if (municipioOption.length > 0) {
-                $('#municipio').val(municipioOption.val()).trigger('change');
-            }
-        }
-        const estado = getComp("administrative_area_level_1") || "";
-        if (estado) {
-            const estadoOption = $(`#estado option:contains("${estado}")`).first();
-            if (estadoOption.length > 0) {
-                $('#estado').val(estadoOption.val()).trigger('change');
-            }
-        }
     }
 
     function actualizarMapaConEstado(estadoNombre) {
@@ -1123,7 +1010,7 @@
 </script>
 
 <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDldEaEtV3NdG-fY-us0SmbBSh8RHibnpU&libraries=places,geometry&callback=initMap"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDldEaEtV3NdG-fY-us0SmbBSh8RHibnpU&libraries=geometry&callback=initMap"
     async defer>
 </script>
 {% endblock %}
