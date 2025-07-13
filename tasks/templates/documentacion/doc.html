@@ -1,0 +1,1030 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Documentación{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/doc.css' %}" />
+
+<section class="hero-section position-relative overflow-hidden d-flex flex-column flex-lg-row align-items-center text-white" style="background: linear-gradient(135deg, #003035 0%, #006064 100%);">
+  <div class="hero-content text-left text-lg-start p-4 p-lg-5 w-100 w-lg-50 z-2">
+    <h1 class="display-4 fw-bold mb-3">Documentación</h1>
+    <p class="lead mb-4">
+    Aquí podrás encontrar todo sobre la documentación relacionado al tanteo. Haz clic para ver más.
+    </p>
+    <a href="#corporate-documents" class="btn btn-info fw-bold px-4 py-2">Ver más</a>
+  </div>
+
+  
+   <div id="heroCarousel" class="carousel slide w-100 w-lg-50 h-100" data-bs-ride="carousel">
+    <div class="carousel-inner h-100">
+      <div class="carousel-item active h-100">
+        <img src="{% static 'images/altaltium4.png' %}" class="d-block w-100 h-100 object-fit-cover" alt="Imagen 1">
+      </div>
+      <div class="carousel-item h-100">
+        <img src="{% static 'images/altaltium5.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Imagen 2">
+      </div>
+      <div class="carousel-item h-100">
+        <img src="{% static 'images/altaltium3.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Imagen 3">
+      </div>
+      <div class="carousel-item h-100">
+        <img src="{% static 'images/altaltium6.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Imagen 4">
+      </div>
+      <div class="carousel-item h-100">
+        <img src="{% static 'images/altaltium7.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Imagen 5">
+      </div>
+      <div class="carousel-item h-100">
+        <img src="{% static 'images/altaltium8.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="Imagen 6">
+      </div>
+    </div>
+  <div class="carousel-controls">
+    <div class="carousel-btn" onclick="changeImage(-1)">❮</div>
+    <div class="carousel-btn" onclick="changeImage(1)">❯</div>
+  </div>
+</section>
+
+
+<section id="corporate-documents" class="documents-grid-section">
+  <div class="container">
+    <h2 class="section-title">Documentos Corporativos</h2>
+    <p class="section-subtitle">
+      Explora y descarga nuestros archivos institucionales en diferentes
+      formatos
+    </p>
+
+    <div class="categories-nav">
+      <button class="category-btn active" data-category="all">Todos</button>
+      <button class="category-btn" data-category="presentation"> CV Corporativo</button>
+      <button class="category-btn" data-category="cv">Manuales de productos</button>
+      <button class="category-btn" data-category="destacados">Documentos destacados</button>
+      <button class="category-btn" data-category="logos">Logos</button>
+      <button class="category-btn" data-category="direccion">¿Cómo llegar?</button>
+    </div>
+
+    <div class="documents-grid">
+      <!-- Documento 1 - Presentación Horizontal -->
+      <div class="document-card" data-category="presentation">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/horizontal_.png' %}"
+            alt="Presentación Horizontal"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/ALTALTIUM_horizontal.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/ALTALTIUM_horizontal.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>CV Horizontal</h3>
+          <p>Formato estándar para proyección en pantallas</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 19,449 KB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documento 2 - Presentación Vertical -->
+      <div class="document-card" data-category="presentation">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/vertical_.png' %}"
+            alt="Presentación Vertical"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/ALTALTIUM_vertical.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/ALTALTIUM_vertical.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>CV Vertical</h3>
+          <p>Formato optimizado para móviles y redes sociales</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 20,314 KB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documento 3 - CV Corporativo -->
+      <div class="document-card" data-category="presentation">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/ingles_.png' %}"
+            alt="CV Corporativo"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/CV_ALTALTIUM_English.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/CV_ALTALTIUM_English.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>CV Versión Inglés</h3>
+          <p>Versión internacional de nuestra presentación corporativa</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 18,890 KB</span>
+          </div>
+        </div>
+      </div>
+      <!-- Documento 4 - Presentación en manual de productos -->
+      <div class="document-card" data-category="cv">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/classic.png' %}"
+            alt="Presentación en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/manuales/Manual_de_Classic.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/manuales/Manual_de_Classic.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Manual Classic</h3>
+          <p>Versión del tipo de producto Classic</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 57,147 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 5 - Presentación en manual de productos -->
+      <div class="document-card" data-category="cv">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/flipping.png' %}"
+            alt="Presentación en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/manuales/Manual_de_Flipping.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/manuales/Manual_de_Flipping.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Manual Flipping</h3>
+          <p>Versión de tipo de producto Flipping</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 48,672 KB</span>
+          </div>
+        </div>
+      </div>
+
+      
+<!-- Documento 6 - Presentación en manual de productos -->
+      <div class="document-card" data-category="cv">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/premium.png' %}"
+            alt="Presentación en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/manuales/Manual_de_Premium.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/manuales/Manual_de_Premium.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Manual Premium</h3>
+          <p>Versión de tipo de producto Premium</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 32,370 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 7 - Presentación en manual de productos -->
+      <div class="document-card" data-category="cv">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/recover.png' %}"
+            alt="Presentación en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/manuales/Manual_de_Recover.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/manuales/Manual_de_Recover.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Manual Recover</h3>
+          <p>Versión de tipo de producto Recover</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 10,279 KB</span>
+          </div>
+        </div>
+      </div>
+
+
+<!-- Documento 8 - Presentación en manual de productos -->
+      <div class="document-card" data-category="cv">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/crowfunding.png' %}"
+            alt="Presentación en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/manuales/Manual_de_Crowfunding.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/manuales/Manual_de_Crowfunding.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Manual Crowdfunding</h3>
+          <p>Versión de tipo de producto Crowdfunding</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 77,674 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 9 - Presentación en manual de productos -->
+<div class="document-card" data-category="cv">
+  <div class="document-preview">
+    <img
+      src="{% static 'images/doc/word4.png' %}"
+      alt="Presentación en Inglés"
+      class="document-image"
+    />
+    <div class="document-overlay">
+      <a
+        href="https://docs.google.com/document/d/1PlHuW4F_fX0Ui6GFkCF5ZVTz8s92tPnM/edit?usp=sharing&ouid=107081836410299507090&rtpof=true&sd=true"
+        class="preview-btn"
+        target="_blank"
+      >
+        <i class="fas fa-eye"></i> Vista Previa
+      </a>
+      <a
+        href="{% static 'docs/manuales/Resumen_completo_de_Manuales.docx' %}"
+        class="download-btn"
+        download
+      >
+        <i class="fas fa-download"></i> Descargar
+      </a>
+    </div>
+  </div>
+  <div class="document-info">
+    <h3>Manual General</h3>
+    <p>Versión General de todos los productos</p>
+    <div class="document-meta">
+      <span><i class="far fa-file-word"></i> DOCX</span>
+      <span><i class="far fa-file-alt"></i> 20 KB</span>
+    </div>
+  </div>
+</div>
+
+      <!-- Documento 10 - Documentos destacados -->
+      <div class="document-card" data-category="destacados">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/casos.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/manuales/destacados/CASOS_EXITO_FLIPPING.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/manuales/destacados/CASOS_EXITO_FLIPPING.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Casos de Éxito</h3>
+          <p>Producto Flipping</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 17,379 KB</span>
+          </div>
+        </div>
+      </div>
+
+   
+
+
+   <!-- Documento 12 - Documentos destacados -->
+      <div class="document-card" data-category="destacados">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/c2024.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/manuales/destacados/Presentación_Corporativa_2024.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/manuales/destacados/Presentación_Corporativa_2024.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Presentación Corporativa 2024</h3>
+          <p>Información sobre ese año</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 7,391 KB</span>
+          </div>
+        </div>
+      </div>
+
+   <!-- Documento 13 - Documentos destacados -->
+      <div class="document-card" data-category="destacados">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/juicio.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/ALTALTIUM_FASES_JUICIO_ESPECIAL_HIPOTECARIO.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/ALTALTIUM_FASES_JUICIO_ESPECIAL_HIPOTECARIO.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Altaltium Juicio</h3>
+          <p>Fases juicio especial hipotecario Altaltium</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 13,417 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 14 - Documentos destacados -->
+      <div class="document-card" data-category="destacados">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/buyer.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/Buyer_Personas_Altaltium.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/Buyer_Personas_Altaltium.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Buyer Personas</h3>
+          <p>Público objetivo y Buyer persona</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 24,340 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 15 - Documentos destacados -->
+      <div class="document-card" data-category="destacados">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/Crowdfunding.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/Crowdfunding.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/Crowdfunding.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Tickets de Inversión</h3>
+          <p>Información más detallada de Crowdfunding</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 9,104 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 16 - Documentos destacados -->
+      <div class="document-card" data-category="destacados">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/exclusiva.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/Exclusiva_CLASSIC_ALTALTIUM.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/Exclusiva_CLASSIC_ALTALTIUM.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Exclusiva Classic</h3>
+          <p>Beneficios de venta en exclusiva</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 18,060 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 17 - llegar -->
+      <div class="document-card" data-category="direccion">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/oficinas.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/Acceso_a_nuestras_oficinas.pdf' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/Acceso_a_nuestras_oficinas.pdf' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Oficinas Altaltium</h3>
+          <p>Documento para descargar datos sobre el acceso a las oficinas</p>
+          <div class="document-meta">
+            <span><i class="far fa-file-pdf"></i> PDF</span>
+            <span><i class="far fa-file-alt"></i> 9,913 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 18 - llegar -->
+      <div class="document-card" data-category="direccion">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/estacionamiento.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/ESTACIONAMIENTO.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/estacionamiento.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Estacionamiento Altaltium</h3>
+          <p>Imagen para descargar datos sobre el estacionamiento</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 1,324 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- LOGOS DE ALTALTIUM -->
+
+<!-- Documento 19 Logos -->
+  <div class="document-card" data-category="logos">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/logo/Logo-Altaltium_NEGRO_JM.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/logo/Logo-Altaltium_NEGRO_JM.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/logo/Logo-Altaltium_NEGRO_JM.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Logo Negro</h3>
+          <p>Imagen para descargar del logo normal</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 8.88 KB</span>
+          </div>
+        </div>
+      </div>
+
+
+<!-- Documento 20 Logos -->
+ 
+      <div class="document-card" data-category="logos">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/logo_blanco.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/logo/Logo_Altaltium_BLANCO_JM.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/logo/Logo_Altaltium_BLANCO_JM.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Logo Blanco</h3>
+          <p>Imagen para descargar del logo normal</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 74.0 KB</span>
+          </div>
+        </div>
+      </div>
+
+
+<!-- Documento 21 Logos -->
+ 
+      <div class="document-card" data-category="logos">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/logo/NEGRO_ESLOGAN.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/logo/NEGRO_ESLOGAN.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/logo/NEGRO_ESLOGAN.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Logo Negro ESL</h3>
+          <p>Imagen para descargar del logo con eslogan</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 16.3 KB</span>
+          </div>
+        </div>
+      </div>
+<!-- Documento 21 Logos -->
+ 
+      <div class="document-card" data-category="logos">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/logo_blanco2.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/logo/BLANCO_ESLOGAN.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/logo/BLANCO_ESLOGAN.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Logo Blanco ESL</h3>
+          <p>Imagen para descargar del logo con eslogan</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 270 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 23 Logos -->
+ 
+      <div class="document-card" data-category="logos">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/logo_blanco.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/logo/Logo_fondo_blanco.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/logo/Logo_fondo_blanco.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Logo sin Blanco</h3>
+          <p>Imagen para descargar sin fondo con letras blancas</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 249 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 24 Logos -->
+ 
+      <div class="document-card" data-category="logos">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/logo/Logo_fondo_negro.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/logo/Logo_fondo_negro.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/logo/Logo_fondo_negro.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Logo Fondo Blanco</h3>
+          <p>Imagen para descargar del logo con fondo blanco y letras negras</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 222 KB</span>
+          </div>
+        </div>
+      </div>
+
+
+<!-- Documento 25 Logos -->
+ 
+      <div class="document-card" data-category="logos">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/vec_logo.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/logo/iniciales_blanco.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/logo/iniciales_blanco.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Logo Iniciales Blanco</h3>
+          <p>Imagen para descargar del logo con fondo blanco (Iniciales)</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 14.8 KB</span>
+          </div>
+        </div>
+      </div>
+
+<!-- Documento 26 Logos -->
+ 
+      <div class="document-card" data-category="logos">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/logo/iniciales_negro.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/logo/iniciales_negro.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/logo/iniciales_negro.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Logo Iniciales Negro</h3>
+          <p>Imagen para descargar del logo con fondo blanco (Letras negras)</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 26.2 KB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documento 27 Logos -->
+ 
+      <div class="document-card" data-category="logos">
+        <div class="document-preview">
+          <img
+            src="{% static 'images/doc/logo/iniciales_verde.png' %}"
+            alt="CV en Inglés"
+            class="document-image"
+          />
+          <div class="document-overlay">
+            <a
+              href="{% static 'docs/logo/iniciales_verde.png' %}"
+              class="preview-btn"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Vista Previa
+            </a>
+            <a
+              href="{% static 'docs/logo/iniciales_verde.png' %}"
+              class="download-btn"
+              download
+            >
+              <i class="fas fa-download"></i> Descargar
+            </a>
+          </div>
+        </div>
+        <div class="document-info">
+          <h3>Logo Iniciales Verdes</h3>
+          <p>Imagen para descargar del logo con fondo blanco (Letras verdes)</p>
+          <div class="document-meta">
+            <span><i class="far fa-image"></i> Imagen</span>
+            <span><i class="far fa-file-alt"></i> 16.5 KB</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+  // Hero Section Carousel
+  const images = document.querySelectorAll(".hero-images");
+  let currentImage = 0;
+  let carouselInterval;
+
+  function changeImage(direction) {
+    images[currentImage].classList.remove("active");
+    currentImage = (currentImage + direction + images.length) % images.length;
+    images[currentImage].classList.add("active");
+    clearInterval(carouselInterval);
+    startCarousel();
+  }
+
+  function startCarousel() {
+    carouselInterval = setInterval(() => changeImage(1), 5000);
+  }
+
+  // Documents Grid Filtering
+  document.addEventListener("DOMContentLoaded", () => {
+    startCarousel();
+
+    const categoryButtons = document.querySelectorAll(".category-btn");
+    const documentCards = document.querySelectorAll(".document-card");
+
+    categoryButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        categoryButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        const category = button.dataset.category;
+        documentCards.forEach(card => {
+          card.style.display = (category === "all" || card.dataset.category === category) ? "block" : "none";
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}
