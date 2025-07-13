@@ -138,7 +138,7 @@ LOGIN_URL = '/signin'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Media files configuration
+# Media files configuration si
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/media'
 
