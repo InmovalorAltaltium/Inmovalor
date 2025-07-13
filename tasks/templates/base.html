@@ -16,6 +16,28 @@
 
     <!-- Referencia al nuevo icono.ico -->
     <link rel="icon" type="image/x-icon" href="{% static 'icono.ico' %}">
+
+  {# Script para cierre de sesión por inactividad #}
+    <script>
+      let timer;
+      const logoutTime = 2 * 60 * 1000; // 5 minutos
+
+      function cerrarSesionPorInactividad() {
+        window.location.href = "{% url 'signout' %}"; // Ajusta esta URL si tu logout es distinto
+      }
+
+      function resetTimer() {
+        clearTimeout(timer);
+        timer = setTimeout(cerrarSesionPorInactividad, logoutTime);
+      }
+
+      window.onload = resetTimer;
+      document.onmousemove = resetTimer;
+      document.onkeypress = resetTimer;
+      document.onscroll = resetTimer;
+    </script>
+      {# Fin Script para cierre de sesión por inactividad #}
+
   </head>
   <body>
     {% include '_navbar.html' %}

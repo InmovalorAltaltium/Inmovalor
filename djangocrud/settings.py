@@ -147,3 +147,9 @@ MEDIA_ROOT = '/media'
 AUTHENTICATION_BACKENDS = [
     'tasks.auth_backend.PlainTextAuthBackend',    # Para compatibilidad
 ]
+
+
+#Tiempo de limite para cerrar sesion
+SESSION_COOKIE_AGE = 120
+# Se reinicia el contador si el usuario interactúa
+SESSION_SAVE_EVERY_REQUEST = True

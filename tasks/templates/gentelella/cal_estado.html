@@ -602,6 +602,12 @@ document.getElementById('searchInput').addEventListener('input', function() {
             <script src="{% static 'vendors/starrr/dist/starrr.js' %}"></script>
             <!-- Custom Theme Scripts -->
             <script src="{% static 'js/custom.min.js' %}"></script>
+             {# Script para cierre de sesión por inactividad #}
+            <script>
+            const logoutUrl = "{% url 'signout' %}";
+            </script>
+            <script src="{% static 'js/tiempo.js' %}"></script>
+            {# Fin Script para cierre de sesión por inactividad #}
         </div>
     </div>
 </body>

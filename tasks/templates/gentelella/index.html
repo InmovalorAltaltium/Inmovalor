@@ -374,6 +374,10 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{% static 'js/custom.min.js' %}"></script>
-	
+	<script>
+            const logoutUrl = "{% url 'signout' %}";
+            </script>
+            <script src="{% static 'js/tiempo.js' %}"></script>
+            {# Fin Script para cierre de sesión por inactividad #}
   </body>
 </html>
