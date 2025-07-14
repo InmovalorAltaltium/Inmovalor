@@ -416,7 +416,7 @@
                                 <div class="invalid-feedback">Campo requerido.</div>
                             </div>
                         </div>
-                        <div class="col-12">
+                        <div class="col-md-6">
                             <label class="form-label required-field">Estado de conservación</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
@@ -436,7 +436,7 @@
                                 <i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.
                             </div>
                         </div>
-                        <div class="col-12 mt-2 text-center">
+                        <div class="col-12 mt-2 text-end">
                             <button type="submit" class="btn btn-calculate pulse-animation">
                                 <i class="fas fa-calculator me-2"></i> Calcular
                             </button>
@@ -557,7 +557,7 @@
             }
         }
 
-        // Agregar eventos a los campos requeridos a partir de "Calle"
+        // Agregar eventos a los campos requeridos
         const finalFields = ['calle', 'recamaras', 'sanitarios', 'estacionamiento', 'terreno', 'construccion', 'estado_conservacion'];
         const requiredFields = document.querySelectorAll('input[required], select[required]');
         requiredFields.forEach(field => {
@@ -567,12 +567,15 @@
                     scrollToNextField(this);
                 }
             });
-            field.addEventListener('input', function() {
-                checkFormValidity();
-                if (finalFields.includes(this.id) && this.type !== 'number') { // Evitar scroll en inputs numéricos durante escritura
-                    scrollToNextField(this);
-                }
-            });
+            // Solo agregar evento input para campos numéricos y selectores, no para texto
+            if (field.type !== 'text') {
+                field.addEventListener('input', function() {
+                    checkFormValidity();
+                    if (finalFields.includes(this.id)) {
+                        scrollToNextField(this);
+                    }
+                });
+            }
         });
 
         // Validar al cargar la página
