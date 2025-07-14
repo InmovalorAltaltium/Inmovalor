@@ -1,6 +1,3 @@
-{% extends 'base.html' %}
-{% load static %}
-
 {% block content %}
 <!DOCTYPE html>
 <html lang="es">
@@ -72,19 +69,11 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <style>
-      /* Importar fuentes Poppins y Montserrat */
-      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
-
       body {
-        font-family: 'Poppins', 'Montserrat', sans-serif;
-        background: #E6ECEF; /* Gris perla claro */
-        color: #333333; /* Texto oscuro */
+        font-family: "Montserrat", sans-serif;
+        background: #ffffff;
+        color: #0d1d1f;
         scroll-behavior: smooth;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
       }
 
       .gradient-bg {
@@ -213,7 +202,7 @@
 
       .button:hover::after {
         opacity: 1;
-        transform: translateobes translateX(100%) rotate(45deg);
+        transform: translateX(100%) rotate(45deg);
       }
 
       .detail-item {
@@ -270,303 +259,83 @@
         transform: scale(1.1);
       }
 
-      /* Estilos de la calculadora del segundo código */
-      .main-wrapper {
-        background: #F8FAFA; /* Blanco suave */
-        padding: 1.5rem;
+      .form-container {
+        background: #ffffff;
+        padding: 2rem;
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        max-width: 1500px; /* Aumentado para un recuadro más ancho */
-        width: 95%;
-        margin: 1rem auto;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        max-width: 1400px;
+        width: 100%;
+        margin: 2rem auto;
         position: relative;
-        border: 1px solid #D1D5DB; /* Borde gris claro */
-        box-sizing: border-box;
+        transition: all 0.3s ease;
       }
 
-      .header-cotizacion {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        position: relative;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #00CCCC;
-      }
-
-      .header-cotizacion .main-title {
-        color: #333333;
-        font-size: 1.9rem;
-        font-weight: 600;
-        letter-spacing: 2px;
+      .form-title {
+        color: #003035;
         text-align: center;
-      }
-
-      .header-cotizacion .main-title .calc-text {
-        color: #00CCCC;
-      }
-
-      .input-form-section {
-        background: #FFFFFF;
-        padding: 1rem;
-        border-radius: 8px;
+        font-size: 2rem;
+        font-weight: 700;
         margin-bottom: 1.5rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        letter-spacing: 1px;
+        position: relative;
+      }
+
+      .form-title::after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: #00cccc;
+        margin: 0.5rem auto;
+        border-radius: 2px;
       }
 
       .form-label {
         font-weight: 500;
-        color: #4B5563;
-        font-size: 0.85rem;
-        margin-bottom: 0.3rem;
+        color: #0d1d1f;
+        font-size: 1rem;
       }
 
       .required-field::after {
         content: " *";
-        color: #00CCCC;
-      }
-
-      .form-control,
-      .form-select {
-        background: #F9FAFB;
-        border: 1px solid #D1D5DB;
-        color: #333333;
-        padding: 0.5rem 0.7rem;
-        border-radius: 6px;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-      }
-
-      .form-control::placeholder {
-        color: #9CA3AF;
-      }
-
-      .form-control:focus {
-        color: #00CC66;
-        border-color: #00CCCC;
-        outline: none;
-        box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
-        background: #FFFFFF;
-      }
-
-      .form-control:not(:focus) {
-        color: #333333;
-      }
-
-      .form-select:focus {
-        border-color: #00CCCC;
-        outline: none;
-        box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
-        background: #FFFFFF;
-      }
-
-      .results-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-      }
-
-      @media (min-width: 768px) {
-        .results-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
+        color: #008a8a;
       }
 
       .section-title {
-        color: #00CCCC;
+        color: #003035;
         font-weight: 600;
-        font-size: 1.1rem;
-        margin-bottom: 0.8rem;
-        text-align: left;
+        font-size: 1.2rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
         position: relative;
-        padding-bottom: 0.4rem;
       }
 
       .section-title::after {
         content: "";
         position: absolute;
-        bottom: 0;
+        bottom: -4px;
         left: 0;
-        width: 50px;
+        width: 40px;
         height: 2px;
-        background: #00CCCC;
-        border-radius: 1px;
+        background: #00cccc;
+        transition: width 0.3s ease;
       }
 
-      .section-block {
-        background: #FFFFFF;
-        padding: 1.2rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        border: 1px solid #D1D5DB;
+      .section-title:hover::after {
+        width: 80px;
       }
 
       table {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
-        margin-top: 0.8rem;
-        color: #333333;
-      }
-
-      th {
-        background: none;
-        color: #6B7280;
-        font-weight: 500;
-        padding: 0.4rem 0;
-        text-align: left;
-        border-bottom: 1px solid #D1D5DB;
-        font-size: 0.9rem;
-      }
-
-      td {
-        padding: 0.6rem 0;
-        text-align: left;
-        border-bottom: 1px solid #E5E7EB;
-        font-size: 0.9rem;
-      }
-
-      tr:last-child td {
-        border-bottom: none;
-      }
-
-      .result-value {
-        color: #00CCCC;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        padding-left: 0.5rem;
-      }
-
-      .copy-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        margin-left: 0.5rem;
-        color: #00CCCC;
-        font-size: 1rem;
-        transition: color 0.3s ease, transform 0.3s ease;
-        opacity: 0.7;
-      }
-
-      .copy-button:hover {
-        color: #00CC66;
-        transform: scale(1.1);
-        opacity: 1;
-      }
-
-      .total-row td {
-        border-top: 2px solid #00CCCC;
-        font-weight: 700;
-        color: #333333;
-        padding-top: 0.8rem;
-        font-size: 1rem;
-      }
-
-      .total-row .result-value {
-        font-size: 1rem;
-        color: #00CCCC;
-      }
-
-      .ganancia-container {
-        background: #FFFFFF;
-        padding: 1.5rem;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        border: 1px solid #D1D5DB;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      @media (min-width: 768px) {
-        .ganancia-container {
-          grid-template-columns: 1fr 1fr;
-        }
-      }
-
-      .ganancia-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .ganancia-label {
-        color: #333333;
-        font-size: 1rem;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-      }
-
-      .ganancia-value {
-        color: #00CCCC;
-        font-size: 2.5rem;
-        font-weight: 700;
-        line-height: 1;
-        position: relative;
-        padding-bottom: 0.4rem;
-      }
-
-      .ganancia-value::after {
-        content: "";
-        display: block;
-        width: 70%;
-        max-width: 120px;
-        height: 3px;
-        background: #00CCCC;
-        margin: 0.4rem auto 0;
-        border-radius: 2px;
-      }
-
-      .ganancia-sub-value {
-        color: #6B7280;
-        font-size: 1rem;
-        font-weight: 400;
-        margin-top: 0.4rem;
-      }
-
-      #cesion-derechos-section {
-        display: none;
-      }
-
-      #cesion-derechos-section.active {
-        display: block;
-        grid-column: 1 / -1;
-        margin-top: 1.5rem;
-      }
-
-      #cesion-derechos-section table {
-        font-size: 0.9rem;
-      }
-
-      .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #00CCCC;
-        color: #FFFFFF;
-        padding: 0.7rem 1.2rem;
+        background: rgba(255, 255, 255, 0.95);
         border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0, 138, 138, 0.4);
-        opacity: 0;
-        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-        transform: translateY(30px);
-        z-index: 1000;
-        font-size: 0.85rem;
-      }
-
-      .toast.show {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .error-message {
-        color: #DC2626;
-        font-size: 0.85rem;
-        margin-top: 0.3rem;
-        display: none;
+        overflow: hidden;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 204, 204, 0.1);
       }
 
       .details-table {
@@ -583,6 +352,79 @@
       .details-table td {
         border-bottom: 1px solid rgba(0, 204, 204, 0.1);
         padding: 0.4rem;
+      }
+
+      .interest-table {
+        background: rgba(0, 204, 204, 0.05);
+      }
+
+      .interest-table th {
+        background: #52b3c0;
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      .interest-table td {
+        border-bottom: 1px solid rgba(0, 204, 204, 0.1);
+      }
+
+      th, td {
+        padding: 0.4rem;
+        text-align: left;
+        border-bottom: 1px solid #bfc6c7;
+      }
+
+      th {
+        background: linear-gradient(90deg, #003035, #008a8a);
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      td input,
+      td select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #bfc6c7;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      td input:focus,
+      td select:focus {
+        border-color: #00cccc;
+        outline: none;
+        box-shadow: 0 0 6px rgba(0, 204, 204, 0.2);
+      }
+
+      td span {
+        color: #0d1d1f;
+        font-weight: 600;
+      }
+
+      .result-value {
+        color: #ffffff;
+        background: #008a8a;
+        padding: 0.3rem 0.8rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .interest-value {
+        color: #0d1d1f;
+        background: #52b3c0;
+        padding: 0.3rem 0.8rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .highlight {
+        background: rgba(0, 204, 204, 0.05);
       }
 
       .results-container {
@@ -604,6 +446,41 @@
         }
       }
 
+      .copy-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-left: 0.4rem;
+        color: #00cccc;
+        font-size: 0.9rem;
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+
+      .copy-button:hover {
+        color: #008a8a;
+        transform: scale(1.1);
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #00cccc;
+        color: #ffffff;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        transform: translateY(20px);
+        z-index: 1000;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
       .animate-delay-1 { animation-delay: 0.2s; }
       .animate-delay-2 { animation-delay: 0.4s; }
       .animate-delay-3 { animation-delay: 0.6s; }
@@ -621,7 +498,7 @@
       </div>
     </header>
 
-    <!-- Banner de Dirección -->
+    <!-- Banner de Dirección (Restaurado al diseño original) -->
     <div
       class="bg-offwhite py-4 px-4 sm:px-6 lg:px-8 border-b border-softgray animate-slide-up"
     >
@@ -773,114 +650,167 @@
     <!-- Sección de Calculadora de Honorarios -->
     <section id="honorarios" class="bg-white py-8 border-t border-gray hidden fade">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="main-wrapper">
-          <header class="header-cotizacion">
-            <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
-          </header>
-
-          <form class="input-form-section grid grid-cols-1 md:grid-cols-3 gap-4" id="calculator-form" novalidate>
+        <div class="form-container">
+          <h1 class="form-title">Calculadora de Honorarios</h1>
+          <form class="grid grid-cols-1 md:grid-cols-3 gap-4" id="calculator-form" novalidate>
             {% csrf_token %}
             <div>
               <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
-              <select id="calcType" name="calcType" class="form-select" required>
+              <select id="calcType" name="calcType" class="form-select">
                 <option value="adjudicado" {% if not calc_type or calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
                 <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
-                <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
               </select>
             </div>
             <div>
-              <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
+              <label for="valorComercial" class="form-label required-field">Valor comercial $</label>
               <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" placeholder="Ingresa el precio" value="{{ propiedad.valor_comercial|default_if_none:'0.00'|floatformat:2 }}">
               <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
-              <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
             </div>
             <div>
-              <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
+              <label for="precioDeSesion" class="form-label required-field">Precio de cesión $</label>
               <input type="text" id="precioDeSesion" name="precioDeSesionDisplay" class="form-control" placeholder="Ingresa el precio">
               <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion">
-              <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
             </div>
           </form>
 
-          <div class="results-grid" id="results-grid-container">
-            <div id="descripcion-section" class="section-block">
-              <span class="section-title">DESCRIPCIÓN</span>
+          <div class="results-container">
+            <div>
+              <span class="section-title">Modificables</span>
               <table>
-                <tbody>
-                  <tr>
-                    <td>Valor Comercial</td>
-                    <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorComercial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Valor Judicial</td>
-                    <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorJudicial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Honorarios</td>
-                    <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Cesión de Derechos</td>
-                    <td><span class="result-value" id="displayCession">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCession')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                </tbody>
+                <tr>
+                  <th>Concepto</th>
+                  <th>Valor</th>
+                </tr>
+                <tr>
+                  <td>Valor comercial</td>
+                  <td>
+                    <span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayValorComercial')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Precio de cesión</td>
+                  <td>
+                    <span class="result-value" id="displayPrecioSesion">{{ precio_de_sesion|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayPrecioSesion')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
               </table>
             </div>
-
-            <div id="parcialidades-section" class="section-block">
-              <span class="section-title">PARCIALIDADES</span>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>1er Pago (75%)</td>
-                    <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayPrimerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>2do Pago</td>
-                    <td><span class="result-value" id="displaySegundoPago">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>3er Pago (25%)</td>
-                    <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr class="total-row">
-                    <td>COSTO TOTAL:</td>
-                    <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                </tbody>
+            <div>
+              <span class="section-title">General</span>
+              <table class="interest-table">
+                <tr>
+                  <th>Concepto</th>
+                  <th>Valor</th>
+                </tr>
+                <tr>
+                  <td>Porcentaje del valor comercial</td>
+                  <td>
+                    <span class="result-value" id="displayPorcentajeVC">{{ porcentaje_vc|default:'0.00%' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayPorcentajeVC')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ganancia</td>
+                  <td>
+                    <span class="result-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
               </table>
             </div>
-
-            <div id="cesion-derechos-section" class="section-block">
-              <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
+            <div>
+              <span class="section-title">Valores de Interés</span>
               <table>
-                <tbody>
-                  <tr>
-                    <td>Valor Extrajudicial</td>
-                    <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorExt')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Cotización (50%)</td>
-                    <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                </tbody>
+                <tr>
+                  <th>Concepto</th>
+                  <th>Valor</th>
+                </tr>
+                <tr>
+                  <td>Valor Judicial Aproximado</td>
+                  <td>
+                    <span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayValorJudicial')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Honorarios</td>
+                  <td>
+                    <span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Costo Total</td>
+                  <td>
+                    <span class="result-value" id="displayCostoTotal">{{ costo_total|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayCostoTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="honorarios-section">
+              <span class="section-title">Modalidad de Pagos</span>
+              <table>
+                <tr>
+                  <th>Concepto</th>
+                  <th>Valor</th>
+                </tr>
+                <tr>
+                  <td>Pago Único (90%)</td>
+                  <td>
+                    <span class="result-value" id="displayPagoUnico">{{ pago_unico|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayPagoUnico')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>A la Firma (75%)</td>
+                  <td>
+                    <span class="result-value" id="displayFirma">{{ firma|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayFirma')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>A la Entrega (25%)</td>
+                  <td>
+                    <span class="result-value" id="displayEntrega">{{ entrega|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayEntrega')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+                <tr class="highlight">
+                  <td>Total (100%)</td>
+                  <td>
+                    <span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="honorarios-section">
+              <span class="section-title">Cesión de Derechos de Cobranza</span>
+              <table>
+                <tr>
+                  <th>Concepto</th>
+                  <th>Valor</th>
+                </tr>
+                <tr>
+                  <td>Valor Extrajudicial</td>
+                  <td>
+                    <span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayValorExt')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Cotización (50%)</td>
+                  <td>
+                    <span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span>
+                    <button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                  </td>
+                </tr>
               </table>
             </div>
           </div>
-
-          <div id="ganancia-container" class="ganancia-container">
-            <div class="ganancia-item">
-              <span class="ganancia-label">GANANCIA</span>
-              <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
-              <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-            </div>
-            <div class="ganancia-item">
-              <span class="ganancia-label">Costo de Compra</span>
-              <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
-              <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-            </div>
-          </div>
-
           <div id="toast" class="toast">¡Valor copiado!</div>
         </div>
       </div>
@@ -1004,53 +934,6 @@
         const form = document.getElementById("calculator-form");
         const valorComercialHidden = document.getElementById("valorComercialHidden");
         const precioDeSesionHidden = document.getElementById("precioDeSesionHidden");
-        const resultsGridContainer = document.getElementById("results-grid-container");
-        const descripcionSection = document.getElementById("descripcion-section");
-        const parcialidadesSection = document.getElementById("parcialidades-section");
-        const gananciaContainer = document.getElementById("ganancia-container");
-        const cesionDerechosSection = document.getElementById("cesion-derechos-section");
-
-        // Validar entradas
-        const valorComercialClean = cleanNumber(document.getElementById("valorComercial").value);
-        const precioDeSesionClean = cleanNumber(document.getElementById("precioDeSesion").value);
-        const valorComercialError = document.getElementById("valorComercialError");
-        const precioDeSesionError = document.getElementById("precioDeSesionError");
-
-        if (isNaN(valorComercialClean) || valorComercialClean < 0) {
-          valorComercialError.style.display = 'block';
-          return;
-        } else {
-          valorComercialError.style.display = 'none';
-        }
-
-        if (isNaN(precioDeSesionClean) || precioDeSesionClean < 0) {
-          precioDeSesionError.style.display = 'block';
-          return;
-        } else {
-          precioDeSesionError.style.display = 'none';
-        }
-
-        // Manejo de la visibilidad de las secciones
-        const calcType = document.getElementById("calcType").value;
-        if (calcType === 'derechos_cobranza') {
-          descripcionSection.style.display = 'none';
-          parcialidadesSection.style.display = 'none';
-          gananciaContainer.style.display = 'none';
-          cesionDerechosSection.style.display = 'block';
-          cesionDerechosSection.classList.add('active');
-          resultsGridContainer.style.gridTemplateColumns = '1fr';
-        } else {
-          descripcionSection.style.display = 'block';
-          parcialidadesSection.style.display = 'block';
-          gananciaContainer.style.display = 'grid';
-          cesionDerechosSection.style.display = 'none';
-          cesionDerechosSection.classList.remove('active');
-          if (window.matchMedia("(min-width: 768px)").matches) {
-            resultsGridContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-          } else {
-            resultsGridContainer.style.gridTemplateColumns = '1fr';
-          }
-        }
 
         const formData = new FormData(form);
         formData.set("valorComercial", valorComercialHidden.value);
@@ -1071,15 +954,14 @@
             document.getElementById("displayCotizacion").textContent = data.cotizacion;
             document.getElementById("displayCostoTotal").textContent = data.costo_total;
             document.getElementById("displayHonorarios").textContent = data.honorarios;
-            document.getElementById("displayPrimerPago").textContent = data.firma;
-            document.getElementById("displaySegundoPago").textContent = data.cotizacion;
-            document.getElementById("displayTercerPago").textContent = data.entrega;
+            document.getElementById("displayPagoUnico").textContent = data.pago_unico;
+            document.getElementById("displayFirma").textContent = data.firma;
+            document.getElementById("displayEntrega").textContent = data.entrega;
             document.getElementById("displayTotal").textContent = data.total;
             document.getElementById("displayPorcentajeVC").textContent = data.porcentaje_vc;
             document.getElementById("displayGanancia").textContent = data.ganancia;
             document.getElementById("displayValorJudicial").textContent = data.valor_judicial;
             document.getElementById("displayValorExt").textContent = data.valor_ext;
-            document.getElementById("displayCession").textContent = data.cotizacion;
           })
           .catch((error) => console.error("Error:", error));
       }
@@ -1123,6 +1005,12 @@
           calculateResults();
         });
       }
+
+// Asumiendo que cleanNumber elimina comas y devuelve el valor numérico
+function cleanNumber(value) {
+  return value.replace(/,/g, '');
+}
+      
 
       // Inicializar al cargar la página
       document.addEventListener("DOMContentLoaded", function () {
