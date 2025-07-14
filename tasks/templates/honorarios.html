@@ -14,7 +14,7 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding-top: 120px; /* Espacio para navbar fijo */
+    padding-top: 80px; /* Reducido de 120px a 80px para subir la calculadora */
     box-sizing: border-box;
   }
 
@@ -23,9 +23,9 @@
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 950px;
+    max-width: 1000px; /* Aumentado de 950px a 1000px para un recuadro más ancho */
     width: 95%;
-    margin: 2rem auto 1rem auto; /* Margen superior para bajar el Ascent */
+    margin: 1rem auto; /* Reducido el margen superior de 2rem a 1rem */
     position: relative;
     border: 1px solid #D1D5DB; /* Borde gris claro */
     box-sizing: border-box;
@@ -274,6 +274,10 @@
     margin-top: 0.4rem;
   }
 
+  #cesion-derechos-section {
+    display: none;
+  }
+
   #cesion-derechos-section.active {
     display: block;
     grid-column: 1 / -1;
@@ -391,6 +395,22 @@
               </tbody>
             </table>
           </div>
+
+          <div id="cesion-derechos-section" class="section-block">
+            <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
+            <table>
+              <tbody>
+                <tr>
+                  <td>Valor Extrajudicial</td>
+                  <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorExt')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                </tr>
+                <tr>
+                  <td>Cotización (50%)</td>
+                  <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div id="ganancia-container" class="ganancia-container">
@@ -404,22 +424,6 @@
             <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
             <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
           </div>
-        </div>
-
-        <div id="cesion-derechos-section" class="section-block" style="display: none;">
-          <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
-          <table>
-            <tbody>
-              <tr>
-                <td>Valor Extrajudicial</td>
-                <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorExt')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-              </tr>
-              <tr>
-                <td>Cotización (50%)</td>
-                <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-              </tr>
-            </tbody>
-          </table>
         </div>
 
         <div id="toast" class="toast">¡Valor copiado!</div>
