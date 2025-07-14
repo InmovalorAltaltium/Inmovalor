@@ -439,12 +439,8 @@
                     </form>
                 </div>
             </div>
-            Mapa
+            <!-- Mapa -->
             <div class="col-lg-6">
-                <div class="input-group mb-2">
-                    <span class="input-group-text"><i class="fas fa-search"></i></span>
-                    <!-- <input id="searchBox" type="text" class="form-control" placeholder="Buscar dirección..."> -->
-                </div>
                 <div id="map"></div>
             </div>
         </div>
@@ -453,7 +449,7 @@
 
 <!-- Inclusión de Google Maps -->
 <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDldEaEtV3NdG-fY-us0SmbBSh8RHibnpU&libraries=places,geometry&callback=initMap"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDldEaEtV3NdG-fY-us0SmbBSh8RHibnpU&libraries=geometry&callback=initMap"
     async defer>
 </script>
 
@@ -462,7 +458,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
 <script>
-    let map, marker, geocoder, autocomplete;
+    let map, marker, geocoder;
 
     function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
@@ -479,37 +475,11 @@
         });
 
         geocoder = new google.maps.Geocoder();
-        autocomplete = new google.maps.places.Autocomplete(document.getElementById("searchBox"), {
-            types: ["address"],
-            componentRestrictions: { country: "mx" },
-        });
-
-        autocomplete.bindTo("bounds", map);
-
-        autocomplete.addListener("place_changed", function () {
-            const place = autocomplete.getPlace();
-            if (!place.geometry) {
-                showMapMessage("No se encontraron detalles para la dirección ingresada.", "error");
-                return;
-            }
-
-            if (place.geometry.viewport) {
-                map.fitBounds(place.geometry.viewport);
-            } else {
-                map.setCenter(place.geometry.location);
-                map.setZoom(17);
-            }
-
-            marker.setPosition(place.geometry.location);
-            marker.setVisible(true);
-            fillAddressFields(place);
-        });
 
         marker.addListener("dragend", function () {
             const position = marker.getPosition();
             geocoder.geocode({ location: position }, function (results, status) {
                 if (status === "OK" && results[0]) {
-                    document.getElementById("searchBox").value = results[0].formatted_address;
                     fillAddressFields(results[0]);
                     showMapMessage("Ubicación actualizada desde el marcador.", "success");
                 } else {
@@ -527,7 +497,6 @@
                         map.setZoom(17);
                         marker.setPosition(results[0].geometry.location);
                         marker.setVisible(true);
-                        document.getElementById("searchBox").value = results[0].formatted_address;
                         fillAddressFields(results[0]);
                         showMapMessage("Ubicación encontrada en el mapa.", "success");
                     } else {
