@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
 <!DOCTYPE html>
 <html lang="es">
@@ -74,8 +77,8 @@
 
       body {
         font-family: 'Poppins', 'Montserrat', sans-serif;
-        background: #E6ECEF; /* Gris perla claro */
-        color: #0d1d1f; /* dark */
+        background: #E6ECEF;
+        color: #333333;
         scroll-behavior: smooth;
         margin: 0;
         padding: 0;
@@ -267,9 +270,9 @@
         transform: scale(1.1);
       }
 
-      /* Estilos de la calculadora con colores adaptados */
+      /* Estilos de la calculadora */
       .main-wrapper {
-        background: #f8fafc; /* offwhite */
+        background: #F8FAFA;
         padding: 1.5rem;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -277,7 +280,7 @@
         width: 95%;
         margin: 1rem auto;
         position: relative;
-        border: 1px solid #e5e7eb; /* softgray */
+        border: 1px solid #D1D5DB;
         box-sizing: border-box;
       }
 
@@ -288,11 +291,11 @@
         margin-bottom: 1.5rem;
         position: relative;
         padding-bottom: 0.5rem;
-        border-bottom: 2px solid #00cccc; /* accent */
+        border-bottom: 2px solid #00CCCC;
       }
 
       .header-cotizacion .main-title {
-        color: #0d1d1f; /* dark */
+        color: #333333;
         font-size: 1.9rem;
         font-weight: 600;
         letter-spacing: 2px;
@@ -300,11 +303,11 @@
       }
 
       .header-cotizacion .main-title .calc-text {
-        color: #00cccc; /* accent */
+        color: #00CCCC;
       }
 
       .input-form-section {
-        background: #ffffff; /* white */
+        background: #FFFFFF;
         padding: 1rem;
         border-radius: 8px;
         margin-bottom: 1.5rem;
@@ -313,21 +316,21 @@
 
       .form-label {
         font-weight: 500;
-        color: #949797; /* gray */
+        color: #4B5563;
         font-size: 0.85rem;
         margin-bottom: 0.3rem;
       }
 
       .required-field::after {
         content: " *";
-        color: #00cccc; /* accent */
+        color: #00CCCC;
       }
 
       .form-control,
       .form-select {
-        background: #f8fafc; /* offwhite */
-        border: 1px solid #e5e7eb; /* softgray */
-        color: #0d1d1f; /* dark */
+        background: #F9FAFB;
+        border: 1px solid #D1D5DB;
+        color: #333333;
         padding: 0.5rem 0.7rem;
         border-radius: 6px;
         font-size: 0.85rem;
@@ -335,26 +338,26 @@
       }
 
       .form-control::placeholder {
-        color: #bfc6c7; /* lightgray */
+        color: #9CA3AF;
       }
 
       .form-control:focus {
-        color: #00cccc; /* accent */
-        border-color: #00cccc; /* accent */
+        color: #00CC66;
+        border-color: #00CCCC;
         outline: none;
         box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
-        background: #ffffff; /* white */
+        background: #FFFFFF;
       }
 
       .form-control:not(:focus) {
-        color: #0d1d1f; /* dark */
+        color: #333333;
       }
 
       .form-select:focus {
-        border-color: #00cccc; /* accent */
+        border-color: #00CCCC;
         outline: none;
         box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
-        background: #ffffff; /* white */
+        background: #FFFFFF;
       }
 
       .results-grid {
@@ -371,7 +374,7 @@
       }
 
       .section-title {
-        color: #00cccc; /* accent */
+        color: #00CCCC;
         font-weight: 600;
         font-size: 1.1rem;
         margin-bottom: 0.8rem;
@@ -387,16 +390,16 @@
         left: 0;
         width: 50px;
         height: 2px;
-        background: #00cccc; /* accent */
+        background: #00CCCC;
         border-radius: 1px;
       }
 
       .section-block {
-        background: #ffffff; /* white */
+        background: #FFFFFF;
         padding: 1.2rem;
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e5e7eb; /* softgray */
+        border: 1px solid #D1D5DB;
       }
 
       table {
@@ -404,23 +407,23 @@
         border-collapse: separate;
         border-spacing: 0;
         margin-top: 0.8rem;
-        color: #0d1d1f; /* dark */
+        color: #333333;
       }
 
       th {
         background: none;
-        color: #949797; /* gray */
+        color: #6B7280;
         font-weight: 500;
         padding: 0.4rem 0;
         text-align: left;
-        border-bottom: 1px solid #e5e7eb; /* softgray */
+        border-bottom: 1px solid #D1D5DB;
         font-size: 0.9rem;
       }
 
       td {
         padding: 0.6rem 0;
         text-align: left;
-        border-bottom: 1px solid #e5e7eb; /* softgray */
+        border-bottom: 1px solid #E5E7EB;
         font-size: 0.9rem;
       }
 
@@ -429,7 +432,7 @@
       }
 
       .result-value {
-        color: #00cccc; /* accent */
+        color: #00CCCC;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
@@ -441,38 +444,38 @@
         border: none;
         cursor: pointer;
         margin-left: 0.5rem;
-        color: #00cccc; /* accent */
+        color: #00CCCC;
         font-size: 1rem;
         transition: color 0.3s ease, transform 0.3s ease;
         opacity: 0.7;
       }
 
       .copy-button:hover {
-        color: #52b3c0; /* lightaccent */
+        color: #00CC66;
         transform: scale(1.1);
         opacity: 1;
       }
 
       .total-row td {
-        border-top: 2px solid #00cccc; /* accent */
+        border-top: 2px solid #00CCCC;
         font-weight: 700;
-        color: #0d1d1f; /* dark */
+        color: #333333;
         padding-top: 0.8rem;
         font-size: 1rem;
       }
 
       .total-row .result-value {
         font-size: 1rem;
-        color: #00cccc; /* accent */
+        color: #00CCCC;
       }
 
       .ganancia-container {
-        background: #ffffff; /* white */
+        background: #FFFFFF;
         padding: 1.5rem;
         border-radius: 12px;
         text-align: center;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e5e7eb; /* softgray */
+        border: 1px solid #D1D5DB;
         display: grid;
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -491,14 +494,14 @@
       }
 
       .ganancia-label {
-        color: #0d1d1f; /* dark */
+        color: #333333;
         font-size: 1rem;
         font-weight: 500;
         margin-bottom: 0.5rem;
       }
 
       .ganancia-value {
-        color: #00cccc; /* accent */
+        color: #00CCCC;
         font-size: 2.5rem;
         font-weight: 700;
         line-height: 1;
@@ -512,13 +515,13 @@
         width: 70%;
         max-width: 120px;
         height: 3px;
-        background: #00cccc; /* accent */
+        background: #00CCCC;
         margin: 0.4rem auto 0;
         border-radius: 2px;
       }
 
       .ganancia-sub-value {
-        color: #949797; /* gray */
+        color: #6B7280;
         font-size: 1rem;
         font-weight: 400;
         margin-top: 0.4rem;
@@ -542,8 +545,8 @@
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background: #00cccc; /* accent */
-        color: #ffffff; /* white */
+        background: #00CCCC;
+        color: #FFFFFF;
         padding: 0.7rem 1.2rem;
         border-radius: 8px;
         box-shadow: 0 4px 15px rgba(0, 138, 138, 0.4);
@@ -560,7 +563,7 @@
       }
 
       .error-message {
-        color: #ff4040; /* rojo suave para errores */
+        color: #DC2626;
         font-size: 0.85rem;
         margin-top: 0.3rem;
         display: none;
@@ -1061,24 +1064,37 @@
             "X-CSRFToken": "{{ csrf_token }}"
           }
         })
-          .then((response) => response.json())
-          .then((data) => {
-            document.getElementById("displayValorComercial").textContent = data.valor_comercial;
-            document.getElementById("displayPrecioSesion").textContent = data.precio_de_sesion;
-            document.getElementById("displayCotizacion").textContent = data.cotizacion;
-            document.getElementById("displayCostoTotal").textContent = data.costo_total;
-            document.getElementById("displayHonorarios").textContent = data.honorarios;
-            document.getElementById("displayPrimerPago").textContent = data.firma;
-            document.getElementById("displaySegundoPago").textContent = data.cotizacion;
-            document.getElementById("displayTercerPago").textContent = data.entrega;
-            document.getElementById("displayTotal").textContent = data.total;
-            document.getElementById("displayPorcentajeVC").textContent = data.porcentaje_vc;
-            document.getElementById("displayGanancia").textContent = data.ganancia;
-            document.getElementById("displayValorJudicial").textContent = data.valor_judicial;
-            document.getElementById("displayValorExt").textContent = data.valor_ext;
-            document.getElementById("displayCession").textContent = data.cotizacion;
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
           })
-          .catch((error) => console.error("Error:", error));
+          .then((data) => {
+            console.log("Respuesta del servidor:", data); // Depuración
+            document.getElementById("displayValorComercial").textContent = data.valor_comercial || '$0.00';
+            document.getElementById("displayValorJudicial").textContent = data.valor_judicial || '$0.00';
+            document.getElementById("displayHonorarios").textContent = data.honorarios || '$0.00';
+            document.getElementById("displayCession").textContent = data.cotizacion || '$0.00';
+            document.getElementById("displayPrimerPago").textContent = data.firma || '$0.00';
+            document.getElementById("displaySegundoPago").textContent = data.cotizacion || '$0.00';
+            document.getElementById("displayTercerPago").textContent = data.entrega || '$0.00';
+            document.getElementById("displayTotal").textContent = data.total || '$0.00';
+            document.getElementById("displayGanancia").textContent = data.ganancia || '0.00%';
+            document.getElementById("displayCostoCompra").textContent = data.porcentaje_vc || '0.00%';
+            document.getElementById("displayValorExt").textContent = data.valor_ext || '$0.00';
+            document.getElementById("displayCotizacion").textContent = data.cotizacion || '$0.00';
+          })
+          .catch((error) => {
+            console.error("Error en fetch:", error);
+            const toast = document.getElementById("toast");
+            toast.textContent = "Error al calcular. Por favor, intenta de nuevo.";
+            toast.classList.add("show");
+            setTimeout(() => {
+              toast.classList.remove("show");
+              toast.textContent = "¡Valor copiado!";
+            }, 2000);
+          });
       }
 
       // Script para formateo de inputs y cálculos
@@ -1089,9 +1105,8 @@
 
       function formatNumberInput(input, hiddenInput) {
         input.addEventListener('input', function (e) {
-          let value = input.value.replace(/[^0-9.]/g, ''); // Permitir solo números y punto
+          let value = input.value.replace(/[^0-9.]/g, '');
 
-          // Si el valor está vacío, limpiar ambos inputs y calcular
           if (value === '') {
             input.value = '';
             hiddenInput.value = '';
@@ -1099,23 +1114,16 @@
             return;
           }
 
-          // Dividir el valor en parte entera y decimal (si existe)
           let parts = value.split('.');
           let integerPart = parts[0];
-
-          // Agregar comas a la parte entera
           integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-          // Formatear el valor visible
           if (parts.length > 1) {
-            // Si hay parte decimal, limitarla a 2 dígitos
             input.value = `${integerPart}.${parts[1].slice(0, 2)}`;
           } else {
-            // Si no hay parte decimal, no añadir ".00"
             input.value = integerPart;
           }
 
-          // Actualizar el hidden input con el valor limpio
           hiddenInput.value = cleanNumber(input.value);
           calculateResults();
         });
@@ -1133,9 +1141,9 @@
 
         // Formatear valores iniciales
         const valorComercialValue = valorComercialInput.value || '0.00';
-        valorComercialInput.value = valorComercialValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        valorComercialInput.value = formatNumberWithCommas(valorComercialValue);
         valorComercialHidden.value = cleanNumber(valorComercialValue);
-        precioDeSesionInput.value = '0.00';
+        precioDeSesionInput.value = formatNumberWithCommas('0.00');
         precioDeSesionHidden.value = '0.00';
 
         // Aplicar formateo en tiempo real
@@ -1165,6 +1173,10 @@
         valorComercialInput.addEventListener("input", calculateResults);
         precioDeSesionInput.addEventListener("input", calculateResults);
         calcTypeInput.addEventListener("change", calculateResults);
+
+        // Cálculo inicial para depuración
+        console.log("Valor comercial inicial:", valorComercialInput.value);
+        calculateResults();
       });
     </script>
     <script
