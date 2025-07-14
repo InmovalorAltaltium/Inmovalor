@@ -542,11 +542,7 @@
             const fields = Array.from(form.querySelectorAll('input[required], select[required]'));
             const calleIndex = fields.findIndex(field => field.id === 'calle');
             const relevantFields = fields.slice(calleIndex); // Solo campos desde "Calle" en adelante
-            const firstEmptyField = relevantFields.find(field => 
-                !field.value || 
-                (field.tagName === 'SELECT' && field.value === '') ||
-                (field.type === 'number' && field.value <= 0)
-            );
+            const firstEmptyField = relevantFields.find(field => !field.value || (field.tagName === 'SELECT' && field.value === ''));
 
             if (firstEmptyField && firstEmptyField !== currentField) {
                 setTimeout(() => {
@@ -568,12 +564,18 @@
             field.addEventListener('change', function() {
                 checkFormValidity();
                 if (finalFields.includes(this.id)) {
-                    // Solo ejecutar scroll si el campo tiene un valor válido
-                    if (this.value && (this.type !== 'number' || this.value > 0)) {
-                        scrollToNextField(this);
-                    }
+                    scrollToNextField(this);
                 }
             });
+            // Solo agregar evento input para campos numéricos y selectores, no para texto
+            if (field.type !== 'text') {
+                field.addEventListener('input', function() {
+                    checkFormValidity();
+                    if (finalFields.includes(this.id)) {
+                        scrollToNextField(this);
+                    }
+                });
+            }
         });
 
         // Validar al cargar la página
