@@ -550,17 +550,17 @@
       document.getElementById('displayValorComercial').textContent = data.valor_comercial;
       document.getElementById('displayValorJudicial').textContent = data.valor_judicial;
       document.getElementById('displayHonorarios').textContent = data.honorarios;
-      document.getElementById('displayCession').textContent = data.cotizacion;
+      // Usar precio_de_sesion para sentencia y adjudicado, cotizacion para derechos_cobranza
+      document.getElementById('displayCession').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? data.precio_de_sesion : data.cotizacion;
       document.getElementById('displayPrimerPago').textContent = data.firma;
-      document.getElementById('displaySegundoPago').textContent = data.cotizacion;
+      // Usar precio_de_sesion para sentencia y adjudicado, cotizacion para derechos_cobranza
+      document.getElementById('displaySegundoPago').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? data.precio_de_sesion : data.cotizacion;
       document.getElementById('displayTercerPago').textContent = data.entrega;
       document.getElementById('displayTotal').textContent = data.total;
       document.getElementById('displayGanancia').textContent = data.ganancia;
       document.getElementById('displayCostoCompra').textContent = data.porcentaje_vc;
       document.getElementById('displayValorExt').textContent = data.valor_ext;
-      document.getElementById('displayCotizacion').textContent = data.cotizacion;
-
-      // No actualizar los inputs para mantener los valores ingresados por el usuario
+      document.getElementById('displayCotizacion').textContent = data.cotizacion; // Sin cambios para derechos_cobranza
     })
     .catch(error => {
       console.error('Error en la solicitud Fetch:', error);
