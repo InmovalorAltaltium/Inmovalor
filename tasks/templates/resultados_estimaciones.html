@@ -923,64 +923,6 @@
       }).format(value / 100);
     }
 
-    // Función para formatear el input con comas mientras se escribe
-    function formatNumberInput(input) {
-      input.addEventListener('input', function(e) {
-        let value = input.value.replace(/[^0-9.]/g, ''); // Permitir solo números y punto
-        let caretPos = input.selectionStart;
-        let originalLength = input.value.length;
-
-        // Manejar el punto decimal
-        let parts = value.split('.');
-        if (parts.length > 2) {
-          value = parts[0] + '.' + parts.slice(1).join('');
-        }
-
-        if (value === '' || value === '.') {
-          input.value = value;
-          calculateResults();
-          return;
-        }
-
-        // Formatear la parte entera con comas
-        let formattedValue = '';
-        if (value.includes('.')) {
-          let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          formattedValue = integerPart + '.' + (parts[1] || '');
-        } else {
-          formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        }
-
-        input.value = formattedValue;
-
-        // Ajustar la posición del cursor
-        let newLength = formattedValue.length;
-        let diff = newLength - originalLength;
-        input.setSelectionRange(caretPos + diff, caretPos + diff);
-
-        calculateResults();
-      });
-
-      // Formatear valor inicial
-      let initialValue = getCleanNumber(input.value);
-      if (initialValue !== 0) {
-        input.value = new Intl.NumberFormat('es-MX').format(initialValue);
-      }
-    }
-
-    // Función para inicializar y formatear valorComercial
-    function initializeValorComercial() {
-      const valorComercialInput = document.getElementById('valorComercial');
-      const valorComercialHidden = document.getElementById('valorComercialHidden');
-      let initialValue = getCleanNumber(valorComercialHidden.value);
-      if (initialValue !== 0) {
-        valorComercialInput.value = new Intl.NumberFormat('es-MX').format(initialValue);
-      } else {
-        valorComercialInput.value = '0';
-        valorComercialHidden.value = '0';
-      }
-    }
-
     // Función principal para calcular y actualizar resultados
     function calculateResults() {
       const form = document.getElementById('calculator-form');
@@ -1017,12 +959,6 @@
 
       // Actualizar el valor oculto para precioDeSesion
       precioDeSesionHidden.value = precioDeSesionClean;
-
-      // Actualizar displayCession y displaySegundoPago en tiempo real para sentencia y adjudicado
-      if (calcType === 'sentencia' || calcType === 'adjudicado') {
-        document.getElementById('displayCession').textContent = formatCurrency(precioDeSesionClean);
-        document.getElementById('displaySegundoPago').textContent = formatCurrency(precioDeSesionClean);
-      }
 
       // Manejo de la visibilidad de las secciones
       if (calcType === 'derechos_cobranza') {
@@ -1069,12 +1005,11 @@
         document.getElementById('displayValorComercial').textContent = data.valor_comercial;
         document.getElementById('displayValorJudicial').textContent = data.valor_judicial;
         document.getElementById('displayHonorarios').textContent = data.honorarios;
-        // Solo actualizar displayCession y displaySegundoPago con data.cotizacion para derechos_cobranza
-        if (calcType === 'derechos_cobranza') {
-          document.getElementById('displayCession').textContent = data.cotizacion;
-          document.getElementById('displaySegundoPago').textContent = data.cotizacion;
-        }
+        // Usar precio_de_sesion para sentencia y adjudicado, cotizacion para derechos_cobranza
+        document.getElementById('displayCession').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? data.precio_de_sesion : data.cotizacion;
         document.getElementById('displayPrimerPago').textContent = data.firma;
+        // Usar precio_de_sesion para sentencia y adjudicado, cotizacion para derechos_cobranza
+        document.getElementById('displaySegundoPago').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? data.precio_de_sesion : data.cotizacion;
         document.getElementById('displayTercerPago').textContent = data.entrega;
         document.getElementById('displayTotal').textContent = data.total;
         document.getElementById('displayGanancia').textContent = data.ganancia;
@@ -1096,21 +1031,58 @@
       });
     }
 
+    // Función para formatear el input con comas mientras se escribe
+    function formatNumberInput(input) {
+      input.addEventListener('input', function(e) {
+        let value = input.value.replace(/[^0-9.]/g, ''); // Permitir solo números y punto
+        let caretPos = input.selectionStart;
+        let originalLength = input.value.length;
+
+        // Manejar el punto decimal
+        let parts = value.split('.');
+        if (parts.length > 2) {
+          value = parts[0] + '.' + parts.slice(1).join('');
+        }
+
+        if (value === '' || value === '.') {
+          input.value = value;
+          calculateResults();
+          return;
+        }
+
+        // Formatear la parte entera con comas
+        let formattedValue = '';
+        if (value.includes('.')) {
+          let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          formattedValue = integerPart + '.' + (parts[1] || '');
+        } else {
+          formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        input.value = formattedValue;
+
+        // Ajustar la posición del cursor
+        let newLength = formattedValue.length;
+        let diff = newLength - originalLength;
+        input.setSelectionRange(caretPos + diff, caretPos + diff);
+
+        calculateResults();
+      });
+
+      // Formatear valor inicial
+      let initialValue = getCleanNumber(input.value);
+      input.value = initialValue === 0 ? '0' : new Intl.NumberFormat('es-MX').format(initialValue);
+    }
+
     // Ejecutar al cargar la página
     document.addEventListener("DOMContentLoaded", function () {
       const precioDeSesionInput = document.getElementById('precioDeSesion');
       const calcTypeInput = document.getElementById('calcType');
 
-      // Inicializar valorComercial
-      initializeValorComercial();
-
-      // Formatear precioDeSesion
       formatNumberInput(precioDeSesionInput);
 
-      // Calcular resultados iniciales
       calculateResults();
 
-      // Evento para cambio de calcType
       if (calcTypeInput) {
         calcTypeInput.addEventListener('change', calculateResults);
       }
@@ -1124,6 +1096,7 @@
     });
   </script>
     </section>
+
     <!-- Footer -->
     <footer class="gradient-bg text-white py-4 mt-auto">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
