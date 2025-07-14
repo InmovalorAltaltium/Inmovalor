@@ -309,12 +309,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar dropdowns de Bootstrap
-    const dropdownElements = document.querySelectorAll('.dropdown-toggle');
-    dropdownElements.forEach(dropdown => {
-      new bootstrap.Dropdown(dropdown);
-    });
-
     // Tema toggle
     const themeToggle = document.querySelector('.theme-toggle');
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');

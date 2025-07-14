@@ -26,7 +26,7 @@
       const logoutTime = 2 * 60 * 1000; // 2 minutos
 
       function cerrarSesionPorInactividad() {
-        window.location.href = "{% url 'signout' %}"; // Cambiado de 'logout' a 'signout'
+        window.location.href = "{% url 'signout' %}";
       }
 
       function resetTimer() {
@@ -48,5 +48,15 @@
 
     <!-- JS de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Inicialización de dropdowns de Bootstrap -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const dropdownElements = document.querySelectorAll('.dropdown-toggle');
+        dropdownElements.forEach(dropdown => {
+          new bootstrap.Dropdown(dropdown);
+        });
+      });
+    </script>
   </body>
 </html>
