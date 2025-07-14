@@ -769,118 +769,118 @@
 
     <!-- Sección de Calculadora de Honorarios -->
     <section id="honorarios" class="bg-white py-8 border-t border-gray hidden fade">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="main-wrapper">
-      <header class="header-cotizacion">
-        <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
-      </header>
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="main-wrapper">
+          <header class="header-cotizacion">
+            <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
+          </header>
 
-      <form class="input-form-section grid grid-cols-1 md:grid-cols-3 gap-4" id="calculator-form" novalidate>
-        {% csrf_token %}
-        <div>
-          <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
-          <select id="calcType" name="calcType" class="form-select" required>
-            <option value="adjudicado" {% if not calc_type or calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
-            <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
-            <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
-          </select>
-        </div>
-        <div>
-          <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
-          <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="{{ propiedad.valor_comercial|default_if_none:'0.00'|floatformat:2 }}">
-          <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
-          <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
-        </div>
-        <div>
-          <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
-          <input type="text" id="precioDeSesion" name="precioDeSesionDisplay" class="form-control" placeholder="Ingresa el precio" value="0">
-          <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion" value="0">
-          <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
-        </div>
-      </form>
+          <form class="input-form-section grid grid-cols-1 md:grid-cols-3 gap-4" id="calculator-form" novalidate>
+            {% csrf_token %}
+            <div>
+              <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
+              <select id="calcType" name="calcType" class="form-select" required>
+                <option value="adjudicado" {% if not calc_type or calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
+                <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
+                <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
+              </select>
+            </div>
+            <div>
+              <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
+              <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="{{ propiedad.valor_comercial|default_if_none:'0.00'|floatformat:2 }}">
+              <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
+              <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
+            </div>
+            <div>
+              <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
+              <input type="text" id="precioDeSesion" name="precioDeSesionDisplay" class="form-control" placeholder="Ingresa el precio" value="0">
+              <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion" value="0">
+              <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
+            </div>
+          </form>
 
-      <div class="results-grid" id="results-grid-container">
-        <div id="descripcion-section" class="section-block">
-          <span class="section-title">DESCRIPCIÓN</span>
-          <table>
-            <tbody>
-              <tr>
-                <td>Valor Comercial</td>
-                <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span></td>
-              </tr>
-              <tr>
-                <td>Valor Judicial</td>
-                <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span></td>
-              </tr>
-              <tr>
-                <td>Honorarios</td>
-                <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-              </tr>
-              <tr>
-                <td>Cesión de Derechos</td>
-                <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCession')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <div class="results-grid" id="results-grid-container">
+            <div id="descripcion-section" class="section-block">
+              <span class="section-title">DESCRIPCIÓN</span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Valor Comercial</td>
+                    <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span></td>
+                  </tr>
+                  <tr>
+                    <td>Valor Judicial</td>
+                    <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span></td>
+                  </tr>
+                  <tr>
+                    <td>Honorarios</td>
+                    <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td>Cesión de Derechos</td>
+                    <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCession')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-        <div id="parcialidades-section" class="section-block">
-          <span class="section-title">PARCIALIDADES</span>
-          <table>
-            <tbody>
-              <tr>
-                <td>1er Pago (75%)</td>
-                <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayPrimerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-              </tr>
-              <tr>
-                <td>2do Pago</td>
-                <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-              </tr>
-              <tr>
-                <td>3er Pago (25%)</td>
-                <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-              </tr>
-              <tr class="total-row">
-                <td>COSTO TOTAL:</td>
-                <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+            <div id="parcialidades-section" class="section-block">
+              <span class="section-title">PARCIALIDADES</span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>1er Pago (75%)</td>
+                    <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayPrimerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td>2do Pago</td>
+                    <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td>3er Pago (25%)</td>
+                    <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr class="total-row">
+                    <td>COSTO TOTAL:</td>
+                    <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-        <div id="cesion-derechos-section" class="section-block">
-          <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
-          <table>
-            <tbody>
-              <tr>
-                <td>Valor Extrajudicial</td>
-                <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span></td>
-              </tr>
-              <tr>
-                <td>Cotización (50%)</td>
-                <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-              </tr>
-            </tbody>
-          </table>
+            <div id="cesion-derechos-section" class="section-block">
+              <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Valor Extrajudicial</td>
+                    <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span></td>
+                  </tr>
+                  <tr>
+                    <td>Cotización (50%)</td>
+                    <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="ganancia-container" class="ganancia-container">
+            <div class="ganancia-item">
+              <span class="ganancia-label">GANANCIA</span>
+              <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
+              <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+            </div>
+            <div class="ganancia-item">
+              <span class="ganancia-label">Costo de Compra</span>
+              <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
+              <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+            </div>
+          </div>
+
+          <div id="toast" class="toast">¡Valor copiado!</div>
         </div>
       </div>
-
-      <div id="ganancia-container" class="ganancia-container">
-        <div class="ganancia-item">
-          <span class="ganancia-label">GANANCIA</span>
-          <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
-          <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-        </div>
-        <div class="ganancia-item">
-          <span class="ganancia-label">Costo de Compra</span>
-          <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
-          <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-        </div>
-      </div>
-
-      <div id="toast" class="toast">¡Valor copiado!</div>
-    </div>
-  </div>
 
   <script>
     // Función para copiar al portapapeles
