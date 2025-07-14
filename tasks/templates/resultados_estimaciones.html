@@ -768,335 +768,334 @@
     </section>
 
     <!-- Sección de Calculadora de Honorarios -->
-  <section id="honorarios" class="bg-white py-8 border-t border-gray hidden fade">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="main-wrapper">
-          <header class="header-cotizacion">
-            <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
-          </header>
+    <section id="honorarios" class="bg-white py-8 border-t border-gray hidden fade">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="main-wrapper">
+              <header class="header-cotizacion">
+                <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
+              </header>
 
-          <form class="input-form-section grid grid-cols-1 md:grid-cols-3 gap-4" id="calculator-form" novalidate>
-            {% csrf_token %}
-            <div>
-              <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
-              <select id="calcType" name="calcType" class="form-select" required>
-                <option value="adjudicado" {% if not calc_type or calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
-                <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
-                <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
-              </select>
-            </div>
-            <div>
-              <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
-              <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="{{ propiedad.valor_comercial|default_if_none:'0.00'|floatformat:2 }}">
-              <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
-              <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
-            </div>
-            <div>
-              <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
-              <input type="text" id="precioDeSesion" name="precioDeSesionDisplay" class="form-control" placeholder="Ingresa el precio" value="0">
-              <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion" value="0">
-              <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
-            </div>
-          </form>
+              <form class="input-form-section grid grid-cols-1 md:grid-cols-3 gap-4" id="calculator-form" novalidate>
+                {% csrf_token %}
+                <div>
+                  <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
+                  <select id="calcType" name="calcType" class="form-select" required>
+                    <option value="adjudicado" {% if not calc_type or calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
+                    <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
+                    <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
+                  <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="{{ propiedad.valor_comercial|default_if_none:'0.00'|floatformat:2 }}">
+                  <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
+                  <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
+                </div>
+                <div>
+                  <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
+                  <input type="text" id="precioDeSesion" name="precioDeSesionDisplay" class="form-control" placeholder="Ingresa el precio" value="0">
+                  <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion" value="0">
+                  <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
+                </div>
+              </form>
 
-          <div class="results-grid" id="results-grid-container">
-            <div id="descripcion-section" class="section-block">
-              <span class="section-title">DESCRIPCIÓN</span>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Valor Comercial</td>
-                    <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span></td>
-                  </tr>
-                  <tr>
-                    <td>Valor Judicial</td>
-                    <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span></td>
-                  </tr>
-                  <tr>
-                    <td>Honorarios</td>
-                    <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Cesión de Derechos</td>
-                    <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCession')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+              <div class="results-grid" id="results-grid-container">
+                <div id="descripcion-section" class="section-block">
+                  <span class="section-title">DESCRIPCIÓN</span>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>Valor Comercial</td>
+                        <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span></td>
+                      </tr>
+                      <tr>
+                        <td>Valor Judicial</td>
+                        <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span></td>
+                      </tr>
+                      <tr>
+                        <td>Honorarios</td>
+                        <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                      </tr>
+                      <tr>
+                        <td>Cesión de Derechos</td>
+                        <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCession')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-            <div id="parcialidades-section" class="section-block">
-              <span class="section-title">PARCIALIDADES</span>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>1er Pago (75%)</td>
-                    <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayPrimerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>2do Pago</td>
-                    <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>3er Pago (25%)</td>
-                    <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr class="total-row">
-                    <td>COSTO TOTAL:</td>
-                    <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                <div id="parcialidades-section" class="section-block">
+                  <span class="section-title">PARCIALIDADES</span>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>1er Pago (75%)</td>
+                        <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayPrimerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                      </tr>
+                      <tr>
+                        <td>2do Pago</td>
+                        <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                      </tr>
+                      <tr>
+                        <td>3er Pago (25%)</td>
+                        <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                      </tr>
+                      <tr class="total-row">
+                        <td>COSTO TOTAL:</td>
+                        <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-            <div id="cesion-derechos-section" class="section-block">
-              <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Valor Extrajudicial</td>
-                    <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span></td>
-                  </tr>
-                  <tr>
-                    <td>Cotización (50%)</td>
-                    <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                </tbody>
-              </table>
+                <div id="cesion-derechos-section" class="section-block">
+                  <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>Valor Extrajudicial</td>
+                        <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span></td>
+                      </tr>
+                      <tr>
+                        <td>Cotización (50%)</td>
+                        <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div id="ganancia-container" class="ganancia-container">
+                <div class="ganancia-item">
+                  <span class="ganancia-label">GANANCIA</span>
+                  <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
+                  <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                </div>
+                <div class="ganancia-item">
+                  <span class="ganancia-label">Costo de Compra</span>
+                  <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
+                  <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+                </div>
+              </div>
+
+              <div id="toast" class="toast">¡Valor copiado!</div>
             </div>
           </div>
 
-          <div id="ganancia-container" class="ganancia-container">
-            <div class="ganancia-item">
-              <span class="ganancia-label">GANANCIA</span>
-              <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
-              <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-            </div>
-            <div class="ganancia-item">
-              <span class="ganancia-label">Costo de Compra</span>
-              <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
-              <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-            </div>
-          </div>
-
-          <div id="toast" class="toast">¡Valor copiado!</div>
-        </div>
-      </div>
-
-  <script>
-    // Función para copiar al portapapeles
-    function copyToClipboard(elementId) {
-      const element = document.getElementById(elementId);
-      let textToCopy = element.textContent.trim(); // Copia el texto completo, incluyendo formato
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        const toast = document.getElementById('toast');
-        toast.classList.add('show');
-        setTimeout(() => {
-          toast.classList.remove('show');
-        }, 2000);
-      }).catch(err => {
-        console.error('Error al copiar: ', err);
-      });
-    }
-
-    // Función para limpiar y obtener un número float
-    function getCleanNumber(value) {
-      if (typeof value !== 'string') return parseFloat(value) || 0;
-      return parseFloat(value.replace(/[^0-9.-]+/g, "")) || 0;
-    }
-
-    // Función para formatear números a moneda
-    function formatCurrency(value) {
-      return new Intl.NumberFormat('es-MX', {
-        style: 'currency',
-        currency: 'MXN',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(value);
-    }
-
-    // Función para formatear porcentajes
-    function formatPercentage(value) {
-      return new Intl.NumberFormat('es-MX', {
-        style: 'percent',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(value / 100);
-    }
-
-    // Función principal para calcular y actualizar resultados
-    function calculateResults() {
-      const form = document.getElementById('calculator-form');
-      const calcType = document.getElementById('calcType').value;
-      const resultsGridContainer = document.getElementById('results-grid-container');
-      const descripcionSection = document.getElementById('descripcion-section');
-      const parcialidadesSection = document.getElementById('parcialidades-section');
-      const gananciaContainer = document.getElementById('ganancia-container');
-      const cesionDerechosSection = document.getElementById('cesion-derechos-section');
-      const valorComercialInput = document.getElementById('valorComercial');
-      const precioDeSesionInput = document.getElementById('precioDeSesion');
-      const valorComercialHidden = document.getElementById('valorComercialHidden');
-      const precioDeSesionHidden = document.getElementById('precioDeSesionHidden');
-      const valorComercialError = document.getElementById('valorComercialError');
-      const precioDeSesionError = document.getElementById('precioDeSesionError');
-
-      // Validar entradas
-      const valorComercialClean = getCleanNumber(valorComercialHidden.value);
-      const precioDeSesionClean = getCleanNumber(precioDeSesionInput.value);
-
-      if (isNaN(valorComercialClean) || valorComercialClean < 0) {
-        valorComercialError.style.display = 'block';
-        return;
-      } else {
-        valorComercialError.style.display = 'none';
-      }
-
-      if (isNaN(precioDeSesionClean) || precioDeSesionClean < 0) {
-        precioDeSesionError.style.display = 'block';
-        return;
-      } else {
-        precioDeSesionError.style.display = 'none';
-      }
-
-      // Actualizar el valor oculto para precioDeSesion
-      precioDeSesionHidden.value = precioDeSesionClean;
-
-      // Manejo de la visibilidad de las secciones
-      if (calcType === 'derechos_cobranza') {
-        descripcionSection.style.display = 'none';
-        parcialidadesSection.style.display = 'none';
-        gananciaContainer.style.display = 'none';
-        cesionDerechosSection.style.display = 'block';
-        cesionDerechosSection.classList.add('active');
-        resultsGridContainer.style.gridTemplateColumns = '1fr';
-      } else {
-        descripcionSection.style.display = 'block';
-        parcialidadesSection.style.display = 'block';
-        gananciaContainer.style.display = 'grid';
-        cesionDerechosSection.style.display = 'none';
-        cesionDerechosSection.classList.remove('active');
-        if (window.matchMedia("(min-width: 768px)").matches) {
-          resultsGridContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-        } else {
-          resultsGridContainer.style.gridTemplateColumns = '1fr';
-        }
-      }
-
-      const formData = new FormData(form);
-      formData.set('valorComercial', valorComercialClean);
-      formData.set('precioDeSesion', precioDeSesionClean);
-
-      fetch('{% url "honorarios_calculator" %}', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          'X-CSRFToken': '{{ csrf_token }}'
-        }
-      })
-      .then(response => {
-        if (!response.ok) {
-          return response.json().then(errorData => {
-            throw new Error(errorData.error || 'Error en la solicitud al servidor');
+      <script>
+        // Función para copiar al portapapeles
+        function copyToClipboard(elementId) {
+          const element = document.getElementById(elementId);
+          let textToCopy = element.textContent.trim(); // Copia el texto completo, incluyendo formato
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+              toast.classList.remove('show');
+            }, 2000);
+          }).catch(err => {
+            console.error('Error al copiar: ', err);
           });
         }
-        return response.json();
-      })
-      .then(data => {
-        document.getElementById('displayValorComercial').textContent = data.valor_comercial;
-        document.getElementById('displayValorJudicial').textContent = data.valor_judicial;
-        document.getElementById('displayHonorarios').textContent = data.honorarios;
-        // Usar precioDeSesionClean directamente para sentencia y adjudicado
-        document.getElementById('displayCession').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? formatCurrency(precioDeSesionClean) : data.cotizacion;
-        document.getElementById('displayPrimerPago').textContent = data.firma;
-        // Usar precioDeSesionClean directamente para sentencia y adjudicado
-        document.getElementById('displaySegundoPago').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? formatCurrency(precioDeSesionClean) : data.cotizacion;
-        document.getElementById('displayTercerPago').textContent = data.entrega;
-        document.getElementById('displayTotal').textContent = data.total;
-        document.getElementById('displayGanancia').textContent = data.ganancia;
-        document.getElementById('displayCostoCompra').textContent = data.porcentaje_vc;
-        document.getElementById('displayValorExt').textContent = data.valor_ext;
-        document.getElementById('displayCotizacion').textContent = data.cotizacion;
-      })
-      .catch(error => {
-        console.error('Error en la solicitud Fetch:', error);
-        const toast = document.getElementById('toast');
-        toast.textContent = 'Error al calcular. Intenta de nuevo.';
-        toast.style.background = '#DC2626';
-        toast.classList.add('show');
-        setTimeout(() => {
-          toast.classList.remove('show');
-          toast.style.background = '#00CCCC';
-          toast.textContent = '¡Valor copiado!';
-        }, 3000);
-      });
-    }
 
-    // Función para formatear el input con comas mientras se escribe
-    function formatNumberInput(input) {
-      input.addEventListener('input', function(e) {
-        let value = input.value.replace(/[^0-9.]/g, ''); // Permitir solo números y punto
-        let caretPos = input.selectionStart;
-        let originalLength = input.value.length;
-
-        // Manejar el punto decimal
-        let parts = value.split('.');
-        if (parts.length > 2) {
-          value = parts[0] + '.' + parts.slice(1).join('');
+        // Función para limpiar y obtener un número float
+        function getCleanNumber(value) {
+          if (typeof value !== 'string') return parseFloat(value) || 0;
+          return parseFloat(value.replace(/[^0-9.-]+/g, "")) || 0;
         }
 
-        if (value === '' || value === '.') {
-          input.value = value;
+        // Función para formatear números a moneda
+        function formatCurrency(value) {
+          return new Intl.NumberFormat('es-MX', {
+            style: 'currency',
+            currency: 'MXN',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }).format(value);
+        }
+
+        // Función para formatear porcentajes
+        function formatPercentage(value) {
+          return new Intl.NumberFormat('es-MX', {
+            style: 'percent',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }).format(value / 100);
+        }
+
+        // Función principal para calcular y actualizar resultados
+        function calculateResults() {
+          const form = document.getElementById('calculator-form');
+          const calcType = document.getElementById('calcType').value;
+          const resultsGridContainer = document.getElementById('results-grid-container');
+          const descripcionSection = document.getElementById('descripcion-section');
+          const parcialidadesSection = document.getElementById('parcialidades-section');
+          const gananciaContainer = document.getElementById('ganancia-container');
+          const cesionDerechosSection = document.getElementById('cesion-derechos-section');
+          const valorComercialInput = document.getElementById('valorComercial');
+          const precioDeSesionInput = document.getElementById('precioDeSesion');
+          const valorComercialHidden = document.getElementById('valorComercialHidden');
+          const precioDeSesionHidden = document.getElementById('precioDeSesionHidden');
+          const valorComercialError = document.getElementById('valorComercialError');
+          const precioDeSesionError = document.getElementById('precioDeSesionError');
+
+          // Validar entradas
+          const valorComercialClean = getCleanNumber(valorComercialHidden.value);
+          const precioDeSesionClean = getCleanNumber(precioDeSesionInput.value);
+
+          if (isNaN(valorComercialClean) || valorComercialClean < 0) {
+            valorComercialError.style.display = 'block';
+            return;
+          } else {
+            valorComercialError.style.display = 'none';
+          }
+
+          if (isNaN(precioDeSesionClean) || precioDeSesionClean < 0) {
+            precioDeSesionError.style.display = 'block';
+            return;
+          } else {
+            precioDeSesionError.style.display = 'none';
+          }
+
+          // Actualizar el valor oculto para precioDeSesion
+          precioDeSesionHidden.value = precioDeSesionClean;
+
+          // Manejo de la visibilidad de las secciones
+          if (calcType === 'derechos_cobranza') {
+            descripcionSection.style.display = 'none';
+            parcialidadesSection.style.display = 'none';
+            gananciaContainer.style.display = 'none';
+            cesionDerechosSection.style.display = 'block';
+            cesionDerechosSection.classList.add('active');
+            resultsGridContainer.style.gridTemplateColumns = '1fr';
+          } else {
+            descripcionSection.style.display = 'block';
+            parcialidadesSection.style.display = 'block';
+            gananciaContainer.style.display = 'grid';
+            cesionDerechosSection.style.display = 'none';
+            cesionDerechosSection.classList.remove('active');
+            if (window.matchMedia("(min-width: 768px)").matches) {
+              resultsGridContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
+            } else {
+              resultsGridContainer.style.gridTemplateColumns = '1fr';
+            }
+          }
+
+          const formData = new FormData(form);
+          formData.set('valorComercial', valorComercialClean);
+          formData.set('precioDeSesion', precioDeSesionClean);
+
+          fetch('{% url "honorarios_calculator" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRFToken': '{{ csrf_token }}'
+            }
+          })
+          .then(response => {
+            if (!response.ok) {
+              return response.json().then(errorData => {
+                throw new Error(errorData.error || 'Error en la solicitud al servidor');
+              });
+            }
+            return response.json();
+          })
+          .then(data => {
+            document.getElementById('displayValorComercial').textContent = data.valor_comercial;
+            document.getElementById('displayValorJudicial').textContent = data.valor_judicial;
+            document.getElementById('displayHonorarios').textContent = data.honorarios;
+            // Usar precioDeSesionClean directamente para sentencia y adjudicado, cotizacion para derechos_cobranza
+            document.getElementById('displayCession').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? formatCurrency(precioDeSesionClean) : data.cotizacion;
+            document.getElementById('displayPrimerPago').textContent = data.firma;
+            // Usar precioDeSesionClean directamente para sentencia y adjudicado, cotizacion para derechos_cobranza
+            document.getElementById('displaySegundoPago').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? formatCurrency(precioDeSesionClean) : data.cotizacion;
+            document.getElementById('displayTercerPago').textContent = data.entrega;
+            document.getElementById('displayTotal').textContent = data.total;
+            document.getElementById('displayGanancia').textContent = data.ganancia;
+            document.getElementById('displayCostoCompra').textContent = data.porcentaje_vc;
+            document.getElementById('displayValorExt').textContent = data.valor_ext;
+            document.getElementById('displayCotizacion').textContent = data.cotizacion;
+          })
+          .catch(error => {
+            console.error('Error en la solicitud Fetch:', error);
+            const toast = document.getElementById('toast');
+            toast.textContent = 'Error al calcular. Intenta de nuevo.';
+            toast.style.background = '#DC2626';
+            toast.classList.add('show');
+            setTimeout(() => {
+              toast.classList.remove('show');
+              toast.style.background = '#00CCCC';
+              toast.textContent = '¡Valor copiado!';
+            }, 3000);
+          });
+        }
+
+        // Función para formatear el input con comas mientras se escribe
+        function formatNumberInput(input) {
+          input.addEventListener('input', function(e) {
+            let value = input.value.replace(/[^0-9.]/g, ''); // Permitir solo números y punto
+            let caretPos = input.selectionStart;
+            let originalLength = input.value.length;
+
+            // Manejar el punto decimal
+            let parts = value.split('.');
+            if (parts.length > 2) {
+              value = parts[0] + '.' + parts.slice(1).join('');
+            }
+
+            if (value === '' || value === '.') {
+              input.value = value;
+              calculateResults();
+              return;
+            }
+
+            // Formatear la parte entera con comas
+            let formattedValue = '';
+            if (value.includes('.')) {
+              let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              formattedValue = integerPart + '.' + (parts[1] || '');
+            } else {
+              formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+
+            input.value = formattedValue;
+
+            // Ajustar la posición del cursor
+            let newLength = formattedValue.length;
+            let diff = newLength - originalLength;
+            input.setSelectionRange(caretPos + diff, caretPos + diff);
+
+            calculateResults();
+          });
+
+          // Formatear valor inicial
+          let initialValue = getCleanNumber(input.value);
+          input.value = initialValue === 0 ? '0' : new Intl.NumberFormat('es-MX').format(initialValue);
+        }
+
+        // Ejecutar al cargar la página
+        document.addEventListener("DOMContentLoaded", function () {
+          const precioDeSesionInput = document.getElementById('precioDeSesion');
+          const calcTypeInput = document.getElementById('calcType');
+
+          formatNumberInput(precioDeSesionInput);
+
           calculateResults();
-          return;
-        }
 
-        // Formatear la parte entera con comas
-        let formattedValue = '';
-        if (value.includes('.')) {
-          let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          formattedValue = integerPart + '.' + (parts[1] || '');
-        } else {
-          formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        }
+          if (calcTypeInput) {
+            calcTypeInput.addEventListener('change', calculateResults);
+          }
 
-        input.value = formattedValue;
-
-        // Ajustar la posición del cursor
-        let newLength = formattedValue.length;
-        let diff = newLength - originalLength;
-        input.setSelectionRange(caretPos + diff, caretPos + diff);
-
-        calculateResults();
-      });
-
-      // Formatear valor inicial
-      let initialValue = getCleanNumber(input.value);
-      input.value = initialValue === 0 ? '0' : new Intl.NumberFormat('es-MX').format(initialValue);
-    }
-
-    // Ejecutar al cargar la página
-    document.addEventListener("DOMContentLoaded", function () {
-      const precioDeSesionInput = document.getElementById('precioDeSesion');
-      const calcTypeInput = document.getElementById('calcType');
-
-      formatNumberInput(precioDeSesionInput);
-
-      calculateResults();
-
-      if (calcTypeInput) {
-        calcTypeInput.addEventListener('change', calculateResults);
-      }
-
-      // Validar formulario al enviar
-      const form = document.getElementById('calculator-form');
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        calculateResults();
-      });
-    });
-  </script>
-  </section>
-
+          // Validar formulario al enviar
+          const form = document.getElementById('calculator-form');
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateResults();
+          });
+        });
+      </script>
+    </section>
     <!-- Footer -->
     <footer class="gradient-bg text-white py-4 mt-auto">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
