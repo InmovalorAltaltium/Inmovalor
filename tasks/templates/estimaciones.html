@@ -2,36 +2,16 @@
 {% load static %}
 {% block content %}
 <style>
-     :root {
-        
+    /* Definir variables dentro de .form-container para limitar su alcance al formulario */
+    .form-container {
+        --primary-color: #00CCCC;
         --secondary-color: #009999;
         --accent-color: #CCF5F5;
         --dark-color: #003035;
         --light-color: #FFFFFF;
         --error-color: #FF6B6B;
         --success-color: #66CC99;
-    }
-    .estimaciones-container {
-        background: linear-gradient(-45deg, #fefcef, #bfc6c7, #52b3c0, #00cccc);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-        min-height: calc(100vh - 100px);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding-top: 100px;
-    }
 
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    .form-container {
         background-color: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(8px);
         padding: 1rem;
@@ -49,7 +29,20 @@
         transform: translateY(-2px);
     }
 
-    .form-title {
+    /* Centrar el contenido verticalmente para que todo quepa en una pantalla */
+    body {
+        background: #FFFFFF; /* Color fijo para evitar dependencia de variables */
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Estilos del título del formulario */
+    .form-container .form-title {
         color: var(--dark-color);
         font-weight: 700;
         margin-bottom: 0.8rem;
@@ -60,7 +53,7 @@
         font-size: 1.4rem;
     }
 
-    .form-title::after {
+    .form-container .form-title::after {
         content: '';
         position: absolute;
         bottom: 0;
@@ -72,19 +65,19 @@
         border-radius: 2px;
     }
 
-    .form-label {
+    .form-container .form-label {
         font-weight: 600;
         color: var(--dark-color);
         margin-bottom: 0.2rem;
         font-size: 0.8rem;
     }
 
-    .required-field::after {
+    .form-container .required-field::after {
         content: " *";
         color: var(--error-color);
     }
 
-    .section-title {
+    .form-container .section-title {
         color: var(--dark-color);
         font-weight: 600;
         font-size: 0.9rem;
@@ -94,7 +87,7 @@
         padding-left: 0.6rem;
     }
 
-    .section-title::before {
+    .form-container .section-title::before {
         content: '';
         position: absolute;
         left: 0;
@@ -106,7 +99,7 @@
         border-radius: 2px;
     }
 
-    .btn-calculate {
+    .form-container .btn-calculate {
         background-color: var(--primary-color);
         border: none;
         color: white;
@@ -117,14 +110,14 @@
         box-shadow: 0 2px 4px rgba(0, 204, 204, 0.2);
     }
 
-    .btn-calculate:hover {
+    .form-container .btn-calculate:hover {
         background-color: var(--secondary-color);
         color: white;
         transform: translateY(-2px);
         box-shadow: 0 4px 6px rgba(0, 204, 204, 0.3);
     }
 
-    .btn-secondary {
+    .form-container .btn-secondary {
         background-color: var(--dark-color);
         color: white;
         font-weight: 500;
@@ -133,12 +126,35 @@
         transition: all 0.3s ease;
     }
 
-    .btn-secondary:hover {
+    .form-container .btn-secondary:hover {
         background-color: var(--secondary-color);
         color: white;
         transform: translateY(-2px);
     }
 
+    /* Estilo del botón calcular */
+    .form-container #btn-calcular {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-container #btn-calcular:hover {
+        background-color: var(--secondary-color);
+        transform: scale(1.05);
+    }
+
+    .form-container #btn-calcular:active {
+        background-color: #007777;
+        transform: scale(0.95);
+    }
+
+    /* Estilo para el mapa (usando colores explícitos para evitar dependencia de variables) */
     #map {
         height: 450px;
         width: 100%;
@@ -151,7 +167,7 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
 
-    .map-message {
+    .form-container .map-message {
         padding: 6px 12px;
         background: white;
         border-radius: 5px;
@@ -165,17 +181,17 @@
         color: black;
     }
 
-    .error-message {
+    .form-container .error-message {
         color: white;
         background-color: var(--error-color);
     }
 
-    .success-message {
+    .form-container .success-message {
         color: white;
         background-color: var(--success-color);
     }
 
-    .form-status-message {
+    .form-container .form-status-message {
         font-size: 0.8rem;
         font-weight: 500;
         text-align: center;
@@ -185,17 +201,18 @@
         transition: all 0.3s ease;
     }
 
-    .form-status-message.success {
+    .form-container .form-status-message.success {
         color: var(--success-color);
         background-color: rgba(102, 204, 153, 0.1);
     }
 
-    .form-status-message.error {
+    .form-container .form-status-message.error {
         color: var(--error-color);
         background-color: rgba(255, 107, 107, 0.1);
     }
 
-    .form-control, .form-select {
+    .form-container .form-control,
+    .form-container .form-select {
         border-radius: 5px;
         padding: 0.4rem 0.7rem;
         border: 1px solid #ced4da;
@@ -203,19 +220,20 @@
         font-size: 0.85rem;
     }
 
-    .form-control:focus, .form-select:focus {
+    .form-container .form-control:focus,
+    .form-container .form-select:focus {
         border-color: var(--primary-color);
         outline: none;
         box-shadow: 0 0 0 0.15rem rgba(0, 204, 204, 0.25);
         background: var(--light-color);
     }
 
-    .invalid-feedback {
+    .form-container .invalid-feedback {
         font-size: 0.7rem;
         color: var(--error-color);
     }
 
-    .animate-fade-in {
+    .form-container .animate-fade-in {
         animation: fadeIn 0.6s ease-in-out;
     }
 
@@ -224,7 +242,7 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .animate-float {
+    .form-container .animate-float {
         animation: float 3s ease-in-out infinite;
     }
 
@@ -234,7 +252,19 @@
         100% { transform: translateY(0px); }
     }
 
-    .input-group-text {
+    .form-container .feature-icon {
+        width: 25px;
+        height: 25px;
+        background-color: var(--accent-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.6rem;
+        color: var(--primary-color);
+    }
+
+    .form-container .input-group-text {
         background-color: var(--accent-color);
         color: var(--dark-color);
         border-radius: 5px 0 0 5px;
@@ -242,12 +272,12 @@
         padding: 0.4rem 0.6rem;
     }
 
-    .input-group:focus-within .input-group-text {
+    .form-container .input-group:focus-within .input-group-text {
         background-color: var(--primary-color);
         color: white;
     }
 
-    .loading-spinner {
+    .form-container .loading-spinner {
         display: none;
         position: absolute;
         right: 6px;
@@ -255,11 +285,11 @@
         transform: translateY(-50%);
     }
 
-    .form-control.is-loading {
+    .form-container .form-control.is-loading {
         padding-right: 30px;
     }
 
-    .pulse-animation {
+    .form-container .pulse-animation {
         animation: pulse 2s infinite;
     }
 
@@ -274,232 +304,209 @@
     }
 </style>
 
-<div class="estimaciones-container">
-    <div class="container-fluid py-2 animate-fade-in">
-        <div class="row g-2">
-            <!-- Formulario -->
-            <div class="col-lg-6">
-                <div class="form-container">
-                    <h1 class="form-title">Estimación de Propiedad</h1>
-                    <form method="POST" class="row g-2 needs-validation" novalidate>
-                        {% csrf_token %}
-                        <div class="col-md-6">
-                            <label class="form-label required-field">Tipo de propiedad</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-building"></i></span>
-                                <select id="tipo_propiedad" name="tipo_propiedad" class="form-select" required>
-                                    <option selected disabled value="">Seleccionar...</option>
-                                    <option value="Casa">Casa</option>
-                                    <option value="Departamento">Departamento</option>
-                                    <option value="Terreno">Terreno</option>
-                                </select>
-                                <div class="invalid-feedback">Selecciona una opción válida.</div>
-                            </div>
+<div class="container-fluid py-2 animate-fade-in">
+    <div class="row g-2">
+        <!-- Formulario -->
+        <div class="col-lg-6">
+            <div class="form-container">
+                <h1 class="form-title">Estimación de Propiedad</h1>
+
+                <form method="POST" class="row g-2 needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Tipo de propiedad</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-building"></i></span>
+                            <select id="tipo_propiedad" name="tipo_propiedad" class="form-select" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                <option value="Casa">Casa</option>
+                                <option value="Departamento">Departamento</option>
+                                <option value="Terreno">Terreno</option>
+                            </select>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label required-field">Estado</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                <select class="form-control" id="estado" name="estado" required>
-                                    <option selected disabled value="">Seleccionar...</option>
-                                    {% for estado in estados %}
-                                    <option value="{{ estado.id_estado }}">{{ estado.nombre }}</option>
-                                    {% endfor %}
-                                </select>
-                                <div class="invalid-feedback">Selecciona una opción válida.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label required-field">Alcaldía/Municipio</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-city"></i></span>
-                                <select class="form-control" id="municipio" name="municipio" required>
-                                    <option selected disabled value="">Seleccionar...</option>
-                                </select>
-                                <div class="loading-spinner" id="municipio-spinner">
-                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                                <div class="invalid-feedback">Selecciona una opción válida.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label required-field">Colonia</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
-                                <select id="colonia" name="colonia" class="form-control" required>
-                                    <option selected disabled value="">Seleccionar...</option>
-                                </select>
-                                <div class="loading-spinner" id="colonia-spinner">
-                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                                <div class="invalid-feedback">Selecciona una opción válida.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label required-field">Código Postal</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
-                                <select id="cp" name="cp" class="form-control" required>
-                                    <option selected disabled value="">Seleccionar...</option>
-                                </select>
-                                <div class="invalid-feedback">Selecciona una opción válida.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label required-field">Calle</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-road"></i></span>
-                                <input id="calle" name="calle" type="text" class="form-control" placeholder="Ej. Av. Revolución 123" required>
-                                <div class="invalid-feedback">Introduce una calle válida.</div>
-                            </div>
-                        </div>
-                        <div class="col-12 mb-1">
-                            <button type="button" id="btnUbicar" class="btn btn-secondary animate-float">
-                                <i class="fas fa-map-marker-alt me-2"></i> Ubicar en mapa
-                            </button>
-                        </div>
-                        <div class="col-12">
-                            <span class="section-title">Características de la propiedad</span>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label required-field">Recámaras</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-bed"></i></span>
-                                <input id="recamaras" name="recamaras" type="number" class="form-control" min="0" required>
-                                <div class="invalid-feedback">Campo requerido.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label required-field">Sanitarios</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-bath"></i></span>
-                                <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" required>
-                                <div class="invalid-feedback">Campo requerido.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label required-field">Estacionamiento</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-car"></i></span>
-                                <input id="estacionamiento" name="estacionamiento" type="number" class="form-control" min="0" required>
-                                <div class="invalid-feedback">Campo requerido.</div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Comentarios adicionales</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-comment-alt"></i></span>
-                                <textarea id="comentarios" name="comentarios" class="form-control" rows="2" placeholder="Ej. Terraza, jardín, amenidades..."></textarea>
-                            </div>
-                        </div>
-                        <div class="col-12 mt-1">
-                            <span class="section-title">Metraje</span>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label required-field">Terreno (m²)</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-vector-square"></i></span>
-                                <input id="terreno" name="terreno" type="number" class="form-control" min="0" required>
-                                <div class="invalid-feedback">Campo requerido.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label required-field">Construcción (m²)</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-home"></i></span>
-                                <input id="construccion" name="construccion" type="number" class="form-control" min="0" required>
-                                <div class="invalid-feedback">Campo requerido.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label required-field">Estado de conservación</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
-                                <select id="estado_conservacion" name="estado_conservacion" class="form-select" required>
-                                    <option selected disabled value="">Seleccionar...</option>
-                                    <option value="Muy bueno">Muy bueno</option>
-                                    <option value="Bueno">Bueno</option>
-                                    <option value="Regular">Regular</option>
-                                    <option value="Malo">Malo</option>
-                                    <option value="Muy malo">Muy malo</option>
-                                </select>
-                                <div class="invalid-feedback">Selecciona un estado de conservación.</div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div id="form-status" class="form-status-message error">
-                                <i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.
-                            </div>
-                        </div>
-                                           <div class="col-12 text-end mt-2">
-                    <button id="btn-calcular" type="submit" class="btn btn-lg"
-                        style="background-color: #00CCCC;
-                            color: white;
-                            border: none;
-                            padding: 12px 24px;
-                            border-radius: 10px;
-                            font-weight: bold;
-                            transition: all 0.2s ease;
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                        <i class="fas fa-calculator me-2"></i> Calcular valor
-                    </button>
                     </div>
 
-                <script>
-                    const boton = document.getElementById("btn-calcular");
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Estado</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                            <select class="form-control" id="estado" name="estado" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                {% for estado in estados %}
+                                <option value="{{ estado.id_estado }}">{{ estado.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        </div>
+                    </div>
 
-                    // Hover
-                    boton.addEventListener("mouseover", function () {
-                        this.style.backgroundColor = "#009999";
-                        this.style.transform = "scale(1.05)";
-                    });
-
-                    boton.addEventListener("mouseout", function () {
-                        this.style.backgroundColor = "#00CCCC";
-                        this.style.transform = "scale(1)";
-                    });
-
-                    // Click/tap animado
-                    boton.addEventListener("mousedown", function () {
-                        this.style.backgroundColor = "#007777";
-                        this.style.transform = "scale(0.95)";
-                    });
-
-                    boton.addEventListener("mouseup", function () {
-                        this.style.backgroundColor = "#009999";
-                        this.style.transform = "scale(1.05)";
-                        setTimeout(() => {
-                            this.style.backgroundColor = "#00CCCC";
-                            this.style.transform = "scale(1)";
-                        }, 200); // Vuelve al estado normal después de 200ms
-                    });
-                </script>
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="col-12 mt-2">
-                                    <div class="form-status-message {{ message.tags }}">
-                                        {{ message }}
-                                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Alcaldía/Municipio</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-city"></i></span>
+                            <select class="form-control" id="municipio" name="municipio" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                {% for municipio in municipios %}
+                                <option value="{{ municipio.id_municipio }}">{{ municipio.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="loading-spinner" id="municipio-spinner">
+                                <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
                                 </div>
-                            {% endfor %}
-                        {% endif %}
-                    </form>
-                </div>
+                            </div>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Colonia</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
+                            <select id="colonia" name="colonia" class="form-control" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                {% for colonia in colonias %}
+                                <option value="{{ colonia.id_colonia }}">{{ colonia.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="loading-spinner" id="colonia-spinner">
+                                <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Código Postal</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
+                            <select id="cp" name="cp" class="form-control" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                            </select>
+                            <div class="invalid-feedback">Selecciona una opción válida.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Calle</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-road"></i></span>
+                            <input id="calle" name="calle" type="text" class="form-control" placeholder="Ej. Av. Revolución 123" required>
+                            <div class="invalid-feedback">Introduce una calle válida.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-1">
+                        <button type="button" id="btnUbicar" class="btn btn-secondary animate-float">
+                            <i class="fas fa-map-marker-alt me-2"></i> Ubicar en mapa
+                        </button>
+                    </div>
+
+                    <div class="col-12">
+                        <span class="section-title">Características de la propiedad</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label required-field">Recámaras</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-bed"></i></span>
+                            <input id="recamaras" name="recamaras" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label required-field">Sanitarios</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-bath"></i></span>
+                            <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label required-field">Estacionamiento</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-car"></i></span>
+                            <input id="estacionamiento" name="estacionamiento" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Comentarios adicionales</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-comment-alt"></i></span>
+                            <textarea id="comentarios" name="comentarios" class="form-control" rows="2" placeholder="Ej. Terraza, jardín, amenidades..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-1">
+                        <span class="section-title">Metraje</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Terreno (m²)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-vector-square"></i></span>
+                            <input id="terreno" name="terreno" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label required-field">Construcción (m²)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-building"></i></span>
+                            <input id="construccion" name="construccion" type="number" class="form-control" min="0" required>
+                            <div class="invalid-feedback">Campo requerido.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label required-field">Estado de conservación</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
+                            <select id="estado_conservacion" name="estado_conservacion" class="form-select" required>
+                                <option selected disabled value="">Seleccionar...</option>
+                                <option value="Muy bueno">Muy bueno</option>
+                                <option value="Bueno">Bueno</option>
+                                <option value="Regular">Regular</option>
+                                <option value="Malo">Malo</option>
+                                <option value="Muy malo">Muy malo</option>
+                            </select>
+                            <div class="invalid-feedback">Selecciona un estado de conservación.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div id="form-status" class="form-status-message error">
+                            <i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-end mt-2">
+                        <button id="btn-calcular" type="submit" class="btn btn-lg">
+                            <i class="fas fa-calculator me-2"></i> Calcular valor
+                        </button>
+                    </div>
+                </form>
             </div>
-            <!-- Mapa -->
-            <div class="col-lg-6">
-                <div id="map"></div>
-            </div>
+        </div>
+
+        <!-- Mapa -->
+        <div class="col-lg-6">
+            <div id="map"></div>
         </div>
     </div>
 </div>
 
-<!-- Inclusión de dependencias -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
@@ -529,22 +536,22 @@
     };
 
     $(document).ready(function () {
-        // Inicializar tooltips
         tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
 
-        // Validación del formulario en submit
         (function () {
             'use strict';
             var forms = document.querySelectorAll('.needs-validation');
+            
             Array.prototype.slice.call(forms).forEach(function (form) {
                 form.addEventListener('submit', function (event) {
                     if (!form.checkValidity()) {
                         event.preventDefault();
                         event.stopPropagation();
                     }
+                    
                     form.classList.add('was-validated');
                 }, false);
             });
@@ -578,11 +585,7 @@
             const fields = Array.from(form.querySelectorAll('input[required], select[required]'));
             const calleIndex = fields.findIndex(field => field.id === 'calle');
             const relevantFields = fields.slice(calleIndex); // Solo campos desde "Calle" en adelante
-            const firstEmptyField = relevantFields.find(field => 
-                !field.value || 
-                (field.tagName === 'SELECT' && field.value === '') ||
-                (field.type === 'number' && field.value <= 0)
-            );
+            const firstEmptyField = relevantFields.find(field => !field.value || (field.tagName === 'SELECT' && field.value === ''));
 
             if (firstEmptyField && firstEmptyField !== currentField) {
                 setTimeout(() => {
@@ -597,25 +600,27 @@
             }
         }
 
-        // Agregar eventos a los campos requeridos
+        // Agregar eventos a los campos requeridos a partir de "Calle"
         const finalFields = ['calle', 'recamaras', 'sanitarios', 'estacionamiento', 'terreno', 'construccion', 'estado_conservacion'];
         const requiredFields = document.querySelectorAll('input[required], select[required]');
         requiredFields.forEach(field => {
             field.addEventListener('change', function() {
                 checkFormValidity();
                 if (finalFields.includes(this.id)) {
-                    // Solo ejecutar scroll si el campo tiene un valor válido
-                    if (this.value && (this.type !== 'number' || this.value > 0)) {
-                        scrollToNextField(this);
-                    }
+                    scrollToNextField(this);
+                }
+            });
+            field.addEventListener('input', function() {
+                checkFormValidity();
+                if (finalFields.includes(this.id) && this.type !== 'number') { // Evitar scroll en inputs numéricos durante escritura
+                    scrollToNextField(this);
                 }
             });
         });
 
         // Validar al cargar la página
         checkFormValidity();
-
-        // Evento change para el selector de estado
+                
         $('#estado').on('change', function () {
             const estadoId = $(this).val();
             const estadoNombre = $(this).find('option:selected').text().trim();
@@ -653,7 +658,6 @@
             }
         });
 
-        // Evento change para el selector de municipio
         $('#municipio').on('change', function () {
             const municipioId = $(this).val();
             const municipioNombre = $(this).find('option:selected').text().trim();
@@ -690,7 +694,6 @@
             }
         });
 
-        // Evento change para el selector de colonia
         $('#colonia').on('change', function () {
             const coloniaId = $(this).val();
             const coloniaNombre = $(this).find('option:selected').text().trim();
@@ -718,7 +721,6 @@
             }
         });
 
-        // Evento change para el selector de código postal
         $('#cp').on('change', function () {
             const cpId = $(this).val();
             if (cpId) {
@@ -746,7 +748,6 @@
             }
         });
 
-        // Evento click para el botón "Ubicar en mapa"
         $('#btnUbicar').click(function () {
             const colonia = $('#colonia option:selected').text().trim();
             if (colonia) {
@@ -851,7 +852,7 @@
                     "elementType": "all",
                     "stylers": [
                         {
-                            "color": "#00CCCC"
+                            "color": "#00CCCC" /* Color fijo para el agua en el mapa */
                         },
                         {
                             "visibility": "on"
