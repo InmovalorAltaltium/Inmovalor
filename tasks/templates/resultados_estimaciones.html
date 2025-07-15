@@ -785,18 +785,18 @@
                     <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
                   </select>
                 </div>
-                <div>
+                <div class="col-12 col-md-4">
                   <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
                   <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="{{ propiedad.valor_comercial|default_if_none:'0.00'|floatformat:2 }}">
                   <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
                   <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
-                </div>
-                <div>
+                </div>                
+                <div class="col-12 col-md-4">
                   <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
-                  <input type="text" id="precioDeSesion" name="precioDeSesionDisplay" class="form-control" placeholder="Ingresa el precio" value="0">
+                  <input type="text" id="precioDeSesion" name="precioDeSesion" value="0" class="form-control" required placeholder="Ingresa el precio">
                   <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion" value="0">
                   <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
-                </div>
+                </div>                
               </form>
 
               <div class="results-grid" id="results-grid-container">
@@ -806,11 +806,11 @@
                     <tbody>
                       <tr>
                         <td>Valor Comercial</td>
-                        <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span></td>
+                        <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorComercial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
                       </tr>
                       <tr>
                         <td>Valor Judicial</td>
-                        <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span></td>
+                        <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorJudicial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
                       </tr>
                       <tr>
                         <td>Honorarios</td>
@@ -834,8 +834,13 @@
                       </tr>
                       <tr>
                         <td>2do Pago</td>
-                        <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
+                        <td>
+                          <span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span>
+                          <button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor">
+                            <i class="fas fa-copy"></i>
+                          </button>
+                        </td>
+                      </tr>                      
                       <tr>
                         <td>3er Pago (25%)</td>
                         <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
@@ -854,7 +859,7 @@
                     <tbody>
                       <tr>
                         <td>Valor Extrajudicial</td>
-                        <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span></td>
+                        <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorExt')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
                       </tr>
                       <tr>
                         <td>Cotización (50%)</td>
@@ -900,9 +905,10 @@
 
         // Función para limpiar y obtener un número float
         function getCleanNumber(value) {
-          if (typeof value !== 'string') return parseFloat(value) || 0;
-          return parseFloat(value.replace(/[^0-9.-]+/g, "")) || 0;
+        if (typeof value !== 'string') return parseFloat(value) || 0;
+        return parseFloat(value.replace(/[^0-9.-]+/g, '').replace(/,/g, '')) || 0;
         }
+
 
         // Función para formatear números a moneda
         function formatCurrency(value) {
@@ -934,13 +940,11 @@
           const cesionDerechosSection = document.getElementById('cesion-derechos-section');
           const valorComercialInput = document.getElementById('valorComercial');
           const precioDeSesionInput = document.getElementById('precioDeSesion');
-          const valorComercialHidden = document.getElementById('valorComercialHidden');
-          const precioDeSesionHidden = document.getElementById('precioDeSesionHidden');
           const valorComercialError = document.getElementById('valorComercialError');
           const precioDeSesionError = document.getElementById('precioDeSesionError');
 
           // Validar entradas
-          const valorComercialClean = getCleanNumber(valorComercialHidden.value);
+          const valorComercialClean = getCleanNumber(valorComercialInput.value);
           const precioDeSesionClean = getCleanNumber(precioDeSesionInput.value);
 
           if (isNaN(valorComercialClean) || valorComercialClean < 0) {
@@ -1005,13 +1009,17 @@
             document.getElementById('displayValorComercial').textContent = data.valor_comercial;
             document.getElementById('displayValorJudicial').textContent = data.valor_judicial;
             document.getElementById('displayHonorarios').textContent = data.honorarios;
-            // Usar precioDeSesionClean directamente para sentencia y adjudicado, cotizacion para derechos_cobranza
-            document.getElementById('displayCession').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? formatCurrency(precioDeSesionClean) : data.cotizacion;
+            document.getElementById('displayCession').textContent = data.precio_de_sesion;
             document.getElementById('displayPrimerPago').textContent = data.firma;
-            // Usar precioDeSesionClean directamente para sentencia y adjudicado, cotizacion para derechos_cobranza
-            document.getElementById('displaySegundoPago').textContent = (calcType === 'sentencia' || calcType === 'adjudicado') ? formatCurrency(precioDeSesionClean) : data.cotizacion;
+            // Ajuste: Segundo pago usa precio_de_sesion para sentencia/adjudicado, cotizacion para derechos_cobranza
+            document.getElementById('displaySegundoPago').textContent = data.segundo_pago;
             document.getElementById('displayTercerPago').textContent = data.entrega;
-            document.getElementById('displayTotal').textContent = data.total;
+            // Ajuste: Calcular el total como la suma de los tres pagos
+            const primerPago = getCleanNumber(data.firma);
+            const segundoPago = getCleanNumber((calcType === 'derechos_cobranza') ? data.cotizacion : data.precio_de_sesion);
+            const tercerPago = getCleanNumber(data.entrega);
+            const totalCalculado = primerPago + segundoPago + tercerPago;
+            document.getElementById('displayTotal').textContent = formatCurrency(totalCalculado);
             document.getElementById('displayGanancia').textContent = data.ganancia;
             document.getElementById('displayCostoCompra').textContent = data.porcentaje_vc;
             document.getElementById('displayValorExt').textContent = data.valor_ext;
@@ -1285,9 +1293,9 @@
             document.getElementById("displayValorComercial").textContent = data.valor_comercial || '$0.00';
             document.getElementById("displayValorJudicial").textContent = data.valor_judicial || '$0.00';
             document.getElementById("displayHonorarios").textContent = data.honorarios || '$0.00';
-            document.getElementById("displayCession").textContent = data.cotizacion || '$0.00';
+            document.getElementById("displayCession").textContent = data.precio_de_sesion || '$0.00';
             document.getElementById("displayPrimerPago").textContent = data.firma || '$0.00';
-            document.getElementById("displaySegundoPago").textContent = data.cotizacion || '$0.00';
+            document.getElementById("displaySegundoPago").textContent = data.segundo_pago || '$0.00';
             document.getElementById("displayTercerPago").textContent = data.entrega || '$0.00';
             document.getElementById("displayTotal").textContent = data.total || '$0.00';
             document.getElementById("displayGanancia").textContent = data.ganancia || '0.00%';

@@ -1145,7 +1145,9 @@ def vista_documentacion(request):
     return render(request, 'documentacion/doc.html', context)
 
 
-# honorarios
+
+
+# Honorarios
 def format_currency(value):
     try:
         return "${:,.2f}".format(float(value))
@@ -1173,13 +1175,14 @@ def honorarios_calculator(request):
 
     # Inicializar contexto con valores por defecto
     context = {
-        'usuario': usuario,  # Puede ser None si no hay usuario
+        'usuario': usuario,
         'calc_type': request.POST.get('calcType', 'sentencia'),
         'valor_comercial': 0.0,
         'precio_de_sesion': 0.0,
         'honorarios': 0.0,
         'pago_unico': 0.0,
         'firma': 0.0,
+        'segundo_pago': 0.0,  # Nuevo campo para el segundo pago
         'entrega': 0.0,
         'total': 0.0,
         'valor_ext': 0.0,
@@ -1203,8 +1206,11 @@ def honorarios_calculator(request):
         context['honorarios'] = calcular_honorarios(context['calc_type'], valor_comercial, precio_de_sesion)
         context['pago_unico'] = context['honorarios'] * 0.9
         context['firma'] = context['honorarios'] * 0.75
+        # Definir segundo_pago según el tipo de cálculo
+        context['segundo_pago'] = precio_de_sesion
         context['entrega'] = context['honorarios'] * 0.25
-        context['total'] = context['firma'] + context['entrega']
+        # Calcular total como suma de los tres pagos
+        context['total'] = context['firma'] + context['segundo_pago'] + context['entrega']
         context['valor_ext'] = valor_comercial
         context['cotizacion'] = context['valor_ext'] * 0.5
         context['costo_total'] = precio_de_sesion + context['honorarios']
@@ -1214,7 +1220,7 @@ def honorarios_calculator(request):
 
         # Formatear valores para mostrar en plantilla y JSON
         for key in ['valor_comercial', 'precio_de_sesion', 'honorarios', 'pago_unico',
-                    'firma', 'entrega', 'total', 'valor_ext', 'cotizacion',
+                    'firma', 'segundo_pago', 'entrega', 'total', 'valor_ext', 'cotizacion',
                     'costo_total', 'valor_judicial']:
             context[key] = format_currency(context[key])
 
@@ -1224,7 +1230,7 @@ def honorarios_calculator(request):
         # Devolver JSON solo con valores serializables
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             context_json = context.copy()
-            context_json.pop('usuario', None)  # Remover el objeto no serializable
+            context_json.pop('usuario', None)
             return JsonResponse(context_json)
 
     return render(request, 'honorarios.html', context)
