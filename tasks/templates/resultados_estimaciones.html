@@ -6,7 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inmovalor | Resultados de Evaluación</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#003035",
+              secondary: "#008a8a",
+              accent: "#00cccc",
+              lightaccent: "#52b3c0",
+              dark: "#0d1d1f",
+              black: "#000000",
+              lightgray: "#bfc6c7",
+              gray: "#949797",
+              white: "#ffffff",
+              offwhite: "#f8fafc",
+              softgray: "#e5e7eb",
+            },
+            fontFamily: {
+              sans: ["Montserrat", "sans-serif"],
+            },
+            boxShadow: {
+              custom: "0 8px 24px rgba(0,0,0,0.1)",
+              "custom-hover": "0 12px 32px rgba(0,0,0,0.15)",
+              "neon-glow": "0 0 12px rgba(0, 204, 204, 0.5)",
+              "card-glow": "0 4px 16px rgba(0, 204, 204, 0.2)",
+            },
+            animation: {
+              "fade-in": "fadeIn 0.8s ease-out",
+              "slide-up": "slideUp 0.6s ease-out",
+              "pulse-glow": "pulseGlow 2s infinite",
+              "neon-shine": "neonShine 1.5s infinite",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideUp: {
+                "0%": { transform: "translateY(20px)", opacity: "0" },
+                "100%": { transform: "translateY(0)", opacity: "1" },
+              },
+              pulseGlow: {
+                "0%, 100%": { boxShadow: "0 0 12px rgba(0, 204, 204, 0.3)" },
+                "50%": { boxShadow: "0 0 20px rgba(0, 204, 204, 0.5)" },
+              },
+              neonShine: {
+                "0%": { boxShadow: "0 0 10px rgba(0, 204, 204, 0.3)" },
+                "50%": { boxShadow: "0 0 20px rgba(0, 204, 204, 0.6)" },
+                "100%": { boxShadow: "0 0 10px rgba(0, 204, 204, 0.3)" },
+              },
+            },
+            backdropFilter: {
+              'blur': 'blur(8px)',
+            },
+          },
+        },
+      };
+    </script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
