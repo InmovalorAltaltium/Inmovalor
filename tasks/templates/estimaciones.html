@@ -435,11 +435,49 @@
                                 <i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.
                             </div>
                         </div>
-                        <div class="col-12 mt-2 text-end">
-                            <button type="submit" class="btn btn-calculate pulse-animation">
-                                <i class="fas fa-calculator me-2"></i> Calcular
-                            </button>
-                        </div>
+                                           <div class="col-12 text-end mt-2">
+                    <button id="btn-calcular" type="submit" class="btn btn-lg"
+                        style="background-color: #00CCCC;
+                            color: white;
+                            border: none;
+                            padding: 12px 24px;
+                            border-radius: 10px;
+                            font-weight: bold;
+                            transition: all 0.2s ease;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                        <i class="fas fa-calculator me-2"></i> Calcular valor
+                    </button>
+                    </div>
+
+                <script>
+                    const boton = document.getElementById("btn-calcular");
+
+                    // Hover
+                    boton.addEventListener("mouseover", function () {
+                        this.style.backgroundColor = "#009999";
+                        this.style.transform = "scale(1.05)";
+                    });
+
+                    boton.addEventListener("mouseout", function () {
+                        this.style.backgroundColor = "#00CCCC";
+                        this.style.transform = "scale(1)";
+                    });
+
+                    // Click/tap animado
+                    boton.addEventListener("mousedown", function () {
+                        this.style.backgroundColor = "#007777";
+                        this.style.transform = "scale(0.95)";
+                    });
+
+                    boton.addEventListener("mouseup", function () {
+                        this.style.backgroundColor = "#009999";
+                        this.style.transform = "scale(1.05)";
+                        setTimeout(() => {
+                            this.style.backgroundColor = "#00CCCC";
+                            this.style.transform = "scale(1)";
+                        }, 200); // Vuelve al estado normal después de 200ms
+                    });
+                </script>
                         {% if messages %}
                             {% for message in messages %}
                                 <div class="col-12 mt-2">
