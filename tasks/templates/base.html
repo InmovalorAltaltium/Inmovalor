@@ -23,7 +23,7 @@
     {# Script para cierre de sesión por inactividad #}
     <script>
       let timer;
-      const logoutTime = 45 * 60 * 1000; // 2 minutos
+      const logoutTime = 240 * 60 * 1000; //4 HORAS Y SE CUENTA EN MINUTOS
 
       function cerrarSesionPorInactividad() {
         window.location.href = "{% url 'signout' %}";

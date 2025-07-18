@@ -149,7 +149,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-#Tiempo de limite para cerrar sesion
-SESSION_COOKIE_AGE = 3600
+#Tiempo de limite para cerrar sesion   SON 5 HORAS Y SE CUENTA EN SEGUNDOS
+SESSION_COOKIE_AGE = 18000
 # Se reinicia el contador si el usuario interactúa
 SESSION_SAVE_EVERY_REQUEST = True

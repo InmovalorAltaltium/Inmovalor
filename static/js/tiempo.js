@@ -1,6 +1,6 @@
 // tiempo.js
 let timer;
-const logoutTime = 45 * 60 * 1000;
+const logoutTime = 240 * 60 * 1000; //4 HORAS Y SE CUENTA EN MINUTOS
 
 function cerrarSesionPorInactividad() {
   window.location.href = logoutUrl;
