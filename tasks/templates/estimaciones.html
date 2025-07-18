@@ -3,7 +3,6 @@
 {% block content %}
 <style>
      :root {
-        
         --secondary-color: #009999;
         --accent-color: #CCF5F5;
         --dark-color: #003035;
@@ -15,14 +14,14 @@
         background: linear-gradient(-45deg, #fefcef, #bfc6c7, #52b3c0, #00cccc);
         background-size: 400% 400%;
         animation: gradientBG 15s ease infinite;
-        min-height: calc(100vh - 100px);
+        min-height: 100vh;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
-        padding-top: 100px;
+        padding-top: 80px; /* Ajuste para bajar un poco los recuadros */
     }
 
     @keyframes gradientBG {
@@ -38,7 +37,7 @@
         border-radius: 10px;
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         border-left: 3px solid var(--primary-color);
-        height: 450px;
+        height: 70vh;
         overflow-y: auto;
         transition: all 0.3s ease;
         scroll-behavior: smooth;
@@ -140,7 +139,7 @@
     }
 
     #map {
-        height: 450px;
+        height: 70vh;
         width: 100%;
         border-radius: 10px;
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
@@ -272,6 +271,10 @@
     .container-fluid {
         padding: 0.5rem;
     }
+
+    .hidden-field {
+        display: none;
+    }
 </style>
 
 <div class="estimaciones-container">
@@ -365,7 +368,7 @@
                         <div class="col-12">
                             <span class="section-title">Características de la propiedad</span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 property-field">
                             <label class="form-label required-field">Recámaras</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-bed"></i></span>
@@ -373,15 +376,15 @@
                                 <div class="invalid-feedback">Campo requerido.</div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 property-field">
                             <label class="form-label required-field">Sanitarios</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-bath"></i></span>
-                                <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" required>
+                                <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" step="0.5" required>
                                 <div class="invalid-feedback">Campo requerido.</div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 property-field">
                             <label class="form-label required-field">Estacionamiento</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-car"></i></span>
@@ -407,7 +410,7 @@
                                 <div class="invalid-feedback">Campo requerido.</div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 property-field">
                             <label class="form-label required-field">Construcción (m²)</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-home"></i></span>
@@ -415,7 +418,7 @@
                                 <div class="invalid-feedback">Campo requerido.</div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 property-field">
                             <label class="form-label required-field">Estado de conservación</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
@@ -435,49 +438,65 @@
                                 <i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.
                             </div>
                         </div>
-                                           <div class="col-12 text-end mt-2">
-                    <button id="btn-calcular" type="submit" class="btn btn-lg"
-                        style="background-color: #00CCCC;
-                            color: white;
-                            border: none;
-                            padding: 12px 24px;
-                            border-radius: 10px;
-                            font-weight: bold;
-                            transition: all 0.2s ease;
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                        <i class="fas fa-calculator me-2"></i> Calcular valor
-                    </button>
-                    </div>
+                        <div class="col-12 text-end mt-2">
+                            <button id="btn-calcular" type="submit" class="btn btn-lg"
+                                style="background-color: #00CCCC;
+                                    color: white;
+                                    border: none;
+                                    padding: 12px 24px;
+                                    border-radius: 10px;
+                                    font-weight: bold;
+                                    transition: all 0.2s ease;
+                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                                <i class="fas fa-calculator me-2"></i> Calcular valor
+                            </button>
+                        </div>
 
-                <script>
-                    const boton = document.getElementById("btn-calcular");
+                        <script>
+                            const boton = document.getElementById("btn-calcular");
 
-                    // Hover
-                    boton.addEventListener("mouseover", function () {
-                        this.style.backgroundColor = "#009999";
-                        this.style.transform = "scale(1.05)";
-                    });
+                            // Hover
+                            boton.addEventListener("mouseover", function () {
+                                this.style.backgroundColor = "#009999";
+                                this.style.transform = "scale(1.05)";
+                            });
 
-                    boton.addEventListener("mouseout", function () {
-                        this.style.backgroundColor = "#00CCCC";
-                        this.style.transform = "scale(1)";
-                    });
+                            boton.addEventListener("mouseout", function () {
+                                this.style.backgroundColor = "#00CCCC";
+                                this.style.transform = "scale(1)";
+                            });
 
-                    // Click/tap animado
-                    boton.addEventListener("mousedown", function () {
-                        this.style.backgroundColor = "#007777";
-                        this.style.transform = "scale(0.95)";
-                    });
+                            // Click/tap animado
+                            boton.addEventListener("mousedown", function () {
+                                this.style.backgroundColor = "#007777";
+                                this.style.transform = "scale(0.95)";
+                            });
 
-                    boton.addEventListener("mouseup", function () {
-                        this.style.backgroundColor = "#009999";
-                        this.style.transform = "scale(1.05)";
-                        setTimeout(() => {
-                            this.style.backgroundColor = "#00CCCC";
-                            this.style.transform = "scale(1)";
-                        }, 200); // Vuelve al estado normal después de 200ms
-                    });
-                </script>
+                            boton.addEventListener("mouseup", function () {
+                                this.style.backgroundColor = "#009999";
+                                this.style.transform = "scale(1.05)";
+                                setTimeout(() => {
+                                    this.style.backgroundColor = "#00CCCC";
+                                    this.style.transform = "scale(1)";
+                                }, 200);
+                            });
+
+                            // Toggle visibility of property-specific fields
+                            document.getElementById('tipo_propiedad').addEventListener('change', function() {
+                                const propertyFields = document.querySelectorAll('.property-field');
+                                const isTerreno = this.value === 'Terreno';
+                                propertyFields.forEach(field => {
+                                    if (isTerreno) {
+                                        field.classList.add('hidden-field');
+                                        field.querySelector('input, select').removeAttribute('required');
+                                    } else {
+                                        field.classList.remove('hidden-field');
+                                        field.querySelector('input, select').setAttribute('required', '');
+                                    }
+                                });
+                                checkFormValidity();
+                            });
+                        </script>
                         {% if messages %}
                             {% for message in messages %}
                                 <div class="col-12 mt-2">
@@ -577,7 +596,7 @@
             const form = document.querySelector('.form-container');
             const fields = Array.from(form.querySelectorAll('input[required], select[required]'));
             const calleIndex = fields.findIndex(field => field.id === 'calle');
-            const relevantFields = fields.slice(calleIndex); // Solo campos desde "Calle" en adelante
+            const relevantFields = fields.slice(calleIndex);
             const firstEmptyField = relevantFields.find(field => 
                 !field.value || 
                 (field.tagName === 'SELECT' && field.value === '') ||
@@ -586,14 +605,14 @@
 
             if (firstEmptyField && firstEmptyField !== currentField) {
                 setTimeout(() => {
-                    const offset = 20; // Margen adicional para visibilidad
+                    const offset = 20;
                     const fieldPosition = firstEmptyField.getBoundingClientRect().top + form.scrollTop - form.getBoundingClientRect().top;
                     form.scrollTo({
                         top: fieldPosition - offset,
                         behavior: 'smooth'
                     });
                     firstEmptyField.focus();
-                }, 100); // Retraso para evitar conflictos con otros eventos
+                }, 100);
             }
         }
 
@@ -604,7 +623,6 @@
             field.addEventListener('change', function() {
                 checkFormValidity();
                 if (finalFields.includes(this.id)) {
-                    // Solo ejecutar scroll si el campo tiene un valor válido
                     if (this.value && (this.type !== 'number' || this.value > 0)) {
                         scrollToNextField(this);
                     }

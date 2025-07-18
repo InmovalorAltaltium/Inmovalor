@@ -56,16 +56,17 @@ def signup(request):
 
 # Estimaciones de propiedades
 @never_cache
-def estimaciones(request):
+def estimaciones(request):    
     usuario = None
     usuario_id = request.session.get('usuario_id')
     if usuario_id:
         try:
             usuario = Usuarios.objects.get(id=usuario_id)
         except Usuarios.DoesNotExist:
-            usuario = None
-
+            usuario = None    
+    
     if request.method == 'POST':
+        # Obtener los datos del formulario
         tipo_propiedad = request.POST.get('tipo_propiedad')
         calle = request.POST.get('calle')
         id_colonia = request.POST.get('colonia')
@@ -76,16 +77,14 @@ def estimaciones(request):
         terreno = request.POST.get('terreno')
         construccion = request.POST.get('construccion')
         estado_conservacion = request.POST.get('estado_conservacion')
-        comentarios = request.POST.get('comentarios', '')
+        comentarios = request.POST.get('comentarios', '')  # Opcional, puede ser vacío
         id_municipio = request.POST.get('municipio')
         id_estado = request.POST.get('estado')
 
-        campos_requeridos = [
-            tipo_propiedad, calle, id_colonia, id_codigo_postal,
-            recamaras, sanitarios, estacionamiento,
-            terreno, construccion, estado_conservacion,
-            id_municipio, id_estado
-        ]
+        # Validar campos requeridos según el tipo de propiedad
+        campos_requeridos = [tipo_propiedad, calle, id_colonia, id_codigo_postal, terreno, id_municipio, id_estado]
+        if tipo_propiedad != 'Terreno':
+            campos_requeridos.extend([recamaras, sanitarios, estacionamiento, construccion, estado_conservacion])
 
         if not all(campos_requeridos):
             messages.error(request, "Todos los campos obligatorios deben ser llenados.")
@@ -100,16 +99,21 @@ def estimaciones(request):
             return render(request, 'estimaciones.html', context)
 
         try:
-            recamaras = int(recamaras)
-            sanitarios = float(sanitarios)
-            estacionamiento = int(estacionamiento)
-            terreno = float(terreno)
-            construccion = float(construccion)
+            # Convertir tipos de datos
             id_colonia = int(id_colonia)
             id_codigo_postal = int(id_codigo_postal)
             id_municipio = int(id_municipio)
             id_estado = int(id_estado)
+            terreno = float(terreno)
 
+            # Inicializar valores para terrenos
+            recamaras = int(recamaras) if recamaras and tipo_propiedad != 'Terreno' else 0
+            sanitarios = float(sanitarios) if sanitarios and tipo_propiedad != 'Terreno' else 0.0
+            estacionamiento = int(estacionamiento) if estacionamiento and tipo_propiedad != 'Terreno' else 0
+            construccion = float(construccion) if construccion and tipo_propiedad != 'Terreno' else 0.0
+            estado_conservacion = estado_conservacion if estado_conservacion and tipo_propiedad != 'Terreno' else 'N/A'
+
+            # Obtener colonia y precio promedio
             colonia = Colonias.objects.filter(id_colonia=id_colonia).first()
             if not colonia:
                 messages.error(request, "Colonia no encontrada.")
@@ -125,29 +129,42 @@ def estimaciones(request):
 
             precio_promedio = float(colonia.promedio_precio or 0)
 
-            coef_conservacion = {
-                'Muy bueno': 0.08500,
-                'Bueno': 1,
-                'Regular': 0.08500,
-                'Malo': 0.13000,
-                'Muy malo': 0.25000
-            }
-
-            valor_inicial = precio_promedio * construccion
-            coef = coef_conservacion.get(estado_conservacion, 1)
-            valor_aprox = valor_inicial * coef if estado_conservacion != 'Bueno' else valor_inicial
-
-            if estado_conservacion == 'Muy bueno':
-                valor_comercial = valor_inicial + valor_aprox
-            elif estado_conservacion == 'Muy malo':
+            if tipo_propiedad == 'Terreno':
+                # Lógica para terrenos
+                valor_inicial = precio_promedio * terreno
+                coef = 0.16  # 16% para terrenos
+                valor_aprox = valor_inicial * coef
                 valor_comercial = valor_inicial - valor_aprox
-            elif estado_conservacion in ['Regular', 'Malo']:
-                valor_comercial = valor_inicial - valor_aprox
+                valor_judicial = (2 / 3) * valor_comercial
             else:
-                valor_comercial = valor_aprox
+                # Lógica existente para Casa y Departamento
+                coef_conservacion = {
+                    'Muy bueno': 0.08500,
+                    'Bueno': 1,
+                    'Regular': 0.08500,
+                    'Malo': 0.13000,
+                    'Muy malo': 0.25000
+                }
 
-            valor_judicial = (2 / 3) * valor_comercial
+                # Cálculo 1: valor inicial
+                valor_inicial = precio_promedio * construccion
 
+                # Cálculo 2: aplicar coeficiente
+                coef = coef_conservacion.get(estado_conservacion, 1)
+                valor_aprox = valor_inicial * coef if estado_conservacion != 'Bueno' else valor_inicial
+
+                # Cálculo 3: valor comercial
+                if estado_conservacion == 'Muy bueno':
+                    valor_comercial = valor_inicial + valor_aprox
+                elif estado_conservacion in ['Muy malo', 'Regular', 'Malo']:
+                    valor_comercial = valor_inicial - valor_aprox
+                else:
+                    valor_comercial = valor_aprox
+
+                # Cálculo 4: valor judicial
+                valor_judicial = (2 / 3) * valor_comercial
+
+            # Guardar en base de datos
             propiedad = Propiedades(
                 tipo_propiedad=tipo_propiedad,
                 calle=calle,
@@ -169,6 +186,7 @@ def estimaciones(request):
             )
             propiedad.save()
 
+            # Redirigir a la vista de resultados con los datos de la propiedad
             messages.success(request, f"Propiedad registrada y calculada exitosamente.")
             return redirect('mostrar_resultado', propiedad_id=propiedad.id_propiedad)
 
@@ -183,6 +201,16 @@ def estimaciones(request):
                 'datos_alcaldia': AlcaldiaVistas.objects.all(),
             }
             return render(request, 'estimaciones.html', context)
+
+    context = {
+        'estados': Estados.objects.all(),
+        'municipios': Municipios.objects.all(),
+        'colonias': Colonias.objects.all(),
+        'codigos_postales': CodigosPostales.objects.all(),
+        'propiedades': Propiedades.objects.all(),
+        'datos_alcaldia': AlcaldiaVistas.objects.all(),
+    }
+    return render(request, 'estimaciones.html', context)
 
     # Generar reporte PDF de una propiedad individual
     if 'generar_reporte_individual' in request.GET and 'id_propiedad' in request.GET:
