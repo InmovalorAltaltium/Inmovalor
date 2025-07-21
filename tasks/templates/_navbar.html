@@ -42,6 +42,16 @@
       transition: all 0.3s ease;
     }
 
+    .navbar-wrapper .main-content {
+      padding-top: 50px;
+    }
+
+    @media (max-width: 991px) {
+      .navbar-wrapper .main-content {
+        padding-top: 80px;
+      }
+    }
+
     .navbar-wrapper .topbar-content,
     .navbar-wrapper .nav-bar-content {
       background-color: var(--nav-bg);
@@ -317,6 +327,10 @@
     </div>
   </div>
 
+  <main class="main-content">
+    <!-- Aquí va el contenido principal de la página -->
+  </main>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const themeToggle = document.querySelector('.navbar-wrapper .theme-toggle');
@@ -352,15 +366,28 @@
           logoLight.style.transform = 'rotateY(90deg)';
           logoDark.style.opacity = '1';
           logoDark.style.transform = 'rotateY(0)';
+          logoText.style.opacity = '0';
+          logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
         } else {
           logoLight.style.opacity = '1';
           logoLight.style.transform = 'rotateY(0)';
           logoDark.style.opacity = '0';
           logoDark.style.transform = 'rotateY(90deg)';
+          logoText.style.opacity = '0';
+          logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
         }
-        logoText.style.opacity = '0';
-        logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
       }
+
+      const combinedBar = document.querySelector('.navbar-wrapper .combined-bar');
+      const mainContent = document.querySelector('.navbar-wrapper .main-content');
+
+      function setMainContentPadding() {
+        const barHeight = combinedBar.offsetHeight;
+        mainContent.style.paddingTop = `${barHeight}px`;
+      }
+
+      setMainContentPadding();
+      window.addEventListener('resize', setMainContentPadding);
     });
   </script>
 </body>
