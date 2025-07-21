@@ -163,21 +163,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .map-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 204, 204, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .map-container:hover .map-overlay {
-            opacity: 1;
-        }
-
         .value-pill {
             display: inline-flex;
             align-items: center;
@@ -612,12 +597,6 @@
                             <p>Por favor espera mientras se carga la ubicación</p>
                         </div>
                         <iframe id="map" allowfullscreen="" loading="lazy" title="Mapa de ubicación"></iframe>
-                        <div class="map-overlay">
-                            <div class="text-center text-dark animate-pulse-glow">
-                                <i class="fas fa-map text-2xl mb-2"></i>
-                                <p class="text-xs font-semibold">Mapa de la propiedad</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -801,7 +780,7 @@
                                         <button class="copy-button" onclick="copyToClipboard('displayTercerPago')"><i class="fas fa-copy"></i></button></td>
                                 </tr>
                                 <tr class="total-row">
-                                    <td>COSTO TOTAL:</td>
+                                    <td>PRECIO TOTAL:</td>
                                     <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span>
                                         <button class="copy-button" onclick="copyToClipboard('displayTotal')"><i class="fas fa-copy"></i></button></td>
                                 </tr>
