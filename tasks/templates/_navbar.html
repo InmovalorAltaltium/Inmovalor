@@ -1,5 +1,6 @@
 {% load static %}
 <style>
+  /* Definir variables de tema */
   :root {
     --bg-color: #ffffff;
     --text-color: #000000;
@@ -26,7 +27,8 @@
     --logo-text-secondary: #52b3c0;
   }
 
-  .combined-bar {
+  /* Encapsular todos los estilos bajo .custom-nav */
+  .custom-nav {
     background-color: var(--nav-bg);
     position: fixed;
     top: 0;
@@ -36,17 +38,20 @@
     transition: all 0.3s ease;
   }
 
-  .topbar-content, .nav-bar-content {
+  .custom-nav .topbar-content,
+  .custom-nav .nav-bar-content {
     background-color: var(--nav-bg);
     transition: background-color 0.3s ease;
   }
 
-  .navbar {
+  .custom-nav .navbar {
     background-color: var(--nav-bg) !important;
     transition: background-color 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    margin: 0 10px;
   }
 
-  .navbar-nav .nav-link {
+  .custom-nav .navbar-nav .nav-link {
     color: var(--primary-color) !important;
     font-weight: 500;
     padding: 0.5rem 1rem;
@@ -57,13 +62,13 @@
     overflow: hidden;
   }
 
-  .navbar-nav .nav-link.active {
+  .custom-nav .navbar-nav .nav-link.active {
     color: var(--primary-hover) !important;
     font-weight: bold;
     position: relative;
   }
 
-  .navbar-nav .nav-link.active:after {
+  .custom-nav .navbar-nav .nav-link.active:after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -75,12 +80,12 @@
     border-radius: 3px;
   }
 
-  .navbar-nav .nav-link:hover {
+  .custom-nav .navbar-nav .nav-link:hover {
     background-color: rgba(var(--primary-color), 0.1);
     transform: translateY(-2px);
   }
 
-  .navbar-nav .nav-link:before {
+  .custom-nav .navbar-nav .nav-link:before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -91,33 +96,33 @@
     transition: width 0.3s ease;
   }
 
-  .navbar-nav .nav-link:hover:before {
+  .custom-nav .navbar-nav .nav-link:hover:before {
     width: 100%;
   }
 
-  .navbar-nav .nav-link.logout-link {
+  .custom-nav .navbar-nav .nav-link.logout-link {
     background-color: rgba(255, 77, 77, 0.1) !important;
     color: #ff4d4d !important;
   }
 
-  .navbar-nav .nav-link.logout-link:hover {
+  .custom-nav .navbar-nav .nav-link.logout-link:hover {
     background-color: rgba(255, 77, 77, 0.2) !important;
     transform: translateY(-2px);
   }
 
-  .social-links a {
+  .custom-nav .social-links a {
     color: var(--primary-color) !important;
     margin: 0 0.5rem;
     transition: all 0.3s ease;
     font-size: 1.1rem;
   }
 
-  .social-links a:hover {
+  .custom-nav .social-links a:hover {
     color: var(--primary-hover) !important;
     transform: translateY(-3px) scale(1.2);
   }
 
-  .contact-info a {
+  .custom-nav .contact-info a {
     color: var(--primary-color) !important;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -127,44 +132,39 @@
     border-radius: 4px;
   }
 
-  .contact-info a:hover {
+  .custom-nav .contact-info a:hover {
     background-color: rgba(var(--primary-color), 0.1);
     transform: translateY(-2px);
   }
 
-  .contact-info a i {
+  .custom-nav .contact-info a i {
     margin-right: 0.75rem;
     font-size: 1rem;
   }
 
-  .contact-separator {
+  .custom-nav .contact-separator {
     color: var(--contact-separator) !important;
     margin: 0 1rem;
   }
 
-  .navbar-brand:hover .logo-img {
+  .custom-nav .navbar-brand:hover .logo-img {
     opacity: 0 !important;
     transform: rotateY(90deg) !important;
   }
 
-  .navbar-brand:hover h1 {
+  .custom-nav .navbar-brand:hover h1 {
     opacity: 1 !important;
     transform: translateY(-50%) rotateY(0) !important;
   }
 
-  .navbar-nav {
+  .custom-nav .navbar-nav {
     margin-left: 20px;
     display: flex;
     flex-direction: row;
     gap: 10px;
   }
 
-  nav.navbar {
-    box-shadow: 0 2px 8px var(--shadow-color);
-    margin: 0 10px;
-  }
-
-  .theme-toggle {
+  .custom-nav .theme-toggle {
     background: none;
     border: none;
     color: var(--primary-color);
@@ -176,51 +176,51 @@
     border-radius: 50%;
   }
 
-  .theme-toggle:hover {
+  .custom-nav .theme-toggle:hover {
     background-color: rgba(var(--primary-color), 0.1);
     transform: scale(1.1);
   }
 
-  .dropdown-menu {
+  .custom-nav .dropdown-menu {
     background-color: var(--nav-bg);
     border: 1px solid var(--shadow-color);
     box-shadow: 0 4px 12px var(--shadow-color);
   }
 
-  .dropdown-item {
+  .custom-nav .dropdown-item {
     color: var(--primary-color) !important;
     transition: all 0.3s ease;
   }
 
-  .dropdown-item:hover {
+  .custom-nav .dropdown-item:hover {
     background-color: rgba(var(--primary-color), 0.1);
     color: var(--primary-hover) !important;
   }
 
-  .dropdown-item.logout-link {
+  .custom-nav .dropdown-item.logout-link {
     color: #ff4d4d !important;
   }
 
-  .dropdown-item.logout-link:hover {
+  .custom-nav .dropdown-item.logout-link:hover {
     background-color: rgba(255, 77, 77, 0.2) !important;
   }
 
   @media (max-width: 991px) {
-    .navbar-nav {
+    .custom-nav .navbar-nav {
       padding: 15px 0;
       flex-direction: column;
     }
-    .nav-link {
+    .custom-nav .nav-link {
       margin: 5px 0 !important;
     }
-    .theme-toggle {
+    .custom-nav .theme-toggle {
       margin-left: 0.5rem;
       font-size: 1rem;
     }
   }
 </style>
 
-<div class="combined-bar">
+<div class="combined-bar custom-nav">
   <div class="topbar-content d-none d-lg-block">
     <div class="container">
       <div class="row align-items-center">
@@ -275,7 +275,7 @@
               <a href="{% url 'estimaciones' %}" class="nav-item nav-link {% if request.path == '/estimaciones' %}active{% endif %}">Estimación</a>
               <a href="{% url 'honorarios_calculator' %}" class="nav-item nav-link {% if request.path == '/honorarios' %}active{% endif %}">Honorarios</a>
               <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle {% if '/estimaciones' in request.path %}active{% endif %}" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle {% if '/ver-mas' in request.path %}active{% endif %}" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Ver más
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="moreDropdown">
@@ -310,7 +310,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Tema toggle
-    const themeToggle = document.querySelector('.theme-toggle');
+    const themeToggle = document.querySelector('.custom-nav .theme-toggle');
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 
     const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
@@ -334,9 +334,9 @@
     }
 
     function updateLogo(theme) {
-      const logoLight = document.querySelector('.logo-light');
-      const logoDark = document.querySelector('.logo-dark');
-      const logoText = document.querySelector('.navbar-brand h1');
+      const logoLight = document.querySelector('.custom-nav .logo-light');
+      const logoDark = document.querySelector('.custom-nav .logo-dark');
+      const logoText = document.querySelector('.custom-nav .navbar-brand h1');
 
       if (theme === 'dark') {
         logoLight.style.opacity = '0';
