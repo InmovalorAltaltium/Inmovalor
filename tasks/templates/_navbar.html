@@ -275,7 +275,7 @@
               <a href="{% url 'estimaciones' %}" class="nav-item nav-link {% if request.path == '/estimaciones' %}active{% endif %}">Estimación</a>
               <a href="{% url 'honorarios_calculator' %}" class="nav-item nav-link {% if request.path == '/honorarios' %}active{% endif %}">Honorarios</a>
               <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle {% if '/estimaciones' in request.path %}active{% endif %}" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle {% if request.path == '/documentacion' or request.path == '/' and request.META.HTTP_REFERER|slice:'-7:' in '#Forbes,#CDMX' %}active{% endif %}" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Ver más
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="moreDropdown">
@@ -312,47 +312,95 @@
     // Tema toggle
     const themeToggle = document.querySelector('.theme-toggle');
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const navbarBrand = document.querySelector('.navbar-brand');
+    const logoLight = document.querySelector('.logo-light');
+    const logoDark = document.querySelector('.logo-dark');
+    const logoText = document.querySelector('.navbar-brand h1');
+    let isLogoVisible = true;
+    let logoInterval;
 
+    // Inicializar tema
     const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
     updateTheme(currentTheme);
 
-    themeToggle.addEventListener('click', function() {
-      const activeTheme = document.documentElement.getAttribute('data-theme');
-      const newTheme = activeTheme === 'dark' ? 'light' : 'dark';
-      updateTheme(newTheme);
-      localStorage.setItem('theme', newTheme);
-    });
-
+    // Función para actualizar el tema
     function updateTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       updateToggleIcon(theme);
       updateLogo(theme);
     }
 
+    // Función para actualizar el ícono de toggle
     function updateToggleIcon(theme) {
       themeToggle.innerHTML = theme === 'light' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     }
 
+    // Función para actualizar el logo según el tema
     function updateLogo(theme) {
-      const logoLight = document.querySelector('.logo-light');
-      const logoDark = document.querySelector('.logo-dark');
-      const logoText = document.querySelector('.navbar-brand h1');
-
-      if (theme === 'dark') {
+      if (isLogoVisible) {
+        if (theme === 'dark') {
+          logoLight.style.opacity = '0';
+          logoLight.style.transform = 'rotateY(90deg)';
+          logoDark.style.opacity = '1';
+          logoDark.style.transform = 'rotateY(0)';
+          logoText.style.opacity = '0';
+          logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
+        } else {
+          logoLight.style.opacity = '1';
+          logoLight.style.transform = 'rotateY(0)';
+          logoDark.style.opacity = '0';
+          logoDark.style.transform = 'rotateY(90deg)';
+          logoText.style.opacity = '0';
+          logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
+        }
+      } else {
         logoLight.style.opacity = '0';
         logoLight.style.transform = 'rotateY(90deg)';
-        logoDark.style.opacity = '1';
-        logoDark.style.transform = 'rotateY(0)';
-        logoText.style.opacity = '0';
-        logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
-      } else {
-        logoLight.style.opacity = '1';
-        logoLight.style.transform = 'rotateY(0)';
         logoDark.style.opacity = '0';
         logoDark.style.transform = 'rotateY(90deg)';
-        logoText.style.opacity = '0';
-        logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
+        logoText.style.opacity = '1';
+        logoText.style.transform = 'translateY(-50%) rotateY(0)';
       }
     }
+
+    // Función para alternar entre logo y texto
+    function toggleLogoText() {
+      isLogoVisible = !isLogoVisible;
+      updateLogo(document.documentElement.getAttribute('data-theme'));
+    }
+
+    // Iniciar el temporizador para alternar cada 5 segundos
+    function startLogoTimer() {
+      logoInterval = setInterval(toggleLogoText, 5000);
+    }
+
+    // Detener el temporizador
+    function stopLogoTimer() {
+      clearInterval(logoInterval);
+    }
+
+    // Manejar eventos de hover
+    navbarBrand.addEventListener('mouseenter', function() {
+      stopLogoTimer();
+      isLogoVisible = false;
+      updateLogo(document.documentElement.getAttribute('data-theme'));
+    });
+
+    navbarBrand.addEventListener('mouseleave', function() {
+      isLogoVisible = true;
+      updateLogo(document.documentElement.getAttribute('data-theme'));
+      startLogoTimer();
+    });
+
+    // Iniciar el temporizador al cargar la página
+    startLogoTimer();
+
+    // Manejar el cambio de tema
+    themeToggle.addEventListener('click', function() {
+      const activeTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = activeTheme === 'dark' ? 'light' : 'dark';
+      updateTheme(newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
   });
 </script>
