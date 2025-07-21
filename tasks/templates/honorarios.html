@@ -5,7 +5,8 @@
   /* Importar fuentes Poppins y Montserrat */
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
-  body {
+  /* Estilos específicos para la página de la calculadora */
+  .calculator-page {
     font-family: 'Poppins', 'Montserrat', sans-serif;
     background: #E6ECEF; /* Gris perla claro */
     color: #333333; /* Texto oscuro */
@@ -14,7 +15,6 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding-top: 60px;
     box-sizing: border-box;
   }
 
@@ -25,10 +25,11 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 1500px;
     width: 95%;
-    margin: 1rem auto;
+    margin: 2rem auto; /* Margen superior aumentado para evitar superposición */
     position: relative;
     border: 1px solid #D1D5DB;
     box-sizing: border-box;
+    isolation: isolate; /* Aísla los estilos para evitar interferencias del navbar */
   }
 
   .header-cotizacion {
@@ -38,7 +39,7 @@
     margin-bottom: 1.5rem;
     position: relative;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #00CCCC;
+    border-bottom: 2px solid #058F8F;
   }
 
   .header-cotizacion .main-title {
@@ -50,7 +51,7 @@
   }
 
   .header-cotizacion .main-title .calc-text {
-    color: #00CCCC;
+    color: #058F8F;
   }
 
   .input-form-section {
@@ -70,7 +71,7 @@
 
   .required-field::after {
     content: " *";
-    color: #00CCCC;
+    color: #058F8F;
   }
 
   .form-control,
@@ -90,7 +91,7 @@
 
   .form-control:focus {
     color: #00CC66;
-    border-color: #00CCCC;
+    border-color: #058F8F;
     outline: none;
     box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
     background: #FFFFFF;
@@ -101,7 +102,7 @@
   }
 
   .form-select:focus {
-    border-color: #00CCCC;
+    border-color: #058F8F;
     outline: none;
     box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
     background: #FFFFFF;
@@ -121,7 +122,7 @@
   }
 
   .section-title {
-    color: #00CCCC;
+    color: #058F8F;
     font-weight: 600;
     font-size: 1.1rem;
     margin-bottom: 0.8rem;
@@ -137,7 +138,7 @@
     left: 0;
     width: 50px;
     height: 2px;
-    background: #00CCCC;
+    background: #058F8F;
     border-radius: 1px;
   }
 
@@ -179,7 +180,7 @@
   }
 
   .result-value {
-    color: #00CCCC;
+    color: #058F8F;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
@@ -191,20 +192,20 @@
     border: none;
     cursor: pointer;
     margin-left: 0.5rem;
-    color: #00CCCC;
+    color: #058F8F;
     font-size: 1rem;
     transition: color 0.3s ease, transform 0.3s ease;
     opacity: 0.7;
   }
 
   .copy-button:hover {
-    color: #00CC66;
+    color: #00cccc;
     transform: scale(1.1);
     opacity: 1;
   }
 
   .total-row td {
-    border-top: 2px solid #00CCCC;
+    border-top: 2px solid #058F8F;
     font-weight: 700;
     color: #333333;
     padding-top: 0.8rem;
@@ -213,7 +214,7 @@
 
   .total-row .result-value {
     font-size: 1rem;
-    color: #00CCCC;
+    color: #058F8F;
   }
 
   .ganancia-container {
@@ -248,7 +249,7 @@
   }
 
   .ganancia-value {
-    color: #00CCCC;
+    color: #058F8F;
     font-size: 2.5rem;
     font-weight: 700;
     line-height: 1;
@@ -262,7 +263,7 @@
     width: 70%;
     max-width: 120px;
     height: 3px;
-    background: #00CCCC;
+    background: #058F8F;
     margin: 0.4rem auto 0;
     border-radius: 2px;
   }
@@ -292,7 +293,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #00CCCC;
+    background: #058F8F;
     color: #FFFFFF;
     padding: 0.7rem 1.2rem;
     border-radius: 8px;
@@ -317,116 +318,118 @@
   }
 </style>
 
-<div class="container-fluid">
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <div class="main-wrapper">
-        <header class="header-cotizacion">
-          <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
-        </header>
+<div class="calculator-page">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="main-wrapper">
+          <header class="header-cotizacion">
+            <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
+          </header>
 
-        <form class="input-form-section row g-3 needs-validation" id="calculator-form" novalidate>
-          {% csrf_token %}
-          <div class="col-12 col-md-4">
-            <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
-            <select id="calcType" name="calcType" class="form-select" required>
-              <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
-              <option value="adjudicado" {% if calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
-              <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
-            </select>
-          </div>
-          <div class="col-12 col-md-4">
-            <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
-            <input type="text" id="valorComercial" name="valorComercial" value="0" class="form-control" required placeholder="Ingresa el precio">
-            <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
-          </div>
-          <div class="col-12 col-md-4">
-            <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
-            <input type="text" id="precioDeSesion" name="precioDeSesion" value="0" class="form-control" required placeholder="Ingresa el precio">
-            <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
-          </div>
-        </form>
+          <form class="input-form-section row g-3 needs-validation" id="calculator-form" novalidate>
+            {% csrf_token %}
+            <div class="col-12 col-md-4">
+              <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
+              <select id="calcType" name="calcType" class="form-select" required>
+                <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
+                <option value="adjudicado" {% if calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
+                <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-4">
+              <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
+              <input type="text" id="valorComercial" name="valorComercial" value="0" class="form-control" required placeholder="Ingresa el precio">
+              <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
+            </div>
+            <div class="col-12 col-md-4">
+              <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
+              <input type="text" id="precioDeSesion" name="precioDeSesion" value="0" class="form-control" required placeholder="Ingresa el precio">
+              <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
+            </div>
+          </form>
 
-        <div class="results-grid" id="results-grid-container">
-          <div id="descripcion-section" class="section-block">
-            <span class="section-title">DESCRIPCIÓN</span>
-            <table>
-              <tbody>
-                <tr>
-                  <td>Valor Comercial</td>
-                  <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorComercial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-                <tr>
-                  <td>Valor Judicial</td>
-                  <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorJudicial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-                <tr>
-                  <td>Honorarios</td>
-                  <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-                <tr>
-                  <td>Cesión de Derechos</td>
-                  <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCession')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="results-grid" id="results-grid-container">
+            <div id="descripcion-section" class="section-block">
+              <span class="section-title">DESCRIPCIÓN</span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Valor Comercial</td>
+                    <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorComercial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td>Valor Judicial</td>
+                    <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorJudicial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td>Honorarios</td>
+                    <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td>Cesión de Derechos</td>
+                    <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCession')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="parcialidades-section" class="section-block">
+              <span class="section-title">PARCIALIDADES</span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>1er Pago (75%)</td>
+                    <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayPrimerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td>2do Pago</td>
+                    <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td>3er Pago (25%)</td>
+                    <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr class="total-row">
+                    <td>COSTO TOTAL:</td>
+                    <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="cesion-derechos-section" class="section-block">
+              <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Valor Extrajudicial</td>
+                    <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorExt')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td>Cotización (50%)</td>
+                    <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <div id="parcialidades-section" class="section-block">
-            <span class="section-title">PARCIALIDADES</span>
-            <table>
-              <tbody>
-                <tr>
-                  <td>1er Pago (75%)</td>
-                  <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayPrimerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-                <tr>
-                  <td>2do Pago</td>
-                  <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-                <tr>
-                  <td>3er Pago (25%)</td>
-                  <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-                <tr class="total-row">
-                  <td>COSTO TOTAL:</td>
-                  <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-              </tbody>
-            </table>
+          <div id="ganancia-container" class="ganancia-container">
+            <div class="ganancia-item">
+              <span class="ganancia-label">GANANCIA</span>
+              <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
+              <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+            </div>
+            <div class="ganancia-item">
+              <span class="ganancia-label">Costo de Compra</span>
+              <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
+              <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
+            </div>
           </div>
 
-          <div id="cesion-derechos-section" class="section-block">
-            <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
-            <table>
-              <tbody>
-                <tr>
-                  <td>Valor Extrajudicial</td>
-                  <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorExt')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-                <tr>
-                  <td>Cotización (50%)</td>
-                  <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <div id="toast" class="toast">¡Valor copiado!</div>
         </div>
-
-        <div id="ganancia-container" class="ganancia-container">
-          <div class="ganancia-item">
-            <span class="ganancia-label">GANANCIA</span>
-            <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
-            <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-          </div>
-          <div class="ganancia-item">
-            <span class="ganancia-label">Costo de Compra</span>
-            <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
-            <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-          </div>
-        </div>
-
-        <div id="toast" class="toast">¡Valor copiado!</div>
       </div>
     </div>
   </div>
@@ -574,7 +577,7 @@ function calculateResults() {
     toast.classList.add('show');
     setTimeout(() => {
       toast.classList.remove('show');
-      toast.style.background = '#00CCCC';
+      toast.style.background = '#058F8F';
       toast.textContent = '¡Valor copiado!';
     }, 3000);
   });

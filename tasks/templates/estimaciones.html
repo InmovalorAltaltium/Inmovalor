@@ -3,6 +3,7 @@
 {% block content %}
 <style>
      :root {
+        --primary-color: #00CCCC;
         --secondary-color: #009999;
         --accent-color: #CCF5F5;
         --dark-color: #003035;
@@ -21,7 +22,7 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        padding-top: 80px; /* Ajuste para bajar un poco los recuadros */
+        padding-top: 10px;
     }
 
     @keyframes gradientBG {
@@ -37,7 +38,7 @@
         border-radius: 10px;
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         border-left: 3px solid var(--primary-color);
-        height: 70vh;
+        height: 80vh;
         overflow-y: auto;
         transition: all 0.3s ease;
         scroll-behavior: smooth;
@@ -138,40 +139,62 @@
         transform: translateY(-2px);
     }
 
-    #map {
-        height: 70vh;
+    .map-container {
+        height: 80vh;
         width: 100%;
         border-radius: 10px;
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         transition: all 0.3s ease;
+        position: relative;
+        background-color: #e9ecef;
     }
 
-    #map:hover {
+    .map-container:hover {
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
 
-    .map-message {
-        padding: 6px 12px;
-        background: white;
-        border-radius: 5px;
+    #map {
+        width: 100%;
+        height: 100%;
+        border: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .loading-map {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #bfc6c7;
         text-align: center;
-        margin-bottom: 6px;
-        font-weight: 500;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        max-width: 90%;
-        margin-left: auto;
-        margin-right: auto;
-        color: black;
+        padding: 2rem;
+        background-color: rgba(0, 48, 53, 0.85);
+        z-index: 10;
+        opacity: 0;
+        animation: fadeIn 0.3s ease forwards;
     }
 
-    .error-message {
-        color: white;
-        background-color: var(--error-color);
+    @keyframes fadeIn {
+        to { opacity: 1; }
     }
 
-    .success-message {
-        color: white;
-        background-color: var(--success-color);
+    .loading-spinner {
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid #00CCCC;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 
     .form-status-message {
@@ -246,7 +269,7 @@
         color: white;
     }
 
-    .loading-spinner {
+    .loading-spinner-field {
         display: none;
         position: absolute;
         right: 6px;
@@ -319,7 +342,7 @@
                                 <select class="form-control" id="municipio" name="municipio" required>
                                     <option selected disabled value="">Seleccionar...</option>
                                 </select>
-                                <div class="loading-spinner" id="municipio-spinner">
+                                <div class="loading-spinner-field" id="municipio-spinner">
                                     <div class="spinner-border spinner-border-sm text-secondary" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
@@ -334,7 +357,7 @@
                                 <select id="colonia" name="colonia" class="form-control" required>
                                     <option selected disabled value="">Seleccionar...</option>
                                 </select>
-                                <div class="loading-spinner" id="colonia-spinner">
+                                <div class="loading-spinner-field" id="colonia-spinner">
                                     <div class="spinner-border spinner-border-sm text-secondary" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
@@ -455,7 +478,6 @@
                         <script>
                             const boton = document.getElementById("btn-calcular");
 
-                            // Hover
                             boton.addEventListener("mouseover", function () {
                                 this.style.backgroundColor = "#009999";
                                 this.style.transform = "scale(1.05)";
@@ -466,7 +488,6 @@
                                 this.style.transform = "scale(1)";
                             });
 
-                            // Click/tap animado
                             boton.addEventListener("mousedown", function () {
                                 this.style.backgroundColor = "#007777";
                                 this.style.transform = "scale(0.95)";
@@ -481,7 +502,6 @@
                                 }, 200);
                             });
 
-                            // Toggle visibility of property-specific fields
                             document.getElementById('tipo_propiedad').addEventListener('change', function() {
                                 const propertyFields = document.querySelectorAll('.property-field');
                                 const isTerreno = this.value === 'Terreno';
@@ -511,45 +531,31 @@
             </div>
             <!-- Mapa -->
             <div class="col-lg-6">
-                <div id="map"></div>
+                <div class="map-container">
+                    <div class="loading-map" id="loadingMap">
+                        <div class="loading-spinner"></div>
+                        <h3>Cargando mapa...</h3>
+                        <p>Por favor espera mientras se carga la ubicación</p>
+                    </div>
+                    <iframe id="map" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            title="Mapa de ubicación">
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Inclusión de dependencias -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
 <script>
-    // Variables globales
-    let map, marker, geocoder, circle, currentPolygon;
-    let tooltipTriggerList = [];
-
-    const ubicacionesConocidas = {
-        "Milpa Alta": { lat: 19.1929, lng: -99.0236 },
-        "Alcaldía Milpa Alta": { lat: 19.1929, lng: -99.0236 },
-        "Álvaro Obregón": { lat: 19.3587, lng: -99.2033 },
-        "Azcapotzalco": { lat: 19.4872, lng: -99.1859 },
-        "Benito Juárez": { lat: 19.3727, lng: -99.1564 },
-        "Coyoacán": { lat: 19.3467, lng: -99.1617 },
-        "Cuajimalpa": { lat: 19.3556, lng: -99.3008 },
-        "Cuauhtémoc": { lat: 19.4326, lng: -99.1332 },
-        "Gustavo A. Madero": { lat: 19.4841, lng: -99.1106 },
-        "Iztacalco": { lat: 19.3952, lng: -99.0978 },
-        "Iztapalapa": { lat: 19.3574, lng: -99.0671 },
-        "Magdalena Contreras": { lat: 19.3321, lng: -99.2119 },
-        "Miguel Hidalgo": { lat: 19.4341, lng: -99.2002 },
-        "Tláhuac": { lat: 19.2576, lng: -99.0056 },
-        "Tlalpan": { lat: 19.2951, lng: -99.1621 },
-        "Venustiano Carranza": { lat: 19.4326, lng: -99.0992 },
-        "Xochimilco": { lat: 19.2578, lng: -99.1056 }
-    };
-
     $(document).ready(function () {
         // Inicializar tooltips
-        tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
@@ -591,7 +597,7 @@
             }
         }
 
-        // Scroll automático al primer campo requerido vacío a partir de "Calle"
+        // Scroll automático al primer campo requerido vacío
         function scrollToNextField(currentField) {
             const form = document.querySelector('.form-container');
             const fields = Array.from(form.querySelectorAll('input[required], select[required]'));
@@ -636,8 +642,6 @@
         // Evento change para el selector de estado
         $('#estado').on('change', function () {
             const estadoId = $(this).val();
-            const estadoNombre = $(this).find('option:selected').text().trim();
-            
             if (estadoId) {
                 $('#municipio-spinner').show();
                 $('#municipio').addClass('is-loading');
@@ -653,11 +657,11 @@
                         $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
                         $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
                         
-                        actualizarMapaConEstado(estadoNombre);
+                        // Mostrar mapa del estado (sin cambiar el zoom)
+                        mostrarMapaEstado($('#estado option:selected').text());
                     },
                     error: function (xhr, status, error) {
                         console.error('Error al obtener municipios:', status, error);
-                        mostrarErrorEnMapa('Error al cargar municipios');
                     },
                     complete: function() {
                         $('#municipio-spinner').hide();
@@ -668,20 +672,18 @@
                 $('#municipio').empty().append('<option selected disabled value="">Seleccionar...</option>');
                 $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
                 $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                // Volver al mapa de México si no hay estado seleccionado
+                inicializarMapaMexico();
             }
         });
 
         // Evento change para el selector de municipio
         $('#municipio').on('change', function () {
             const municipioId = $(this).val();
-            const municipioNombre = $(this).find('option:selected').text().trim();
-
-            if (municipioId && municipioNombre) {
+            if (municipioId) {
                 $('#colonia-spinner').show();
                 $('#colonia').addClass('is-loading');
                 
-                actualizarMapaConMunicipio(municipioNombre);
-
                 $.ajax({
                     url: '/obtener_colonias/',
                     data: { 'municipio_id': municipioId },
@@ -691,10 +693,12 @@
                             $('#colonia').append(`<option value="${colonia.id_colonia}">${colonia.nombre}</option>`);
                         });
                         $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                        
+                        // Mostrar mapa del municipio (sin cambiar el zoom)
+                        mostrarMapaMunicipio($('#municipio option:selected').text(), $('#estado option:selected').text());
                     },
                     error: function (xhr, status, error) {
                         console.error('Error al obtener colonias:', status, error);
-                        mostrarErrorEnMapa('Error al cargar colonias');
                         $('#colonia').empty().append('<option selected disabled value="">Error al cargar</option>');
                     },
                     complete: function() {
@@ -705,16 +709,21 @@
             } else {
                 $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
                 $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                // Volver al mapa del estado si no hay municipio seleccionado
+                mostrarMapaEstado($('#estado option:selected').text());
             }
         });
 
         // Evento change para el selector de colonia
         $('#colonia').on('change', function () {
             const coloniaId = $(this).val();
-            const coloniaNombre = $(this).find('option:selected').text().trim();
-
             if (coloniaId) {
-                actualizarMapaConColonia(coloniaNombre);
+                // Actualizar el mapa automáticamente al seleccionar una colonia
+                mostrarMapaColonia(
+                    $('#colonia option:selected').text(),
+                    $('#municipio option:selected').text(),
+                    $('#estado option:selected').text()
+                );
 
                 $.ajax({
                     url: '/obtener_codigos_postales/',
@@ -727,12 +736,12 @@
                     },
                     error: function (xhr, status, error) {
                         console.error('Error al obtener códigos postales:', status, error);
-                        mostrarErrorEnMapa('Error al cargar códigos postales');
-                        $('#cp').empty().append('<option selected disabled value="">Error al cargar</option>');
                     }
                 });
             } else {
                 $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                // Volver al mapa del municipio si no hay colonia seleccionada
+                mostrarMapaMunicipio($('#municipio option:selected').text(), $('#estado option:selected').text());
             }
         });
 
@@ -758,7 +767,6 @@
                     },
                     error: function (xhr, status, error) {
                         console.error('Error al obtener datos por CP:', status, error);
-                        mostrarErrorEnMapa('Error al buscar datos del código postal');
                     }
                 });
             }
@@ -767,398 +775,151 @@
         // Evento click para el botón "Ubicar en mapa"
         $('#btnUbicar').click(function () {
             const colonia = $('#colonia option:selected').text().trim();
-            if (colonia) {
-                actualizarMapaConColonia(colonia);
+            const municipio = $('#municipio option:selected').text().trim();
+            const estado = $('#estado option:selected').text().trim();
+            const calle = $('#calle').val().trim();
+            
+            if (colonia && colonia !== "Seleccionar...") {
+                mostrarMapaColonia(colonia, municipio, estado);
+            } else if (municipio && municipio !== "Seleccionar...") {
+                mostrarMapaMunicipio(municipio, estado);
+            } else if (estado && estado !== "Seleccionar...") {
+                mostrarMapaEstado(estado);
             } else {
-                const municipio = $('#municipio option:selected').text().trim();
-                if (municipio) {
-                    actualizarMapaConMunicipio(municipio);
-                } else {
-                    const estado = $('#estado option:selected').text().trim();
-                    if (estado) {
-                        actualizarMapaConEstado(estado);
-                    } else {
-                        mostrarErrorEnMapa('Seleccione al menos un estado, municipio o colonia');
-                    }
-                }
+                inicializarMapaMexico();
             }
         });
+
+        // Inicializar el mapa con México
+        inicializarMapaMexico();
+
+        // Función para inicializar el mapa mostrando la República Mexicana
+        function inicializarMapaMexico() {
+            const mapFrame = document.getElementById('map');
+            const loadingMap = document.getElementById('loadingMap');
+            
+            loadingMap.style.display = 'flex';
+            mapFrame.style.opacity = '0.5';
+            
+            const defaultUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8000000!2d-102.5528!3d23.6345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zTcOpeGljbw!5e0!3m2!1ses!2smx!4v${Date.now()}&z=4`;
+            
+            mapFrame.src = defaultUrl;
+            mapFrame.onload = () => {
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+            };
+            mapFrame.onerror = () => {
+                console.error('Error al cargar el mapa:', defaultUrl);
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+                document.getElementById('form-status').innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Error al cargar el mapa. Por favor, intenta de nuevo.';
+            };
+        }
+
+        // Función para mostrar mapa de un estado (sin zoom cercano)
+        function mostrarMapaEstado(estado) {
+            const mapFrame = document.getElementById('map');
+            const loadingMap = document.getElementById('loadingMap');
+            
+            loadingMap.style.display = 'flex';
+            mapFrame.style.opacity = '0.5';
+
+            const estadoCoords = {
+                "Ciudad de México": "19.4326,-99.1332",
+                "Estado de México": "19.2833,-99.6535",
+                "Jalisco": "20.6668,-103.3918",
+                // ... (otros estados)
+            };
+
+            const centerPoint = estadoCoords[estado] || '23.6345,-102.5528';
+            const query = `${estado}, México`;
+            const encodedQuery = encodeURIComponent(query);
+            
+            const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1000000!2d${centerPoint.split(',')[1]}!3d${centerPoint.split(',')[0]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${encodedQuery}!5e0!3m2!1ses!2smx!4v${Date.now()}&z=6`;
+
+            mapFrame.src = mapUrl;
+            mapFrame.onload = () => {
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+            };
+        }
+
+        // Función para mostrar mapa de un municipio (sin zoom cercano)
+        function mostrarMapaMunicipio(municipio, estado) {
+            const mapFrame = document.getElementById('map');
+            const loadingMap = document.getElementById('loadingMap');
+            
+            loadingMap.style.display = 'flex';
+            mapFrame.style.opacity = '0.5';
+
+            const esCDMX = estado === "Ciudad de México";
+            const prefijo = esCDMX ? "Alcaldía " : "Municipio ";
+
+            const municipioCoords = {
+                "Ciudad de México": {
+                    "Álvaro Obregón": "19.3589,-99.2036",
+                    "Azcapotzalco": "19.4872,-99.1854",
+                    // ... (otros municipios de CDMX)
+                },
+                "Estado de México": {
+                    "Toluca": "19.2925,-99.6569",
+                    // ... (otros municipios de EdoMex)
+                }
+                // ... (otros estados)
+            };
+
+            const centerPoint = (municipioCoords[estado] && municipioCoords[estado][municipio]) ? 
+                municipioCoords[estado][municipio] : '23.6345,-102.5528';
+            const query = `${prefijo}${municipio}, ${estado}`;
+            const encodedQuery = encodeURIComponent(query);
+            
+            const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120000!2d${centerPoint.split(',')[1]}!3d${centerPoint.split(',')[0]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${encodedQuery}!5e0!3m2!1ses!2smx!4v${Date.now()}&z=11`;
+
+            mapFrame.src = mapUrl;
+            mapFrame.onload = () => {
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+            };
+        }
+
+        // Función para mostrar mapa de una colonia (con zoom cercano)
+        function mostrarMapaColonia(colonia, municipio, estado) {
+            const mapFrame = document.getElementById('map');
+            const loadingMap = document.getElementById('loadingMap');
+            
+            loadingMap.style.display = 'flex';
+            mapFrame.style.opacity = '0.5';
+
+            const esCDMX = estado === "Ciudad de México";
+            const prefijo = esCDMX ? "Alcaldía " : "Municipio ";
+
+            const coloniaCoords = {
+                "Ciudad de México": {
+                    "Álvaro Obregón": {
+                        "San Ángel": "19.3467,-99.1900",
+                        "Jardines del Pedregal": "19.3308,-99.2100"
+                    },
+                    "Benito Juárez": {
+                        "Del Valle": "19.3933,-99.1642"
+                    }
+                    // ... (otras colonias)
+                }
+                // ... (otros estados)
+            };
+
+            const centerPoint = (coloniaCoords[estado] && coloniaCoords[estado][municipio] && coloniaCoords[estado][municipio][colonia]) ? 
+                coloniaCoords[estado][municipio][colonia] : '23.6345,-102.5528';
+            const query = `${colonia}, ${prefijo}${municipio}, ${estado}`;
+            const encodedQuery = encodeURIComponent(query);
+            
+            const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5000!2d${centerPoint.split(',')[1]}!3d${centerPoint.split(',')[0]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${encodedQuery}!5e0!3m2!1ses!2smx!4v${Date.now()}&z=16`;
+
+            mapFrame.src = mapUrl;
+            mapFrame.onload = () => {
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+            };
+        }
     });
-
-    function initMap() {
-        const centro = { lat: 19.4326, lng: -99.1332 };
-        map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 10,
-            center: centro,
-            mapTypeControl: true,
-            mapTypeControlOptions: {
-                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-                mapTypeIds: ["roadmap", "satellite", "hybrid"]
-            },
-            streetViewControl: false,
-            fullscreenControl: true,
-            styles: [
-                {
-                    "featureType": "administrative",
-                    "elementType": "labels.text.fill",
-                    "stylers": [
-                        {
-                            "color": "#444444"
-                        }
-                    ]
-                },
-                {
-                    "featureType": "landscape",
-                    "elementType": "all",
-                    "stylers": [
-                        {
-                            "color": "#f2f2f2"
-                        }
-                    ]
-                },
-                {
-                    "featureType": "poi",
-                    "elementType": "all",
-                    "stylers": [
-                        {
-                            "visibility": "off"
-                        }
-                    ]
-                },
-                {
-                    "featureType": "road",
-                    "elementType": "all",
-                    "stylers": [
-                        {
-                            "saturation": -100
-                        },
-                        {
-                            "lightness": 45
-                        }
-                    ]
-                },
-                {
-                    "featureType": "road.highway",
-                    "elementType": "all",
-                    "stylers": [
-                        {
-                            "visibility": "simplified"
-                        }
-                    ]
-                },
-                {
-                    "featureType": "road.arterial",
-                    "elementType": "labels.icon",
-                    "stylers": [
-                        {
-                            "visibility": "off"
-                        }
-                    ]
-                },
-                {
-                    "featureType": "transit",
-                    "elementType": "all",
-                    "stylers": [
-                        {
-                            "visibility": "off"
-                        }
-                    ]
-                },
-                {
-                    "featureType": "water",
-                    "elementType": "all",
-                    "stylers": [
-                        {
-                            "color": "#00CCCC"
-                        },
-                        {
-                            "visibility": "on"
-                        }
-                    ]
-                }
-            ]
-        });
-
-        marker = new google.maps.Marker({
-            position: centro,
-            map: map,
-            title: "Ubicación seleccionada",
-            draggable: true,
-            icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 10,
-                fillColor: "#00CCCC",
-                fillOpacity: 1,
-                strokeWeight: 2,
-                strokeColor: "#ffffff"
-            }
-        });
-
-        geocoder = new google.maps.Geocoder();
-
-        ["calle", "colonia", "cp", "municipio"].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.addEventListener("change", actualizarMapa);
-        });
-
-        mostrarMensajeEnMapa('Seleccione una ubicación para comenzar');
-    }
-
-    function actualizarMapaConEstado(estadoNombre) {
-        const direccion = `${estadoNombre}, México`;
-        
-        mostrarMensajeEnMapa(`Buscando ubicación para ${estadoNombre}...`);
-
-        if (circle) circle.setMap(null);
-        if (currentPolygon) currentPolygon.setMap(null);
-
-        geocoder.geocode({ address: direccion }, function (results, status) {
-            if (status === "OK" && results[0]) {
-                const location = results[0].geometry.location;
-                mostrarMensajeEnMapa(`Ubicación aproximada de ${estadoNombre}`, 'success-message');
-                map.setCenter(location);
-                marker.setPosition(location);
-                map.setZoom(8);
-
-                circle = new google.maps.Circle({
-                    strokeColor: '#00CCCC',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: '#00CCCC',
-                    fillOpacity: 0.1,
-                    map: map,
-                    center: location,
-                    radius: 50000
-                });
-            } else {
-                console.error('Geocoding error:', status, results);
-                mostrarErrorEnMapa(`No se pudo encontrar la ubicación exacta de ${estadoNombre}.`);
-            }
-        });
-    }
-
-    function actualizarMapaConMunicipio(municipioNombre) {
-        if (ubicacionesConocidas[municipioNombre]) {
-            const location = new google.maps.LatLng(
-                ubicacionesConocidas[municipioNombre].lat,
-                ubicacionesConocidas[municipioNombre].lng
-            );
-
-            mostrarMensajeEnMapa(`Ubicación conocida de ${municipioNombre}`, 'success-message');
-            map.setCenter(location);
-            marker.setPosition(location);
-            map.setZoom(12);
-
-            if (circle) circle.setMap(null);
-            circle = new google.maps.Circle({
-                strokeColor: '#00CCCC',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#00CCCC',
-                fillOpacity: 0.2,
-                map: map,
-                center: location,
-                radius: 2000
-            });
-            if (currentPolygon) currentPolygon.setMap(null);
-            return;
-        }
-
-        const esCDMX = $('#estado option:selected').text().trim() === "Ciudad de México";
-        const prefijo = esCDMX ? "Alcaldía " : "";
-        const estado = $('#estado option:selected').text().trim() || "Ciudad de México";
-        const direccion = `${prefijo}${municipioNombre}, ${estado}, México`;
-
-        mostrarMensajeEnMapa(`Buscando ubicación para ${municipioNombre}...`);
-
-        if (circle) circle.setMap(null);
-        if (currentPolygon) currentPolygon.setMap(null);
-
-        geocoder.geocode({ address: direccion }, function (results, status) {
-            if (status === "OK" && results[0]) {
-                const location = results[0].geometry.location;
-                mostrarMensajeEnMapa(`Ubicación aproximada de ${municipioNombre}`, 'success-message');
-                map.setCenter(location);
-                marker.setPosition(location);
-                map.setZoom(12);
-
-                circle = new google.maps.Circle({
-                    strokeColor: '#00CCCC',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: '#00CCCC',
-                    fillOpacity: 0.2,
-                    map: map,
-                    center: location,
-                    radius: 2000
-                });
-            } else {
-                console.error('Geocoding error:', status, results);
-                mostrarErrorEnMapa(`No se pudo encontrar la ubicación exacta de ${municipioNombre}. Mostrando ubicación aproximada.`);
-                geocoder.geocode({ address: estado + ', México' }, function (results) {
-                    if (results[0]) {
-                        map.setCenter(results[0].geometry.location);
-                        map.setZoom(10);
-                    }
-                });
-            }
-        });
-    }
-
-    function actualizarMapaConColonia(coloniaNombre) {
-        const municipio = $('#municipio option:selected').text().trim();
-        const estado = $('#estado option:selected').text().trim() || "Ciudad de México";
-        const calle = $('#calle').val().trim() || "";
-        const cp = $('#cp option:selected').text().trim() || "";
-
-        let direccion = `${calle ? calle + ', ' : ''}${coloniaNombre}, ${municipio}, ${estado}, México`;
-        if (cp) {
-            direccion += `, ${cp}`;
-        }
-
-        mostrarMensajeEnMapa(`Buscando ubicación para ${coloniaNombre}...`);
-
-        if (circle) circle.setMap(null);
-        if (currentPolygon) currentPolygon.setMap(null);
-
-        geocoder.geocode({
-            address: direccion,
-            componentRestrictions: { country: "mx" }
-        }, function (results, status) {
-            if (status === "OK" && results[0]) {
-                const location = results[0].geometry.location;
-                mostrarMensajeEnMapa(`Ubicación aproximada de ${coloniaNombre}`, 'success-message');
-                map.setCenter(location);
-                marker.setPosition(location);
-                map.setZoom(15);
-
-                circle = new google.maps.Circle({
-                    strokeColor: '#00CCCC',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: '#00CCCC',
-                    fillOpacity: 0.2,
-                    map: map,
-                    center: location,
-                    radius: 500
-                });
-
-                cargarPoligonoColonia(coloniaNombre, municipio, estado);
-            } else {
-                console.error('Error al geocodificar la colonia:', status, results);
-                mostrarErrorEnMapa(`No se pudo encontrar la ubicación exacta de ${coloniaNombre}. Mostrando municipio.`);
-                actualizarMapaConMunicipio(municipio);
-            }
-        });
-    }
-
-    function cargarPoligonoColonia(coloniaNombre, municipio, estado) {
-        $.ajax({
-            url: '/obtener_poligono_colonia/',
-            data: {
-                'colonia': coloniaNombre,
-                'municipio': municipio,
-                'estado': estado
-            },
-            success: function (data) {
-                if (data && data.geojson) {
-                    if (currentPolygon) {
-                        currentPolygon.setMap(null);
-                    }
-
-                    const paths = data.geojson.coordinates.map(coord => {
-                        return { lat: coord[1], lng: coord[0] };
-                    });
-
-                    currentPolygon = new google.maps.Polygon({
-                        paths: paths,
-                        strokeColor: '#00CCCC',
-                        strokeOpacity: 0.8,
-                        strokeWeight: 2,
-                        fillColor: '#00CCCC',
-                        fillOpacity: 0.3,
-                        map: map
-                    });
-
-                    const bounds = new google.maps.LatLngBounds();
-                    paths.forEach(coord => {
-                        bounds.extend(coord);
-                    });
-                    map.fitBounds(bounds);
-
-                    mostrarMensajeEnMapa(`Mostrando límites de ${coloniaNombre}`, 'success-message');
-                } else {
-                    mostrarErrorEnMapa('No se encontraron límites para esta colonia');
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error al obtener polígono:', status, error);
-                mostrarErrorEnMapa('Error al cargar los límites de la colonia');
-            }
-        });
-    }
-
-    function actualizarMapa() {
-        const calle = document.getElementById("calle")?.value || "";
-        const colonia = document.getElementById("colonia")?.value || "";
-        const cp = document.getElementById("cp")?.value || "";
-        const municipio = $('#municipio option:selected').text().trim() || "";
-        const estado = $('#estado option:selected').text().trim() || "Ciudad de México";
-
-        let direccion = `${calle}, ${colonia}, ${cp}, ${municipio}, ${estado}, México`.trim();
-
-        if (direccion) {
-            mostrarMensajeEnMapa('Buscando ubicación...');
-
-            geocoder.geocode({ address: direccion }, function (results, status) {
-                if (status === "OK" && results[0]) {
-                    const location = results[0].geometry.location;
-                    mostrarMensajeEnMapa('Ubicación encontrada', 'success-message');
-                    map.setCenter(location);
-                    marker.setPosition(location);
-                    map.setZoom(16);
-
-                    if (circle) circle.setMap(null);
-                    if (currentPolygon) currentPolygon.setMap(null);
-
-                    if (colonia) {
-                        cargarPoligonoColonia(colonia, municipio, estado);
-                    }
-                } else {
-                    console.error('Error al geocodificar:', status, results);
-                    mostrarErrorEnMapa('No se pudo encontrar la ubicación exacta. Intente con más detalles.');
-
-                    if (colonia) {
-                        actualizarMapaConColonia(colonia);
-                    } else if (municipio) {
-                        actualizarMapaConMunicipio(municipio);
-                    } else if (estado) {
-                        actualizarMapaConEstado(estado);
-                    }
-                }
-            });
-        }
-    }
-
-    function mostrarMensajeEnMapa(mensaje, clase = '') {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `map-message ${clase}`;
-        messageDiv.textContent = mensaje;
-
-        map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
-        map.controls[google.maps.ControlPosition.TOP_CENTER].push(messageDiv);
-    }
-
-    function mostrarErrorEnMapa(mensaje) {
-        mostrarMensajeEnMapa(mensaje, 'error-message');
-    }
-
-    window.initMap = initMap;
 </script>
-
-<script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDldEaEtV3NdG-fY-us0SmbBSh8RHibnpU&libraries=places,geometry&callback=initMap"
-    async defer>
-</script>
-
 {% endblock %}

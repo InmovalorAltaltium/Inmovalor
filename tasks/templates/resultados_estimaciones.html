@@ -1,1266 +1,1075 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="es">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inmovalor | Resultados de Evaluación</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "#003035",
-              secondary: "#008a8a",
-              accent: "#00cccc",
-              lightaccent: "#52b3c0",
-              dark: "#0d1d1f",
-              black: "#000000",
-              lightgray: "#bfc6c7",
-              gray: "#949797",
-              white: "#ffffff",
-              offwhite: "#f8fafc",
-              softgray: "#e5e7eb",
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#003035",
+                        secondary: "#008a8a",
+                        accent: "#00cccc",
+                        lightaccent: "#52b3c0",
+                        dark: "#0d1d1f",
+                        black: "#000000",
+                        lightgray: "#bfc6c7",
+                        gray: "#949797",
+                        white: "#ffffff",
+                        offwhite: "#f8fafc",
+                        softgray: "#e5e7eb",
+                    },
+                    fontFamily: {
+                        sans: ["Montserrat", "sans-serif"],
+                    },
+                    boxShadow: {
+                        custom: "0 8px 24px rgba(0,0,0,0.1)",
+                        "custom-hover": "0 12px 32px rgba(0,0,0,0.15)",
+                        "neon-glow": "0 0 12px rgba(0, 204, 204, 0.5)",
+                        "card-glow": "0 4px 16px rgba(0, 204, 204, 0.2)",
+                    },
+                    animation: {
+                        "fade-in": "fadeIn 0.8s ease-out",
+                        "slide-up": "slideUp 0.6s ease-out",
+                        "pulse-glow": "pulseGlow 2s infinite",
+                        "neon-shine": "neonShine 1.5s infinite",
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            "0%": { opacity: "0" },
+                            "100%": { opacity: "1" },
+                        },
+                        slideUp: {
+                            "0%": { transform: "translateY(20px)", opacity: "0" },
+                            "100%": { transform: "translateY(0)", opacity: "1" },
+                        },
+                        pulseGlow: {
+                            "0%, 100%": { boxShadow: "0 0 12px rgba(0, 204, 204, 0.3)" },
+                            "50%": { boxShadow: "0 0 20px rgba(0, 204, 204, 0.5)" },
+                        },
+                        neonShine: {
+                            "0%": { boxShadow: "0 0 10px rgba(0, 204, 204, 0.3)" },
+                            "50%": { boxShadow: "0 0 20px rgba(0, 204, 204, 0.6)" },
+                            "100%": { boxShadow: "0 0 10px rgba(0, 204, 204, 0.3)" },
+                        },
+                    },
+                    backdropFilter: {
+                        'blur': 'blur(8px)',
+                    },
+                },
             },
-            fontFamily: {
-              sans: ["Montserrat", "sans-serif"],
-            },
-            boxShadow: {
-              custom: "0 8px 24px rgba(0,0,0,0.1)",
-              "custom-hover": "0 12px 32px rgba(0,0,0,0.15)",
-              "neon-glow": "0 0 12px rgba(0, 204, 204, 0.5)",
-              "card-glow": "0 4px 16px rgba(0, 204, 204, 0.2)",
-            },
-            animation: {
-              "fade-in": "fadeIn 0.8s ease-out",
-              "slide-up": "slideUp 0.6s ease-out",
-              "pulse-glow": "pulseGlow 2s infinite",
-              "neon-shine": "neonShine 1.5s infinite",
-            },
-            keyframes: {
-              fadeIn: {
-                "0%": { opacity: "0" },
-                "100%": { opacity: "1" },
-              },
-              slideUp: {
-                "0%": { transform: "translateY(20px)", opacity: "0" },
-                "100%": { transform: "translateY(0)", opacity: "1" },
-              },
-              pulseGlow: {
-                "0%, 100%": { boxShadow: "0 0 12px rgba(0, 204, 204, 0.3)" },
-                "50%": { boxShadow: "0 0 20px rgba(0, 204, 204, 0.5)" },
-              },
-              neonShine: {
-                "0%": { boxShadow: "0 0 10px rgba(0, 204, 204, 0.3)" },
-                "50%": { boxShadow: "0 0 20px rgba(0, 204, 204, 0.6)" },
-                "100%": { boxShadow: "0 0 10px rgba(0, 204, 204, 0.3)" },
-              },
-            },
-            backdropFilter: {
-              'blur': 'blur(8px)',
-            },
-          },
-        },
-      };
+        };
     </script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-      /* Importar fuentes Poppins y Montserrat */
-      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
-      body {
-        font-family: 'Poppins', 'Montserrat', sans-serif;
-        background: #E6ECEF;
-        color: #333333;
-        scroll-behavior: smooth;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
+        body {
+            font-family: 'Poppins', 'Montserrat', sans-serif;
+            background: #E6ECEF;
+            color: #333333;
+            scroll-behavior: smooth;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-      .gradient-bg {
-        background: linear-gradient(135deg, #003035 0%, #008a8a 100%);
-        position: relative;
-        overflow: hidden;
-      }
+        .gradient-bg {
+            background: linear-gradient(135deg, #003035 0%, #008a8a 100%);
+            position: relative;
+            overflow: hidden;
+        }
 
-      .gradient-bg::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(
-          circle,
-          rgba(255, 255, 255, 0.15) 0%,
-          rgba(255, 255, 255, 0) 70%
-        );
-        pointer-events: none;
-      }
+        .gradient-bg::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+            pointer-events: none;
+        }
 
-      .card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 16px;
-        border: 1px solid rgba(0, 204, 204, 0.2);
-        overflow: hidden;
-        backdrop-filter: blur(8px);
-        animation: slideUp 0.6s ease-out;
-      }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 204, 204, 0.2);
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            animation: slideUp 0.6s ease-out;
+        }
 
-      .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-      }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
 
-      .map-container {
-        height: 100%;
-        min-height: 200px;
-        border-radius: 16px;
-        overflow: hidden;
-        position: relative;
-        box-shadow: 0 4px 16px rgba(0, 204, 204, 0.2);
-      }
-
-      #map {
-        height: 100%;
-        width: 100%;
-      }
-
-      .map-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 204, 204, 0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-      }
-
-      .map-container:hover .map-overlay {
-        opacity: 1;
-      }
-
-      .value-pill {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.3rem 1rem;
-        border-radius: 9999px;
-        font-weight: 700;
-        font-size: 0.9rem;
-        background: linear-gradient(45deg, #00cccc, #52b3c0);
-        color: #ffffff;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        backdrop-filter: blur(4px);
-      }
-
-      .value-pill:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-      }
-
-      .button {
-        position: relative;
-        overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 0 12px rgba(0, 204, 204, 0.5);
-        background: linear-gradient(45deg, #00cccc, #52b3c0);
-        border: none;
-        border-radius: 10px;
-        color: #ffffff;
-        font-weight: 700;
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        animation: neonShine 1.5s infinite;
-      }
-
-      .button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 20px rgba(0, 204, 204, 0.7);
-      }
-
-      .button::after {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-          to right,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.4) 50%,
-          rgba(255, 255, 255, 0) 100%
-        );
-        transform: rotate(45deg);
-        transition: all 0.5s ease;
-        opacity: 0;
-      }
-
-      .button:hover::after {
-        opacity: 1;
-        transform: translateX(100%) rotate(45deg);
-      }
-
-      .detail-item {
-        transition: background-color 0.3s ease;
-        border-radius: 8px;
-      }
-
-      .detail-item:hover {
-        background-color: rgba(0, 204, 204, 0.1);
-      }
-
-      @media (min-width: 640px) {
         .map-container {
-          min-height: 220px;
+            height: 100%;
+            min-height: 200px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 16px rgba(0, 204, 204, 0.2);
         }
+
+        #map {
+            height: 100%;
+            width: 100%;
+            border: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #bfc6c7;
+            background-color: rgba(0, 48, 53, 0.85);
+            z-index: 10;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #00CCCC;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .map-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 204, 204, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .map-container:hover .map-overlay {
+            opacity: 1;
+        }
+
         .value-pill {
-          font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            padding: 0.3rem 1rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: linear-gradient(45deg, #067c7c, #52b3c0);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(4px);
         }
-      }
 
-      @media (min-width: 1024px) {
-        .map-container {
-          min-height: 250px;
+        .value-pill:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
-        .value-pill {
-          font-size: 1rem;
+
+        .button {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 12px rgba(0, 204, 204, 0.5);
+            background: linear-gradient(45deg, #067c7c, #52b3c0);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: neonShine 1.5s infinite;
         }
-      }
 
-      .hidden {
-        display: none;
-      }
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 204, 204, 0.7);
+        }
 
-      .fade {
-        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-      }
+        .button::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
 
-      .fade.hidden {
-        opacity: 0;
-        transform: translateY(20px);
-      }
+        .button:hover::after {
+            opacity: 1;
+            transform: translateX(100%) rotate(45deg);
+        }
 
-      .fade:not(.hidden) {
-        opacity: 1;
-        transform: translateY(0);
-      }
+        .detail-item {
+            transition: background-color 0.3s ease;
+            border-radius: 8px;
+        }
 
-      .copy-icon {
-        transition: color 0.3s ease, transform 0.3s ease;
-      }
+        .detail-item:hover {
+            background-color: rgba(0, 204, 204, 0.1);
+        }
 
-      .copy-icon:hover {
-        color: #00cccc;
-        transform: scale(1.1);
-      }
+        @media (min-width: 640px) {
+            .map-container { min-height: 220px; }
+            .value-pill { font-size: 0.95rem; }
+        }
 
-      /* Estilos de la calculadora */
-      .main-wrapper {
-        background: #F8FAFA;
-        padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        max-width: 1500px;
-        width: 95%;
-        margin: 1rem auto;
-        position: relative;
-        border: 1px solid #D1D5DB;
-        box-sizing: border-box;
-      }
+        @media (min-width: 1024px) {
+            .map-container { min-height: 250px; }
+            .value-pill { font-size: 1rem; }
+        }
 
-      .header-cotizacion {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        position: relative;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #00CCCC;
-      }
+        .hidden { display: none; }
 
-      .header-cotizacion .main-title {
-        color: #333333;
-        font-size: 1.9rem;
-        font-weight: 600;
-        letter-spacing: 2px;
-        text-align: center;
-      }
+        .fade {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
 
-      .header-cotizacion .main-title .calc-text {
-        color: #00CCCC;
-      }
+        .fade.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-      .input-form-section {
-        background: #FFFFFF;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      }
+        .fade:not(.hidden) {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-      .form-label {
-        font-weight: 500;
-        color: #4B5563;
-        font-size: 0.85rem;
-        margin-bottom: 0.3rem;
-      }
+        .copy-icon, .copy-button {
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
 
-      .required-field::after {
-        content: " *";
-        color: #00CCCC;
-      }
+        .copy-icon:hover, .copy-button:hover {
+            color: #00cccc;
+            transform: scale(1.1);
+        }
 
-      .form-control,
-      .form-select {
-        background: #F9FAFB;
-        border: 1px solid #D1D5DB;
-        color: #333333;
-        padding: 0.5rem 0.7rem;
-        border-radius: 6px;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-      }
+        .main-wrapper {
+            background: #F8FAFA;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 1500px;
+            width: 95%;
+            margin: 1rem auto;
+            border: 1px solid #D1D5DB;
+        }
 
-      .form-control::placeholder {
-        color: #9CA3AF;
-      }
+        .header-cotizacion {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #067c7c;
+        }
 
-      .form-control:focus {
-        color: #00CC66;
-        border-color: #00CCCC;
-        outline: none;
-        box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
-        background: #FFFFFF;
-      }
+        .header-cotizacion .main-title {
+            color: #333333;
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-align: center;
+        }
 
-      .form-control:not(:focus) {
-        color: #333333;
-      }
+        .header-cotizacion .main-title .calc-text {
+            color: #067c7c;
+        }
 
-      .form-select:focus {
-        border-color: #00CCCC;
-        outline: none;
-        box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
-        background: #FFFFFF;
-      }
+        .input-form-section {
+            background: #FFFFFF;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
 
-      .results-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-      }
+        .form-label {
+            font-weight: 500;
+            color: #4B5563;
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
 
-      @media (min-width: 768px) {
+        .required-field::after {
+            content: " *";
+            color: #067c7c;
+        }
+
+        .form-control, .form-select {
+            background: #F9FAFB;
+            border: 1px solid #D1D5DB;
+            color: #333333;
+            padding: 0.5rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control::placeholder {
+            color: #9CA3AF;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #067c7c;
+            outline: none;
+            box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
+            background: #FFFFFF;
+        }
+
         .results-grid {
-          grid-template-columns: repeat(2, 1fr);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
-      }
 
-      .section-title {
-        color: #00CCCC;
-        font-weight: 600;
-        font-size: 1.1rem;
-        margin-bottom: 0.8rem;
-        text-align: left;
-        position: relative;
-        padding-bottom: 0.4rem;
-      }
+        @media (min-width: 768px) {
+            .results-grid { grid-template-columns: repeat(2, 1fr); }
+        }
 
-      .section-title::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 50px;
-        height: 2px;
-        background: #00CCCC;
-        border-radius: 1px;
-      }
+        .section-title {
+            color: #067c7c;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            text-align: left;
+            padding-bottom: 0.4rem;
+            position: relative;
+        }
 
-      .section-block {
-        background: #FFFFFF;
-        padding: 1.2rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        border: 1px solid #D1D5DB;
-      }
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #067c7c;
+            border-radius: 1px;
+        }
 
-      table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        margin-top: 0.8rem;
-        color: #333333;
-      }
+        .section-block {
+            background: #FFFFFF;
+            padding: 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #D1D5DB;
+        }
 
-      th {
-        background: none;
-        color: #6B7280;
-        font-weight: 500;
-        padding: 0.4rem 0;
-        text-align: left;
-        border-bottom: 1px solid #D1D5DB;
-        font-size: 0.9rem;
-      }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 0.8rem;
+            color: #333333;
+        }
 
-      td {
-        padding: 0.6rem 0;
-        text-align: left;
-        border-bottom: 1px solid #E5E7EB;
-        font-size: 0.9rem;
-      }
+        th {
+            background: linear-gradient(90deg, #003035, #008a8a);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 0.4rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
 
-      tr:last-child td {
-        border-bottom: none;
-      }
+        td {
+            padding: 0.6rem 0.4rem;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+            font-size: 0.9rem;
+        }
 
-      .result-value {
-        color: #00CCCC;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        padding-left: 0.5rem;
-      }
+        tr:last-child td {
+            border-bottom: none;
+        }
 
-      .copy-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        margin-left: 0.5rem;
-        color: #00CCCC;
-        font-size: 1rem;
-        transition: color 0.3s ease, transform 0.3s ease;
-        opacity: 0.7;
-      }
+        .result-value {
+            color: #067c7c;
+            font-weight: 600;
+            padding-left: 0.5rem;
+        }
 
-      .copy-button:hover {
-        color: #00CC66;
-        transform: scale(1.1);
-        opacity: 1;
-      }
+        .copy-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            color: #067c7c;
+            font-size: 1rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            opacity: 0.7;
+        }
 
-      .total-row td {
-        border-top: 2px solid #00CCCC;
-        font-weight: 700;
-        color: #333333;
-        padding-top: 0.8rem;
-        font-size: 1rem;
-      }
+        .copy-button:hover {
+            color: #08bbbb;
+            transform: scale(1.1);
+            opacity: 1;
+        }
 
-      .total-row .result-value {
-        font-size: 1rem;
-        color: #00CCCC;
-      }
+        .total-row td {
+            border-top: 2px solid #067c7c;
+            font-weight: 700;
+            color: #333333;
+            padding-top: 0.8rem;
+            font-size: 1rem;
+        }
 
-      .ganancia-container {
-        background: #FFFFFF;
-        padding: 1.5rem;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        border: 1px solid #D1D5DB;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      @media (min-width: 768px) {
         .ganancia-container {
-          grid-template-columns: 1fr 1fr;
+            background: #FFFFFF;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #D1D5DB;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
         }
-      }
 
-      .ganancia-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
+        @media (min-width: 768px) {
+            .ganancia-container { grid-template-columns: 1fr 1fr; }
+        }
 
-      .ganancia-label {
-        color: #333333;
-        font-size: 1rem;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-      }
+        .ganancia-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-      .ganancia-value {
-        color: #00CCCC;
-        font-size: 2.5rem;
-        font-weight: 700;
-        line-height: 1;
-        position: relative;
-        padding-bottom: 0.4rem;
-      }
+        .ganancia-label {
+            color: #333333;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
 
-      .ganancia-value::after {
-        content: "";
-        display: block;
-        width: 70%;
-        max-width: 120px;
-        height: 3px;
-        background: #00CCCC;
-        margin: 0.4rem auto 0;
-        border-radius: 2px;
-      }
+        .ganancia-value {
+            color: #067c7c;
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+            padding-bottom: 0.4rem;
+            position: relative;
+        }
 
-      .ganancia-sub-value {
-        color: #6B7280;
-        font-size: 1rem;
-        font-weight: 400;
-        margin-top: 0.4rem;
-      }
+        .ganancia-value::after {
+            content: "";
+            display: block;
+            width: 70%;
+            max-width: 120px;
+            height: 3px;
+            background: #067c7c;
+            margin: 0.4rem auto 0;
+            border-radius: 2px;
+        }
 
-      #cesion-derechos-section {
-        display: none;
-      }
+        #cesion-derechos-section {
+            display: none;
+        }
 
-      #cesion-derechos-section.active {
-        display: block;
-        grid-column: 1 / -1;
-        margin-top: 1.5rem;
-      }
+        #cesion-derechos-section.active {
+            display: block;
+            grid-column: 1 / -1;
+            margin-top: 1.5rem;
+        }
 
-      #cesion-derechos-section table {
-        font-size: 0.9rem;
-      }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #067c7c;
+            color: #FFFFFF;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 138, 138, 0.4);
+            opacity: 0;
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+            transform: translateY(30px);
+            z-index: 1000;
+            font-size: 0.85rem;
+        }
 
-      .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #00CCCC;
-        color: #FFFFFF;
-        padding: 0.7rem 1.2rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0, 138, 138, 0.4);
-        opacity: 0;
-        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-        transform: translateY(30px);
-        z-index: 1000;
-        font-size: 0.85rem;
-      }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-      .toast.show {
-        opacity: 1;
-        transform: translateY(0);
-      }
+        .error-message {
+            color: #DC2626;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
 
-      .error-message {
-        color: #DC2626;
-        font-size: 0.85rem;
-        margin-top: 0.3rem;
-        display: none;
-      }
-
-      .details-table {
-        background: rgba(0, 204, 204, 0.05);
-      }
-
-      .details-table th {
-        background: linear-gradient(90deg, #003035, #008a8a);
-        color: #ffffff;
-        font-weight: 600;
-        padding: 0.4rem;
-      }
-
-      .details-table td {
-        border-bottom: 1px solid rgba(0, 204, 204, 0.1);
-        padding: 0.4rem;
-      }
-
-      .results-container {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        margin-top: 2rem;
-      }
-
-      @media (min-width: 768px) {
         .results-container {
-          grid-template-columns: repeat(2, 1fr);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
         }
-      }
 
-      @media (min-width: 1024px) {
-        .results-container {
-          grid-template-columns: repeat(3, 1fr);
+        @media (min-width: 768px) {
+            .results-container { grid-template-columns: repeat(2, 1fr); }
         }
-      }
 
-      .animate-delay-1 { animation-delay: 0.2s; }
-      .animate-delay-2 { animation-delay: 0.4s; }
-      .animate-delay-3 { animation-delay: 0.6s; }
+        @media (min-width: 1024px) {
+            .results-container { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .animate-delay-1 { animation-delay: 0.2s; }
+        .animate-delay-2 { animation-delay: 0.4s; }
+        .animate-delay-3 { animation-delay: 0.6s; }
     </style>
-  </head>
-  <body class="min-h-screen flex flex-col">
+</head>
+<body class="min-h-screen flex flex-col">
     <!-- Header -->
     <header class="gradient-bg text-white py-4 shadow-lg sticky top-0 z-50">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h1
-          class="text-2xl md:text-3xl font-bold text-center animate-slide-up"
-        >
-          <i class="fas fa-home mr-2"></i> Inmovalor
-        </h1>
-      </div>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-2xl md:text-3xl font-bold text-center animate-slide-up">
+                <i class="fas fa-home mr-2"></i> Inmovalor
+            </h1>
+        </div>
     </header>
 
     <!-- Banner de Dirección -->
-    <div
-      class="bg-offwhite py-4 px-4 sm:px-6 lg:px-8 border-b border-softgray animate-slide-up"
-    >
-      <div class="container mx-auto">
-        <div class="flex items-center">
-          <i class="fas fa-map-marker-alt text-accent mr-4 text-xl"></i>
-          <div>
-            <p class="font-semibold text-dark text-base">
-              {{ propiedad.calle }}, {{ propiedad.id_colonia.nombre }}
-            </p>
-            <p class="text-gray text-sm">
-              {{ propiedad.id_municipio.nombre }}, {{ propiedad.id_estado.nombre }} (CP: {{ propiedad.id_codigo_postal.codigo }})
-            </p>
-          </div>
+    <div class="bg-offwhite py-4 px-4 sm:px-6 lg:px-8 border-b border-softgray animate-slide-up">
+        <div class="container mx-auto">
+            <div class="flex items-center">
+                <i class="fas fa-map-marker-alt text-accent mr-4 text-xl"></i>
+                <div>
+                    <p class="font-semibold text-dark text-base">{{ propiedad.calle }}, {{ propiedad.id_colonia.nombre }}</p>
+                    <p class="text-gray text-sm">{{ propiedad.id_municipio.nombre }}, {{ propiedad.id_estado.nombre }} (CP: {{ propiedad.id_codigo_postal.codigo }})</p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <!-- Sección Principal -->
     <section class="py-8 flex-grow">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <h2 class="text-3xl md:text-4xl font-bold text-primary text-center mb-8 animate-fade-in">
-          Resultados de Evaluación
-        </h2>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-primary text-center mb-8 animate-fade-in">
+                Resultados de Evaluación
+            </h2>
 
-        {% if messages %}
-        {% for message in messages %}
-        <div class="mb-6 p-4 rounded-lg bg-accent/10 border border-accent text-dark text-sm max-w-md mx-auto animate-slide-up">
-          <div class="flex items-center">
-            <i class="fas fa-info-circle mr-2 text-accent text-base"></i>
-            <span>{{ message }}</span>
-          </div>
-        </div>
-        {% endfor %}
-        {% endif %}
-
-        {% if propiedad %}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Mapa -->
-          <div class="card shadow-card-glow animate-slide-up animate-delay-1">
-            <div class="map-container">
-              <div id="map"></div>
-              <div class="map-overlay">
-                <div class="text-center text-dark animate-pulse-glow">
-                  <i class="fas fa-map text-2xl mb-2"></i>
-                  <p class="text-xs font-semibold">Mapa de la propiedad</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Valores -->
-          <div class="card shadow-card-glow animate-slide-up animate-delay-2">
-            <div class="space-y-4 p-4">
-              <div class="bg-white/80 border border-accent/20 rounded-lg p-3 backdrop-filter backdrop-blur">
-                <div class="flex items-center mb-2">
-                  <i class="fas fa-dollar-sign text-accent mr-2 text-sm"></i>
-                  <h4 class="font-semibold text-dark text-sm">Valor Comercial Aproximado</h4>
-                </div>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="mb-6 p-4 rounded-lg bg-accent/10 border border-accent text-dark text-sm max-w-md mx-auto animate-slide-up">
                 <div class="flex items-center">
-                  <span class="value-pill" data-value="{{ propiedad.valor_comercial|floatformat:2 }}">
-                    ${{ propiedad.valor_comercial|floatformat:2 }}
-                  </span>
-                  <div class="relative copy-container">
-                    <i class="fas fa-copy copy-icon ml-2 cursor-pointer text-sm" data-target="comercial"></i>
-                  </div>
+                    <i class="fas fa-info-circle mr-2 text-accent text-base"></i>
+                    <span>{{ message }}</span>
                 </div>
-              </div>
-              <div class="bg-white/80 border border-secondary/20 rounded-lg p-3 backdrop-filter backdrop-blur">
-                <div class="flex items-center mb-2">
-                  <i class="fas fa-gavel text-secondary mr-2 text-sm"></i>
-                  <h4 class="font-semibold text-dark text-sm">Valor Judicial Aproximado</h4>
-                </div>
-                <div class="flex items-center">
-                  <span class="value-pill" data-value="{{ propiedad.valor_judicial|floatformat:2 }}">
-                    ${{ propiedad.valor_judicial|floatformat:2 }}
-                  </span>
-                  <div class="relative copy-container">
-                    <i class="fas fa-copy copy-icon ml-2 cursor-pointer text-sm" data-target="judicial"></i>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
+            {% endfor %}
+            {% endif %}
 
-          <!-- Detalles de la Propiedad -->
-          <div class="card shadow-card-glow animate-slide-up animate-delay-3">
-            <div class="p-4">
-              <h4 class="font-semibold text-dark text-sm mb-3">Detalles de la Propiedad</h4>
-              <table class="details-table">
-                <tr class="detail-item">
-                  <th><i class="fas fa-building text-accent mr-1 text-xs"></i> Tipo</th>
-                  <td>{{ propiedad.tipo_propiedad }}</td>
-                </tr>
-                {% if propiedad.tipo_propiedad != 'Terreno' %}
-                <tr class="detail-item">
-                  <th><i class="fas fa-bed text-accent mr-1 text-xs"></i> Recámaras</th>
-                  <td>{{ propiedad.recamaras }}</td>
-                </tr>
-                <tr class="detail-item">
-                  <th><i class="fas fa-bath text-accent mr-1 text-xs"></i> Sanitarios</th>
-                  <td>{{ propiedad.sanitarios }}</td>
-                </tr>
-                <tr class="detail-item">
-                  <th><i class="fas fa-car text-accent mr-1 text-xs"></i> Estacionamiento</th>
-                  <td>{{ propiedad.estacionamiento }}</td>
-                </tr>
-                <tr class="detail-item">
-                  <th><i class="fas fa-ruler-combined text-accent mr-1 text-xs"></i> Construcción</th>
-                  <td>{{ propiedad.construccion }} m²</td>
-                </tr>
-                <tr class="detail-item">
-                  <th><i class="fas fa-home text-accent mr-1 text-xs"></i> Estado de Conservación</th>
-                  <td>{{ propiedad.estado_conservacion|default:"No especificado" }}</td>
-                </tr>
-                {% endif %}
-                <tr class="detail-item">
-                  <th><i class="fas fa-vector-square text-accent mr-1 text-xs"></i> Terreno</th>
-                  <td>{{ propiedad.terreno }} m²</td>
-                </tr>
-                <tr class="detail-item">
-                  <th><i class="fas fa-comment text-accent mr-1 text-xs"></i> Comentarios</th>
-                  <td>{{ propiedad.comentarios|default:"Sin comentarios adicionales." }}</td>
-                </tr>
-              </table>
+            {% if propiedad %}
+            <div class="results-container">
+                <!-- Mapa -->
+                <div class="card shadow-card-glow animate-slide-up animate-delay-1">
+                    <div class="map-container">
+                        <div class="loading-map" id="loadingMap">
+                            <div class="loading-spinner"></div>
+                            <h3>Cargando mapa...</h3>
+                            <p>Por favor espera mientras se carga la ubicación</p>
+                        </div>
+                        <iframe id="map" allowfullscreen="" loading="lazy" title="Mapa de ubicación"></iframe>
+                        <div class="map-overlay">
+                            <div class="text-center text-dark animate-pulse-glow">
+                                <i class="fas fa-map text-2xl mb-2"></i>
+                                <p class="text-xs font-semibold">Mapa de la propiedad</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Valores -->
+                <div class="card shadow-card-glow animate-slide-up animate-delay-2">
+                    <div class="space-y-4 p-4">
+                        <div class="bg-white/80 border border-secondary/20 rounded-lg p-3 backdrop-filter backdrop-blur">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-dollar-sign text-secondary mr-2 text-sm"></i>
+                                <h4 class="font-semibold text-dark text-sm">Valor Comercial Aproximado</h4>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="value-pill" data-value="{{ propiedad.valor_comercial|floatformat:2 }}">${{ propiedad.valor_comercial|floatformat:2 }}</span>
+                                <button class="copy-button" onclick="copyToClipboard('{{ propiedad.valor_comercial|floatformat:2 }}')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-white/80 border border-secondary/20 rounded-lg p-3 backdrop-filter backdrop-blur">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-gavel text-secondary mr-2 text-sm"></i>
+                                <h4 class="font-semibold text-dark text-sm">Valor Judicial Aproximado</h4>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="value-pill" data-value="{{ propiedad.valor_judicial|floatformat:2 }}">${{ propiedad.valor_judicial|floatformat:2 }}</span>
+                                <button class="copy-button" onclick="copyToClipboard('{{ propiedad.valor_judicial|floatformat:2 }}')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalles de la Propiedad -->
+                <div class="card shadow-card-glow animate-slide-up animate-delay-3">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-dark text-sm mb-3">Detalles de la Propiedad</h4>
+                        <table class="details-table">
+                            <tr class="detail-item">
+                                <th><i class="fas fa-building text-accent mr-1 text-xs"></i> Tipo</th>
+                                <td>{{ propiedad.tipo_propiedad }}</td>
+                            </tr>
+                            {% if propiedad.tipo_propiedad != 'Terreno' %}
+                            <tr class="detail-item">
+                                <th><i class="fas fa-bed text-accent mr-1 text-xs"></i> Recámaras</th>
+                                <td>{{ propiedad.recamaras }}</td>
+                            </tr>
+                            <tr class="detail-item">
+                                <th><i class="fas fa-bath text-accent mr-1 text-xs"></i> Sanitarios</th>
+                                <td>{{ propiedad.sanitarios }}</td>
+                            </tr>
+                            <tr class="detail-item">
+                                <th><i class="fas fa-car text-accent mr-1 text-xs"></i> Estacionamiento</th>
+                                <td>{{ propiedad.estacionamiento }}</td>
+                            </tr>
+                            <tr class="detail-item">
+                                <th><i class="fas fa-ruler-combined text-accent mr-1 text-xs"></i> Construcción</th>
+                                <td>{{ propiedad.construccion }} m²</td>
+                            </tr>
+                            <tr class="detail-item">
+                                <th><i class="fas fa-home text-accent mr-1 text-xs"></i> Estado de Conservación</th>
+                                <td>{{ propiedad.estado_conservacion|default:"No especificado" }}</td>
+                            </tr>
+                            {% endif %}
+                            <tr class="detail-item">
+                                <th><i class="fas fa-vector-square text-accent mr-1 text-xs"></i> Terreno</th>
+                                <td>{{ propiedad.terreno }} m²</td>
+                            </tr>
+                            <tr class="detail-item">
+                                <th><i class="fas fa-comment text-accent mr-1 text-xs"></i> Comentarios</th>
+                                <td>{{ propiedad.comentarios|default:"Sin comentarios adicionales." }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Botones -->
-        <div class="text-center mt-6 flex justify-center gap-4">
-          <a href="{% url 'estimaciones' %}" class="button inline-flex items-center">
-            <i class="fas fa-arrow-left mr-1"></i> Nueva evaluación
-          </a>
-          <a href="{% url 'estimaciones' %}?generar_reporte_individual=1&id_propiedad={{ propiedad.id_propiedad }}" class="button inline-flex items-center">
-            <i class="fa fa-file-pdf mr-1"></i> Generar Reporte
-          </a>
-          <button id="toggle-honorarios" class="button inline-flex items-center animate-pulse-glow" aria-expanded="false">
-            Cálculo de honorarios <i class="fas fa-chevron-down ml-1"></i>
-          </button>
+            <!-- Botones -->
+            <div class="text-center mt-6 flex justify-center gap-4">
+                <a href="{% url 'estimaciones' %}" class="button inline-flex items-center">
+                    <i class="fas fa-arrow-left mr-1"></i> Nueva evaluación
+                </a>
+                <a href="{% url 'estimaciones' %}?generar_reporte_individual=1&id_propiedad={{ propiedad.id_propiedad }}" class="button inline-flex items-center">
+                    <i class="fa fa-file-pdf mr-1"></i> Generar Reporte
+                </a>
+                <button id="toggle-honorarios" class="button inline-flex items-center animate-pulse-glow" aria-expanded="false">
+                    Cálculo de honorarios <i class="fas fa-chevron-down ml-1"></i>
+                </button>
+            </div>
+            {% else %}
+            <div class="card shadow-card-glow p-6 text-center max-w-lg mx-auto animate-slide-up">
+                <i class="fas fa-exclamation-circle text-accent text-2xl mb-3"></i>
+                <h3 class="font-semibold text-dark text-base mb-2">Datos no disponibles</h3>
+                <p class="text-gray text-sm mb-4">No se encontraron datos de la propiedad solicitada.</p>
+                <a href="{% url 'estimaciones' %}" class="button inline-flex items-center">
+                    <i class="fas fa-arrow-left mr-1"></i> Volver
+                </a>
+            </div>
+            {% endif %}
         </div>
-        {% else %}
-        <div class="card shadow-card-glow p-6 text-center max-w-lg mx-auto animate-slide-up">
-          <i class="fas fa-exclamation-circle text-accent text-2xl mb-3"></i>
-          <h3 class="font-semibold text-dark text-base mb-2">Datos no disponibles</h3>
-          <p class="text-gray text-sm mb-4">No se encontraron datos de la propiedad solicitada.</p>
-          <a href="{% url 'estimaciones' %}" class="button inline-flex items-center">
-            <i class="fas fa-arrow-left mr-1"></i> Volver
-          </a>
-        </div>
-        {% endif %}
-      </div>
     </section>
 
-    <!-- Sección de Calculadora de Honorarios -->
+    <!-- Calculadora de Honorarios -->
     <section id="honorarios" class="bg-white py-8 border-t border-gray hidden fade">
-          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="main-wrapper">
-              <header class="header-cotizacion">
-                <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
-              </header>
+                <header class="header-cotizacion">
+                    <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
+                </header>
 
-              <form class="input-form-section grid grid-cols-1 md:grid-cols-3 gap-4" id="calculator-form" novalidate>
-                {% csrf_token %}
-                <div>
-                  <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
-                  <select id="calcType" name="calcType" class="form-select" required>
-                    <option value="adjudicado" {% if not calc_type or calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
-                    <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
-                    <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
-                  </select>
-                </div>
-                <div class="col-12 col-md-4">
-                  <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
-                  <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="{{ propiedad.valor_comercial|default_if_none:'0.00'|floatformat:2 }}">
-                  <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
-                  <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
-                </div>                
-                <div class="col-12 col-md-4">
-                  <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
-                  <input type="text" id="precioDeSesion" name="precioDeSesion" value="0" class="form-control" required placeholder="Ingresa el precio">
-                  <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion" value="0">
-                  <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
-                </div>                
-              </form>
+                <form class="input-form-section grid grid-cols-1 md:grid-cols-3 gap-4" id="calculator-form" novalidate>
+                    {% csrf_token %}
+                    <div>
+                        <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
+                        <select id="calcType" name="calcType" class="form-select" required>
+                            <option value="adjudicado" {% if calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
+                            <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
+                            <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
+                        <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="{{ propiedad.valor_comercial|floatformat:2 }}">
+                        <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
+                        <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
+                    </div>
+                    <div>
+                        <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
+                        <input type="text" id="precioDeSesion" name="precioDeSesion" class="form-control" value="0.00" required placeholder="Ingresa el precio">
+                        <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion" value="0.00">
+                        <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
+                    </div>
+                </form>
 
-              <div class="results-grid" id="results-grid-container">
-                <div id="descripcion-section" class="section-block">
-                  <span class="section-title">DESCRIPCIÓN</span>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Valor Comercial</td>
-                        <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorComercial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
-                      <tr>
-                        <td>Valor Judicial</td>
-                        <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorJudicial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
-                      <tr>
-                        <td>Honorarios</td>
-                        <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
-                      <tr>
-                        <td>Cesión de Derechos</td>
-                        <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCession')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="results-grid" id="results-grid-container">
+                    <div id="descripcion-section" class="section-block">
+                        <span class="section-title">DESCRIPCIÓN</span>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Valor Comercial</td>
+                                    <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayValorComercial')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>Valor Judicial</td>
+                                    <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayValorJudicial')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>Honorarios</td>
+                                    <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayHonorarios')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>Cesión de Derechos</td>
+                                    <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayCession')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="parcialidades-section" class="section-block">
+                        <span class="section-title">PARCIALIDADES</span>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>1er Pago (75%)</td>
+                                    <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayPrimerPago')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>2do Pago</td>
+                                    <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displaySegundoPago')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>3er Pago (25%)</td>
+                                    <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayTercerPago')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td>COSTO TOTAL:</td>
+                                    <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayTotal')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="cesion-derechos-section" class="section-block">
+                        <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Valor Extrajudicial</td>
+                                    <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayValorExt')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td>Cotización (50%)</td>
+                                    <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayCotizacion')"><i class="fas fa-copy"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div id="parcialidades-section" class="section-block">
-                  <span class="section-title">PARCIALIDADES</span>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>1er Pago (75%)</td>
-                        <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayPrimerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
-                      <tr>
-                        <td>2do Pago</td>
-                        <td>
-                          <span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span>
-                          <button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor">
-                            <i class="fas fa-copy"></i>
-                          </button>
-                        </td>
-                      </tr>                      
-                      <tr>
-                        <td>3er Pago (25%)</td>
-                        <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
-                      <tr class="total-row">
-                        <td>COSTO TOTAL:</td>
-                        <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div id="ganancia-container" class="ganancia-container">
+                    <div class="ganancia-item">
+                        <span class="ganancia-label">GANANCIA</span>
+                        <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
+                        <button class="copy-button" onclick="copyToClipboard('displayGanancia')"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <div class="ganancia-item">
+                        <span class="ganancia-label">Costo de Compra</span>
+                        <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
+                        <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')"><i class="fas fa-copy"></i></button>
+                    </div>
                 </div>
 
-                <div id="cesion-derechos-section" class="section-block">
-                  <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Valor Extrajudicial</td>
-                        <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorExt')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
-                      <tr>
-                        <td>Cotización (50%)</td>
-                        <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div id="ganancia-container" class="ganancia-container">
-                <div class="ganancia-item">
-                  <span class="ganancia-label">GANANCIA</span>
-                  <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
-                  <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-                </div>
-                <div class="ganancia-item">
-                  <span class="ganancia-label">Costo de Compra</span>
-                  <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
-                  <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-                </div>
-              </div>
-
-              <div id="toast" class="toast">¡Valor copiado!</div>
+                <div id="toast" class="toast">¡Valor copiado!</div>
             </div>
-          </div>
+        </div>
     </section>
 
     <!-- Footer -->
     <footer class="gradient-bg text-white py-4 mt-auto">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p class="text-sm text-lightgray animate-fade-in">
-          © 2025 Inmovalor. Todos los derechos reservados.
-        </p>
-      </div>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm text-lightgray animate-fade-in">
+                © 2025 Inmovalor. Todos los derechos reservados.
+            </p>
+        </div>
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-      // Función para formatear números con comas
-      function formatNumberWithCommas(number) {
-        return Number(number).toLocaleString("es-MX", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
-      }
+        $(document).ready(function () {
+            // Inicializar mapa
+            function inicializarMapa() {
+                const mapFrame = document.getElementById('map');
+                const loadingMap = document.getElementById('loadingMap');
+                const address = "{{ propiedad.calle }}, {{ propiedad.id_colonia.nombre }}, {{ propiedad.id_municipio.nombre }}, {{ propiedad.id_estado.nombre }}";
+                const esCDMX = "{{ propiedad.id_estado.nombre }}" === "Ciudad de México";
+                const prefijo = esCDMX ? "Alcaldía " : "Municipio ";
 
-      // Aplicar formato a los valores en las píldoras
-      document.addEventListener("DOMContentLoaded", function () {
-        const valuePills = document.querySelectorAll(".value-pill");
-        valuePills.forEach((pill) => {
-          const rawValue = pill.getAttribute("data-value");
-          if (rawValue) {
-            pill.textContent = "$" + formatNumberWithCommas(rawValue);
-          }
-        });
-      });
+                loadingMap.style.display = 'flex';
+                mapFrame.style.opacity = '0.5';
 
-      // Inicialización del mapa de Google Maps
-      function initMap() {
-        const mapElement = document.getElementById("map");
-        const address =
-          "{{ propiedad.calle }}, {{ propiedad.id_colonia.nombre }}, {{ propiedad.id_municipio.nombre }}, {{ propiedad.id_estado.nombre }}";
+                const coloniaCoords = {
+                    "Ciudad de México": {
+                        "Álvaro Obregón": {
+                            "San Ángel": "19.3467,-99.1900",
+                            "Jardines del Pedregal": "19.3308,-99.2100"
+                        },
+                        "Benito Juárez": {
+                            "Del Valle": "19.3933,-99.1642"
+                        }
+                    }
+                };
 
-        // Crear mapa con opciones iniciales
-        const map = new google.maps.Map(mapElement, {
-          zoom: 15,
-          center: { lat: 19.432608, lng: -99.133209 }, // Centro por defecto (Ciudad de México)
-        });
+                const centerPoint = (coloniaCoords["{{ propiedad.id_estado.nombre }}"] && 
+                                    coloniaCoords["{{ propiedad.id_estado.nombre }}"]["{{ propiedad.id_municipio.nombre }}"] && 
+                                    coloniaCoords["{{ propiedad.id_estado.nombre }}"]["{{ propiedad.id_municipio.nombre }}"]["{{ propiedad.id_colonia.nombre }}"]) ? 
+                                    coloniaCoords["{{ propiedad.id_estado.nombre }}"]["{{ propiedad.id_municipio.nombre }}"]["{{ propiedad.id_colonia.nombre }}"] : '23.6345,-102.5528';
+                const query = encodeURIComponent(`${address}`);
+                const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5000!2d${centerPoint.split(',')[1]}!3d${centerPoint.split(',')[0]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${query}!5e0!3m2!1ses!2smx!4v${Date.now()}&z=16`;
 
-        // Geocodificar la dirección
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ address: address }, function (results, status) {
-          if (status === "OK") {
-            map.setCenter(results[0].geometry.location);
-            new google.maps.Marker({
-              map: map,
-              position: results[0].geometry.location,
-              title: address,
+                mapFrame.src = mapUrl;
+                mapFrame.onload = () => {
+                    loadingMap.style.display = 'none';
+                    mapFrame.style.opacity = '1';
+                };
+                mapFrame.onerror = () => {
+                    console.error('Error al cargar el mapa:', mapUrl);
+                    loadingMap.style.display = 'none';
+                    mapFrame.style.opacity = '1';
+                    $('#toast').text('Error al cargar el mapa. Intenta de nuevo.').addClass('show').css('background', '#DC2626');
+                    setTimeout(() => $('#toast').removeClass('show'), 3000);
+                };
+            }
+
+            // Formatear números en value-pill
+            document.querySelectorAll(".value-pill").forEach(pill => {
+                const rawValue = pill.getAttribute("data-value");
+                if (rawValue) {
+                    pill.textContent = "$" + Number(rawValue).toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                }
             });
-          } else {
-            console.error("Geocode falló debido a: " + status);
-          }
-        });
-      }
 
-      // Smooth scroll para los enlaces
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault();
-          document.querySelector(this.getAttribute("href")).scrollIntoView({
-            behavior: "smooth",
-          });
-        });
-      });
+            // Copiar al portapapeles
+            window.copyToClipboard = function(elementId) {
+                const element = document.getElementById(elementId) || document.querySelector(`[data-value="${elementId.split('-')[1]}"]`);
+                const text = element.textContent || element.getAttribute("data-value");
+                navigator.clipboard.writeText(text).then(() => {
+                    $('#toast').addClass('show');
+                    setTimeout(() => $('#toast').removeClass('show'), 2000);
+                }).catch(err => {
+                    console.error('Error al copiar:', err);
+                    $('#toast').text('Error al copiar.').addClass('show').css('background', '#DC2626');
+                    setTimeout(() => $('#toast').removeClass('show'), 3000);
+                });
+            };
 
-      // Script para copiar valores (sección de resultados)
-      document.querySelectorAll(".copy-icon").forEach((icon) => {
-        icon.addEventListener("click", function () {
-          const container = this.closest(".copy-container");
-          const target = this.getAttribute("data-target");
-          let value;
-          if (target === "comercial") {
-            value = document.querySelector("[data-value]").getAttribute("data-value");
-          } else if (target === "judicial") {
-            value = document.querySelectorAll("[data-value]")[1].getAttribute("data-value");
-          }
-          navigator.clipboard.writeText("$" + value).then(() => {
-            const message = document.createElement("span");
-            message.textContent = "Copiado";
-            message.style.cssText = "position: absolute; top: -25px; left: 50%; transform: translateX(-50%); background-color: #00cccc; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; z-index: 10;";
-            container.appendChild(message);
-            this.classList.remove("fa-copy");
-            this.classList.add("fa-check");
-            this.style.color = "#00cccc";
-            setTimeout(() => {
-              message.remove();
-              this.classList.remove("fa-check");
-              this.classList.add("fa-copy");
-              this.style.color = "#0d1d1f";
-            }, 2000);
-          }).catch((err) => {
-            console.error("Error al copiar: ", err);
-          });
-        });
-      });
+            // Formatear números
+            function getCleanNumber(value) {
+                if (typeof value !== 'string') return parseFloat(value) || 0;
+                return parseFloat(value.replace(/[^0-9.-]+/g, '').replace(/,/g, '')) || 0;
+            }
 
-      // Script para copiar valores (calculadora de honorarios)
-      function copyToClipboard(elementId) {
-        const element = document.getElementById(elementId);
-        const text = element.textContent;
-        navigator.clipboard.writeText(text).then(() => {
-          const toast = document.getElementById("toast");
-          toast.classList.add("show");
-          setTimeout(() => {
-            toast.classList.remove("show");
-          }, 2000);
-        }).catch((err) => {
-          console.error("Error al copiar: ", err);
-        });
-      }
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 }).format(value);
+            }
 
-      // Función para limpiar y obtener un número float
-      function getCleanNumber(value) {
-        if (typeof value !== 'string') return parseFloat(value) || 0;
-        return parseFloat(value.replace(/[^0-9.-]+/g, '').replace(/,/g, '')) || 0;
-      }
+            function formatPercentage(value) {
+                return new Intl.NumberFormat('es-MX', { style: 'percent', minimumFractionDigits: 2 }).format(value / 100);
+            }
 
-      // Función para formatear números a moneda
-      function formatCurrency(value) {
-        return new Intl.NumberFormat('es-MX', {
-          style: 'currency',
-          currency: 'MXN',
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }).format(value);
-      }
+            // Formatear input en tiempo real
+            function formatNumberInput(input, hiddenInput) {
+                input.addEventListener('input', function() {
+                    let value = this.value.replace(/[^0-9.]/g, '');
+                    let parts = value.split('.');
+                    if (parts.length > 2) value = parts[0] + '.' + parts.slice(1).join('');
+                    if (value === '' || value === '.') {
+                        this.value = value;
+                        hiddenInput.value = 0;
+                        calculateResults();
+                        return;
+                    }
+                    let formattedValue = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    if (parts[1]) formattedValue += '.' + parts[1];
+                    this.value = formattedValue;
+                    hiddenInput.value = getCleanNumber(value);
+                    calculateResults();
+                });
+            }
 
-      // Función para formatear porcentajes
-      function formatPercentage(value) {
-        return new Intl.NumberFormat('es-MX', {
-          style: 'percent',
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }).format(value / 100);
-      }
+            // Calcular resultados
+            function calculateResults() {
+                const form = $('#calculator-form');
+                const calcType = $('#calcType').val();
+                const valorComercial = getCleanNumber($('#valorComercial').val());
+                const precioDeSesion = getCleanNumber($('#precioDeSesion').val());
+                const valorComercialError = $('#valorComercialError');
+                const precioDeSesionError = $('#precioDeSesionError');
+                const resultsGridContainer = $('#results-grid-container');
+                const descripcionSection = $('#descripcion-section');
+                const parcialidadesSection = $('#parcialidades-section');
+                const cesionDerechosSection = $('#cesion-derechos-section');
+                const gananciaContainer = $('#ganancia-container');
 
-      // Función principal para calcular y actualizar resultados
-      function calculateResults() {
-        const form = document.getElementById('calculator-form');
-        const calcType = document.getElementById('calcType').value;
-        const resultsGridContainer = document.getElementById('results-grid-container');
-        const descripcionSection = document.getElementById('descripcion-section');
-        const parcialidadesSection = document.getElementById('parcialidades-section');
-        const gananciaContainer = document.getElementById('ganancia-container');
-        const cesionDerechosSection = document.getElementById('cesion-derechos-section');
-        const valorComercialInput = document.getElementById('valorComercial');
-        const precioDeSesionInput = document.getElementById('precioDeSesion');
-        const valorComercialError = document.getElementById('valorComercialError');
-        const precioDeSesionError = document.getElementById('precioDeSesionError');
-        const precioDeSesionHidden = document.getElementById('precioDeSesionHidden');
+                if (isNaN(valorComercial) || valorComercial < 0) {
+                    valorComercialError.show();
+                    return;
+                } else {
+                    valorComercialError.hide();
+                }
 
-        // Verificar que los elementos existan
-        if (!form || !valorComercialInput || !precioDeSesionInput || !precioDeSesionHidden) {
-          console.error("Uno o más elementos del formulario no se encontraron.");
-          return;
-        }
+                if (isNaN(precioDeSesion) || precioDeSesion < 0) {
+                    precioDeSesionError.show();
+                    return;
+                } else {
+                    precioDeSesionError.hide();
+                }
 
-        // Validar entradas
-        const valorComercialClean = getCleanNumber(valorComercialInput.value);
-        const precioDeSesionClean = getCleanNumber(precioDeSesionInput.value);
+                if (calcType === 'derechos_cobranza') {
+                    descripcionSection.hide();
+                    parcialidadesSection.hide();
+                    gananciaContainer.hide();
+                    cesionDerechosSection.show().addClass('active');
+                    resultsGridContainer.css('grid-template-columns', '1fr');
+                } else {
+                    descripcionSection.show();
+                    parcialidadesSection.show();
+                    gananciaContainer.show();
+                    cesionDerechosSection.hide().removeClass('active');
+                    resultsGridContainer.css('grid-template-columns', window.matchMedia("(min-width: 768px)").matches ? 'repeat(2, 1fr)' : '1fr');
+                }
 
-        if (isNaN(valorComercialClean) || valorComercialClean < 0) {
-          valorComercialError.style.display = 'block';
-          return;
-        } else {
-          valorComercialError.style.display = 'none';
-        }
+                const formData = new FormData(form[0]);
+                formData.set('valorComercial', valorComercial);
+                formData.set('precioDeSesion', precioDeSesion);
 
-        if (isNaN(precioDeSesionClean) || precioDeSesionClean < 0) {
-          precioDeSesionError.style.display = 'block';
-          return;
-        } else {
-          precioDeSesionError.style.display = 'none';
-        }
+                $.ajax({
+                    url: '{% url "honorarios_calculator" %}',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    success: function(data) {
+                        $('#displayValorComercial').text(data.valor_comercial);
+                        $('#displayValorJudicial').text(data.valor_judicial);
+                        $('#displayHonorarios').text(data.honorarios);
+                        $('#displayCession').text(data.precio_de_sesion);
+                        $('#displayPrimerPago').text(data.firma);
+                        $('#displaySegundoPago').text(data.segundo_pago || data.cotizacion || data.precio_de_sesion);
+                        $('#displayTercerPago').text(data.entrega);
+                        $('#displayTotal').text(formatCurrency(
+                            getCleanNumber(data.firma) +
+                            getCleanNumber(data.segundo_pago || data.cotizacion || data.precio_de_sesion) +
+                            getCleanNumber(data.entrega)
+                        ));
+                        $('#displayGanancia').text(data.ganancia);
+                        $('#displayCostoCompra').text(data.porcentaje_vc);
+                        $('#displayValorExt').text(data.valor_ext);
+                        $('#displayCotizacion').text(data.cotizacion);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error en AJAX:', status, error);
+                        $('#toast').text('Error al calcular. Intenta de nuevo.').addClass('show').css('background', '#DC2626');
+                        setTimeout(() => $('#toast').removeClass('show'), 3000);
+                    }
+                });
+            }
 
-        // Actualizar el valor oculto para precioDeSesion
-        precioDeSesionHidden.value = precioDeSesionClean;
+            // Inicialización
+            const valorComercialInput = document.getElementById('valorComercial');
+            const precioDeSesionInput = document.getElementById('precioDeSesion');
+            const valorComercialHidden = document.getElementById('valorComercialHidden');
+            const precioDeSesionHidden = document.getElementById('precioDeSesionHidden');
+            const toggleHonorariosButton = document.getElementById('toggle-honorarios');
+            const honorariosSection = document.getElementById('honorarios');
 
-        // Manejo de la visibilidad de las secciones
-        if (calcType === 'derechos_cobranza') {
-          descripcionSection.style.display = 'none';
-          parcialidadesSection.style.display = 'none';
-          gananciaContainer.style.display = 'none';
-          cesionDerechosSection.style.display = 'block';
-          cesionDerechosSection.classList.add('active');
-          resultsGridContainer.style.gridTemplateColumns = '1fr';
-        } else {
-          descripcionSection.style.display = 'block';
-          parcialidadesSection.style.display = 'block';
-          gananciaContainer.style.display = 'grid';
-          cesionDerechosSection.style.display = 'none';
-          cesionDerechosSection.classList.remove('active');
-          if (window.matchMedia("(min-width: 768px)").matches) {
-            resultsGridContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-          } else {
-            resultsGridContainer.style.gridTemplateColumns = '1fr';
-          }
-        }
+            formatNumberInput(valorComercialInput, valorComercialHidden);
+            formatNumberInput(precioDeSesionInput, precioDeSesionHidden);
+            inicializarMapa();
+            calculateResults();
 
-        const formData = new FormData(form);
-        formData.set('valorComercial', valorComercialClean);
-        formData.set('precioDeSesion', precioDeSesionClean);
-
-        fetch('{% url "honorarios_calculator" %}', {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}'
-          }
-        })
-        .then(response => {
-          if (!response.ok) {
-            return response.json().then(errorData => {
-              throw new Error(errorData.error || 'Error en la solicitud al servidor');
+            $('#calcType').on('change', calculateResults);
+            $('#calculator-form').on('submit', function(e) {
+                e.preventDefault();
+                calculateResults();
             });
-          }
-          return response.json();
-        })
-        .then(data => {
-          document.getElementById('displayValorComercial').textContent = data.valor_comercial;
-          document.getElementById('displayValorJudicial').textContent = data.valor_judicial;
-          document.getElementById('displayHonorarios').textContent = data.honorarios;
-          document.getElementById('displayCession').textContent = data.precio_de_sesion;
-          document.getElementById('displayPrimerPago').textContent = data.firma;
-          document.getElementById('displaySegundoPago').textContent = data.segundo_pago || data.cotizacion || data.precio_de_sesion;
-          document.getElementById('displayTercerPago').textContent = data.entrega;
-          const primerPago = getCleanNumber(data.firma);
-          const segundoPago = getCleanNumber((calcType === 'derechos_cobranza') ? data.cotizacion : data.precio_de_sesion);
-          const tercerPago = getCleanNumber(data.entrega);
-          const totalCalculado = primerPago + segundoPago + tercerPago;
-          document.getElementById('displayTotal').textContent = formatCurrency(totalCalculado);
-          document.getElementById('displayGanancia').textContent = data.ganancia;
-          document.getElementById('displayCostoCompra').textContent = data.porcentaje_vc;
-          document.getElementById('displayValorExt').textContent = data.valor_ext;
-          document.getElementById('displayCotizacion').textContent = data.cotizacion;
-        })
-        .catch(error => {
-          console.error('Error en la solicitud Fetch:', error);
-          const toast = document.getElementById('toast');
-          toast.textContent = 'Error al calcular. Intenta de nuevo.';
-          toast.style.background = '#DC2626';
-          toast.classList.add('show');
-          setTimeout(() => {
-            toast.classList.remove('show');
-            toast.style.background = '#00CCCC';
-            toast.textContent = '¡Valor copiado!';
-          }, 3000);
+
+            toggleHonorariosButton.addEventListener('click', function() {
+                honorariosSection.classList.toggle('hidden');
+                const isHidden = honorariosSection.classList.contains('hidden');
+                this.innerHTML = isHidden ?
+                    'Cálculo de honorarios <i class="fas fa-chevron-down ml-1"></i>' :
+                    'Ocultar cálculo <i class="fas fa-chevron-up ml-1"></i>';
+                this.setAttribute('aria-expanded', !isHidden);
+                if (!isHidden) {
+                    calculateResults();
+                    honorariosSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
         });
-      }
-
-      // Función para formatear el input con comas mientras se escribe
-      function formatNumberInput(input, hiddenInput) {
-        input.addEventListener('input', function(e) {
-          let value = input.value.replace(/[^0-9.]/g, ''); // Permitir solo números y punto
-          let caretPos = input.selectionStart;
-          let originalLength = input.value.length;
-
-          // Manejar el punto decimal
-          let parts = value.split('.');
-          if (parts.length > 2) {
-            value = parts[0] + '.' + parts.slice(1).join('');
-          }
-
-          if (value === '' || value === '.') {
-            input.value = value;
-            if (hiddenInput) hiddenInput.value = getCleanNumber(value);
-            calculateResults();
-            return;
-          }
-
-          // Formatear la parte entera con comas
-          let formattedValue = '';
-          if (value.includes('.')) {
-            let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            formattedValue = integerPart + '.' + (parts[1] || '');
-          } else {
-            formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-          }
-
-          input.value = formattedValue;
-
-          // Actualizar el campo oculto si existe
-          if (hiddenInput) hiddenInput.value = getCleanNumber(value);
-
-          // Ajustar la posición del cursor
-          let newLength = formattedValue.length;
-          let diff = newLength - originalLength;
-          input.setSelectionRange(caretPos + diff, caretPos + diff);
-
-          calculateResults();
-        });
-
-        // Formatear valor inicial
-        let initialValue = getCleanNumber(input.value);
-        input.value = initialValue === 0 ? '0' : new Intl.NumberFormat('es-MX').format(initialValue);
-        if (hiddenInput) hiddenInput.value = initialValue;
-      }
-
-      // Ejecutar al cargar la página
-      document.addEventListener("DOMContentLoaded", function () {
-        const toggleHonorariosButton = document.getElementById("toggle-honorarios");
-        const honorariosSection = document.getElementById("honorarios");
-        const valorComercialInput = document.getElementById("valorComercial");
-        const precioDeSesionInput = document.getElementById("precioDeSesion");
-        const valorComercialHidden = document.getElementById("valorComercialHidden");
-        const precioDeSesionHidden = document.getElementById("precioDeSesionHidden");
-        const calcTypeInput = document.getElementById("calcType");
-        const form = document.getElementById("calculator-form");
-
-        // Verificar que los elementos existan
-        if (!toggleHonorariosButton || !honorariosSection || !valorComercialInput || 
-            !precioDeSesionInput || !valorComercialHidden || !precioDeSesionHidden || 
-            !calcTypeInput || !form) {
-          console.error("Uno o más elementos del DOM no se encontraron.");
-          return;
-        }
-
-        // Formatear valores iniciales
-        const valorComercialValue = valorComercialInput.value || "0.00";
-        valorComercialInput.value = formatNumberWithCommas(valorComercialValue);
-        valorComercialHidden.value = getCleanNumber(valorComercialValue);
-        precioDeSesionInput.value = formatNumberWithCommas("0.00");
-        precioDeSesionHidden.value = "0.00";
-
-        // Aplicar formateo en tiempo real
-        formatNumberInput(valorComercialInput, valorComercialHidden);
-        formatNumberInput(precioDeSesionInput, precioDeSesionHidden);
-
-        // Ejecutar cálculo inicial
-        calculateResults();
-
-        // Evento para cambios en el tipo de cálculo
-        calcTypeInput.addEventListener("change", calculateResults);
-
-        // Validar formulario al enviar
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
-          calculateResults();
-        });
-
-        // Alternar visibilidad de honorarios y desplazarse
-        toggleHonorariosButton.addEventListener("click", function () {
-          honorariosSection.classList.toggle("hidden");
-          const isHidden = honorariosSection.classList.contains("hidden");
-          toggleHonorariosButton.innerHTML = isHidden
-            ? "Cálculo de honorarios <i class='fas fa-chevron-down ml-1'></i>"
-            : "Ocultar cálculo <i class='fas fa-chevron-up ml-1'></i>";
-          toggleHonorariosButton.setAttribute("aria-expanded", !isHidden);
-          if (!isHidden) {
-            calculateResults();
-            honorariosSection.scrollIntoView({ behavior: "smooth", block: "start" });
-          }
-        });
-
-        // Disparar cálculos en cambios de los inputs
-        valorComercialInput.addEventListener("input", calculateResults);
-        precioDeSesionInput.addEventListener("input", calculateResults);
-      });
     </script>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDldEaEtV3NdG-fY-us0SmbBSh8RHibnpU&libraries=places,geometry&callback=initMap"
-      async
-      defer
-    ></script>
-  </body>
+</body>
 </html>
 {% endblock %}
