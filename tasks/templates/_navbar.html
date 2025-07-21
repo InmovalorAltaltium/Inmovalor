@@ -149,22 +149,14 @@
       margin: 0 1rem;
     }
 
-    .navbar-wrapper .navbar-brand .logo-img {
-      transition: all 0.6s ease;
-      position: absolute;
-      top: 0;
-      left: 0;
+    .navbar-wrapper .navbar-brand:hover .logo-img {
+      opacity: 0 !important;
+      transform: rotateY(90deg) !important;
     }
 
-    .navbar-wrapper .navbar-brand h1 {
-      transition: all 0.6s ease;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      margin: 0;
-      font-size: 2.6rem;
-      white-space: nowrap;
+    .navbar-wrapper .navbar-brand:hover h1 {
+      opacity: 1 !important;
+      transform: translateY(-50%) rotateY(0) !important;
     }
 
     .navbar-wrapper .navbar-nav {
@@ -270,57 +262,57 @@
 
       <div class="nav-bar-content">
         <div class="container-lg px-lg-3">
- Faceted search results for 'django template' (0.002 seconds)
-        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-3">
-          <a href="/" class="navbar-brand" style="position: relative; display: inline-block; height: 65px; width: 250px; overflow: hidden;">
-            <img src="{% static 'images/logonegro.png' %}" width="220" height="65" class="logo-img logo-light" alt="Logo Inmovalor">
-            <img src="{% static 'images/logoblanco.png' %}" width="220" height="65" class="logo-img logo-dark" style="opacity: 0;" alt="Logo Inmovalor">
-            <h1 class="m-0" style="opacity: 0; transform: translateY(-50%) rotateY(90deg);">
-              <span style="color: var(--logo-text-primary);">Inmo</span><span style="color: var(--logo-text-secondary);">valor</span>
-            </h1>
-          </a>
-          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
-            <div class="navbar-nav ms-auto py-0">
-              {% if usuario and usuario.is_staff %}
-                <a href="{% url 'gentelella_page' page='index' %}" class="nav-item nav-link {% if '/admin-panel/index2/' in request.path %}active{% endif %}">Inicio</a>
-              {% else %}
-                <a href="/" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Inicio</a>
-              {% endif %}
-              {% if usuario %}
-                <a href="{% url 'estimaciones' %}" class="nav-item nav-link {% if request.path == '/estimaciones' %}active{% endif %}">Estimación</a>
-                <a href="{% url 'honorarios_calculator' %}" class="nav-item nav-link {% if request.path == '/honorarios' %}active{% endif %}">Honorarios</a>
-                <div class="nav-item dropdown">
-                  <a href="#" class="nav-link dropdown-toggle {% if request.path == '/#Forbes' or request.path == '/#CDMX' or request.path == '/documentacion' %}active{% endif %}" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Ver más
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="moreDropdown">
-                    <li><a class="dropdown-item" href="/#Forbes">Forbes</a></li>
-                    <li><a class="dropdown-item" href="/#CDMX">CDMX</a></li>
-                    <li><a class="dropdown-item" href="{% url 'documentacion' %}">Documentación</a></li>
-                  </ul>
-                </div>
-                <div class="nav-item dropdown">
-                  <a href="#" class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {% if usuario.profile_picture %}
-                      <img src="{{ usuario.profile_picture.url }}" class="rounded-circle me-2" width="30" height="30" alt="Foto de perfil">
-                    {% else %}
-                      <img src="{% static 'img/default_profile.png' %}" class="rounded-circle me-2" width="30" height="30" alt="Foto de perfil por defecto">
-                    {% endif %}
-                    {{ usuario.username }}
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                    <li><a class="dropdown-item logout-link" href="{% url 'signout' %}">Cerrar sesión</a></li>
-                  </ul>
-                </div>
-              {% else %}
-                <a href="{% url 'signin' %}" class="nav-item nav-link {% if request.path == '/signin' %}active{% endif %}">Iniciar sesión</a>
-              {% endif %}
+          <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-3">
+            <a href="/" class="navbar-brand" style="position: relative; display: inline-block; height: 65px; width: 250px; overflow: hidden;">
+              <img src="{% static 'images/logonegro.png' %}" width="220" height="65" class="logo-img logo-light" style="transition: all 0.6s ease; position: absolute; top: 0; left: 0;" alt="Logo Inmovalor">
+              <img src="{% static 'images/logoblanco.png' %}" width="220" height="65" class="logo-img logo-dark" style="transition: all 0.6s ease; position: absolute; top: 0; left: 0; opacity: 0;" alt="Logo Inmovalor">
+              <h1 class="m-0" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); opacity: 0; transition: all 0.6s ease; margin: 0; font-size: 2.6rem; white-space: nowrap;">
+                <span style="color: var(--logo-text-primary);">Inmo</span><span style="color: var(--logo-text-secondary);">valor</span>
+              </h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
+              <div class="navbar-nav ms-auto py-0">
+                {% if usuario and usuario.is_staff %}
+                  <a href="{% url 'gentelella_page' page='index' %}" class="nav-item nav-link {% if '/admin-panel/index2/' in request.path %}active{% endif %}">Inicio</a>
+                {% else %}
+                  <a href="/" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Inicio</a>
+                {% endif %}
+                {% if usuario %}
+                  <a href="{% url 'estimaciones' %}" class="nav-item nav-link {% if request.path == '/estimaciones' %}active{% endif %}">Estimación</a>
+                  <a href="{% url 'honorarios_calculator' %}" class="nav-item nav-link {% if request.path == '/honorarios' %}active{% endif %}">Honorarios</a>
+                  <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle {% if request.path == '/#Forbes' or request.path == '/#CDMX' or request.path == '/documentacion' %}active{% endif %}" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Ver más
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="moreDropdown">
+                      <li><a class="dropdown-item" href="/#Forbes">Forbes</a></li>
+                      <li><a class="dropdown-item" href="/#CDMX">CDMX</a></li>
+                      <li><a class="dropdown-item" href="{% url 'documentacion' %}">Documentación</a></li>
+                    </ul>
+                  </div>
+                  <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      {% if usuario.profile_picture %}
+                        <img src="{{ usuario.profile_picture.url }}" class="rounded-circle me-2" width="30" height="30" alt="Foto de perfil">
+                      {% else %}
+                        <img src="{% static 'img/default_profile.png' %}" class="rounded-circle me-2" width="30" height="30" alt="Foto de perfil por defecto">
+                      {% endif %}
+                      {{ usuario.username }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                      <li><a class="dropdown-item logout-link" href="{% url 'signout' %}">Cerrar sesión</a></li>
+                    </ul>
+                  </div>
+                {% else %}
+                  <a href="{% url 'signin' %}" class="nav-item nav-link {% if request.path == '/signin' %}active{% endif %}">Iniciar sesión</a>
+                {% endif %}
+              </div>
             </div>
-          </div>
-        </nav>
+          </nav>
+        </div>
       </div>
     </div>
   </div>
@@ -369,39 +361,6 @@
         logoText.style.opacity = '0';
         logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
       }
-
-      function toggleLogoText() {
-        const logoLight = document.querySelector('.navbar-wrapper .logo-light');
-        const logoDark = document.querySelector('.navbar-wrapper .logo-dark');
-        const logoText = document.querySelector('.navbar-wrapper .navbar-brand h1');
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-
-        if (logoText.style.opacity === '1') {
-          logoText.style.opacity = '0';
-          logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
-          if (currentTheme === 'dark') {
-            logoDark.style.opacity = '1';
-            logoDark.style.transform = 'rotateY(0)';
-            logoLight.style.opacity = '0';
-            logoLight.style.transform = 'rotateY(90deg)';
-          } else {
-            logoLight.style.opacity = '1';
-            logoLight.style.transform = 'rotateY(0)';
-            logoDark.style.opacity = '0';
-            logoDark.style.transform = 'rotateY(90deg)';
-          }
-        } else {
-          logoText.style.opacity = '1';
-          logoText.style.transform = 'translateY(-50%) rotateY(0)';
-          logoLight.style.opacity = '0';
-          logoLight.style.transform = 'rotateY(90deg)';
-          logoDark.style.opacity = '0';
-          logoDark.style.transform = 'rotateY(90deg)';
-        }
-      }
-
-      setInterval(toggleLogoText, 5000);
-      toggleLogoText();
     });
   </script>
 </body>
