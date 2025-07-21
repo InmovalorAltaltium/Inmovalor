@@ -36,16 +36,6 @@
     transition: all 0.3s ease;
   }
 
-  .main-content {
-    padding-top: 50px; /* Ajusta según la altura de la barra */
-  }
-
-  @media (max-width: 991px) {
-    .main-content {
-      padding-top: 80px; /* Ajusta para pantallas más pequeñas */
-    }
-  }
-
   .topbar-content, .nav-bar-content {
     background-color: var(--nav-bg);
     transition: background-color 0.3s ease;
@@ -230,98 +220,92 @@
   }
 </style>
 
-<body>
-  <div class="combined-bar">
-    <div class="topbar-content d-none d-lg-block">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-6 text-center text-lg-start mb-2 mb-lg-0">
-            <div class="contact-info d-inline-flex align-items-center">
-              <a href="mailto:contacto@altaltiumrealestates.com">
-                <i class="fa fa-envelope"></i> contacto@altaltiumrealestates.com
-              </a>
-              <span class="contact-separator">|</span>
-              <a href="tel:+525549065428">
-                <i class="fa fa-phone-alt"></i> 55 4906 5428
-              </a>
-            </div>
+<div class="combined-bar">
+  <div class="topbar-content d-none d-lg-block">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 text-center text-lg-start mb-2 mb-lg-0">
+          <div class="contact-info d-inline-flex align-items-center">
+            <a href="mailto:contacto@altaltiumrealestates.com">
+              <i class="fa fa-envelope"></i> contacto@altaltiumrealestates.com
+            </a>
+            <span class="contact-separator">|</span>
+            <a href="tel:+525549065428">
+              <i class="fa fa-phone-alt"></i> 55 4906 5428
+            </a>
           </div>
-          <div class="col-lg-6 text-center text-lg-end">
-            <div class="social-links d-inline-flex align-items-center">
-              <a href="https://www.facebook.com/altaltiumrealestates/" target="_blank"><i class="fab fa-facebook-f"></i></a>
-              <a href="https://www.tiktok.com/@altaltium" target="_blank"><i class="fab fa-tiktok"></i></a>
-              <a href="https://www.instagram.com/altaltium/#" target="_blank"><i class="fab fa-instagram"></i></a>
-              <a href="https://wa.me/5215549065428" target="_blank"><i class="fab fa-whatsapp"></i></a>
-              <a href="https://www.youtube.com/@altaltium" target="_blank"><i class="fab fa-youtube"></i></a>
-              <button class="theme-toggle" aria-label="Cambiar tema">
-                <i class="fas fa-sun"></i>
-              </button>
-            </div>
+        </div>
+        <div class="col-lg-6 text-center text-lg-end">
+          <div class="social-links d-inline-flex align-items-center">
+            <a href="https://www.facebook.com/altaltiumrealestates/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.tiktok.com/@altaltium" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/altaltium/#" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/5215549065428" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.youtube.com/@altaltium" target="_blank"><i class="fab fa-youtube"></i></a>
+            <button class="theme-toggle" aria-label="Cambiar tema">
+              <i class="fas fa-sun"></i>
+            </button>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="nav-bar-content">
-      <div class="container-lg px-lg-3">
-        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-3">
-          <a href="/" class="navbar-brand" style="position: relative; display: inline-block; height: 65px; width: 250px; overflow: hidden;">
-            <img src="{% static 'images/logonegro.png' %}" width="220" height="65" class="logo-img logo-light" style="transition: all 0.6s ease; position: absolute; top: 0; left: 0;" alt="Logo Inmovalor">
-            <img src="{% static 'images/logoblanco.png' %}" width="220" height="65" class="logo-img logo-dark" style="transition: all 0.6s ease; position: absolute; top: 0; left: 0; opacity: 0;" alt="Logo Inmovalor">
-            <h1 class="m-0" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); opacity: 0; transition: all 0.6s ease; margin: 0; font-size: 2.6rem; white-space: nowrap;">
-              <span style="color: var(--logo-text-primary);">Inmo</span><span style="color: var(--logo-text-secondary);">valor</span>
-            </h1>
-          </a>
-          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
-            <div class="navbar-nav ms-auto py-0">
-              {% if usuario and usuario.is_staff %}
-                <a href="{% url 'gentelella_page' page='index' %}" class="nav-item nav-link {% if '/admin-panel/index2/' in request.path %}active{% endif %}">Inicio</a>
-              {% else %}
-                <a href="/" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Inicio</a>
-              {% endif %}
-              {% if usuario %}
-                <a href="{% url 'estimaciones' %}" class="nav-item nav-link {% if request.path == '/estimaciones' %}active{% endif %}">Estimación</a>
-                <a href="{% url 'honorarios_calculator' %}" class="nav-item nav-link {% if request.path == '/honorarios' %}active{% endif %}">Honorarios</a>
-                <div class="nav-item dropdown">
-                  <a href="#" class="nav-link dropdown-toggle {% if request.path == '/documentacion' or request.path == '/#Forbes' or request.path == '/#CDMX' %}active{% endif %}" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Ver más
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="moreDropdown">
-                    <li><a class="dropdown-item" href="/#Forbes">Forbes</a></li>
-                    <li><a class="dropdown-item" href="/#CDMX">CDMX</a></li>
-                    <li><a class="dropdown-item" href="{% url 'documentacion' %}">Documentación</a></li>
-                  </ul>
-                </div>
-                <div class="nav-item dropdown">
-                  <a href="#" class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {% if usuario.profile_picture %}
-                      <img src="{{ usuario.profile_picture.url }}" class="rounded-circle me-2" width="30" height="30" alt="Foto de perfil">
-                    {% else %}
-                      <img src="{% static 'img/default_profile.png' %}" class="rounded-circle me-2" width="30" height="30" alt="Foto de perfil por defecto">
-                    {% endif %}
-                    {{ usuario.username }}
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                    <li><a class="dropdown-item logout-link" href="{% url 'signout' %}">Cerrar sesión</a></li>
-                  </ul>
-                </div>
-              {% else %}
-                <a href="{% url 'signin' %}" class="nav-item nav-link {% if request.path == '/signin' %}active{% endif %}">Iniciar sesión</a>
-              {% endif %}
-            </div>
-          </div>
-        </nav>
-      </div>
-    </div>
   </div>
 
-  <main class="main-content">
-    <!-- Aquí va el contenido principal de la página -->
-  </main>
-</body>
+  <div class="nav-bar-content">
+    <div class="container-lg px-lg-3">
+      <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-3">
+        <a href="/" class="navbar-brand" style="position: relative; display: inline-block; height: 65px; width: 250px; overflow: hidden;">
+          <img src="{% static 'images/logonegro.png' %}" width="220" height="65" class="logo-img logo-light" style="transition: all 0.6s ease; position: absolute; top: 0; left: 0;" alt="Logo Inmovalor">
+          <img src="{% static 'images/logoblanco.png' %}" width="220" height="65" class="logo-img logo-dark" style="transition: all 0.6s ease; position: absolute; top: 0; left: 0; opacity: 0;" alt="Logo Inmovalor">
+          <h1 class="m-0" style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); opacity: 0; transition: all 0.6s ease; margin: 0; font-size: 2.6rem; white-space: nowrap;">
+            <span style="color: var(--logo-text-primary);">Inmo</span><span style="color: var(--logo-text-secondary);">valor</span>
+          </h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
+          <div class="navbar-nav ms-auto py-0">
+            {% if usuario and usuario.is_staff %}
+              <a href="{% url 'gentelella_page' page='index' %}" class="nav-item nav-link {% if '/admin-panel/index2/' in request.path %}active{% endif %}">Inicio</a>
+            {% else %}
+              <a href="/" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Inicio</a>
+            {% endif %}
+            {% if usuario %}
+              <a href="{% url 'estimaciones' %}" class="nav-item nav-link {% if request.path == '/estimaciones' %}active{% endif %}">Estimación</a>
+              <a href="{% url 'honorarios_calculator' %}" class="nav-item nav-link {% if request.path == '/honorarios' %}active{% endif %}">Honorarios</a>
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle {% if '/estimaciones' in request.path %}active{% endif %}" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Ver más
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="moreDropdown">
+                  <li><a class="dropdown-item" href="/#Forbes">Forbes</a></li>
+                  <li><a class="dropdown-item" href="/#CDMX">CDMX</a></li>
+                  <li><a class="dropdown-item" href="{% url 'documentacion' %}">Documentación</a></li>
+                </ul>
+              </div>
+              <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {% if usuario.profile_picture %}
+                    <img src="{{ usuario.profile_picture.url }}" class="rounded-circle me-2" width="30" height="30" alt="Foto de perfil">
+                  {% else %}
+                    <img src="{% static 'img/default_profile.png' %}" class="rounded-circle me-2" width="30" height="30" alt="Foto de perfil por defecto">
+                  {% endif %}
+                  {{ usuario.username }}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                  <li><a class="dropdown-item logout-link" href="{% url 'signout' %}">Cerrar sesión</a></li>
+                </ul>
+              </div>
+            {% else %}
+              <a href="{% url 'signin' %}" class="nav-item nav-link {% if request.path == '/signin' %}active{% endif %}">Iniciar sesión</a>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -370,17 +354,5 @@
         logoText.style.transform = 'translateY(-50%) rotateY(90deg)';
       }
     }
-
-    // Ajustar padding dinámicamente según la altura de la barra
-    const combinedBar = document.querySelector('.combined-bar');
-    const mainContent = document.querySelector('.main-content');
-
-    function setMainContentPadding() {
-      const barHeight = combinedBar.offsetHeight;
-      mainContent.style.paddingTop = `${barHeight}px`;
-    }
-
-    setMainContentPadding();
-    window.addEventListener('resize', setMainContentPadding);
   });
 </script>
