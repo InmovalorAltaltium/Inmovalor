@@ -2,646 +2,929 @@
 {% load static %}
 {% block content %}
 <style>
-  /* Importar fuentes Poppins y Montserrat */
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
-
-  /* Estilos específicos para la página de la calculadora */
-  .calculator-page {
-    font-family: 'Poppins', 'Montserrat', sans-serif;
-    background: #E6ECEF; /* Gris perla claro */
-    color: #333333; /* Texto oscuro */
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-
-  .main-wrapper {
-    background: #F8FAFA; /* Blanco suave */
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 1500px;
-    width: 95%;
-    margin: 2rem auto; /* Margen superior aumentado para evitar superposición */
-    position: relative;
-    border: 1px solid #D1D5DB;
-    box-sizing: border-box;
-    isolation: isolate; /* Aísla los estilos para evitar interferencias del navbar */
-  }
-
-  .header-cotizacion {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #058F8F;
-  }
-
-  .header-cotizacion .main-title {
-    color: #333333;
-    font-size: 1.9rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-align: center;
-  }
-
-  .header-cotizacion .main-title .calc-text {
-    color: #058F8F;
-  }
-
-  .input-form-section {
-    background: #FFFFFF;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-
-  .form-label {
-    font-weight: 500;
-    color: #4B5563;
-    font-size: 0.85rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .required-field::after {
-    content: " *";
-    color: #058F8F;
-  }
-
-  .form-control,
-  .form-select {
-    background: #F9FAFB;
-    border: 1px solid #D1D5DB;
-    color: #333333;
-    padding: 0.5rem 0.7rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    transition: all 0.3s ease;
-  }
-
-  .form-control::placeholder {
-    color: #9CA3AF;
-  }
-
-  .form-control:focus {
-    color: #00CC66;
-    border-color: #058F8F;
-    outline: none;
-    box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
-    background: #FFFFFF;
-  }
-
-  .form-control:not(:focus) {
-    color: #333333;
-  }
-
-  .form-select:focus {
-    border-color: #058F8F;
-    outline: none;
-    box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
-    background: #FFFFFF;
-  }
-
-  .results-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .results-grid {
-      grid-template-columns: repeat(2, 1fr);
+    /* Cambiamos las variables :root por variables específicas para estimaciones */
+    .estimaciones-container {
+        --estimaciones-primary-color: #00CCCC;
+        --estimaciones-secondary-color: #009999;
+        --estimaciones-accent-color: #CCF5F5;
+        --estimaciones-dark-color: #003035;
+        --estimaciones-light-color: #FFFFFF;
+        --estimaciones-error-color: #FF6B6B;
+        --estimaciones-success-color: #66CC99;
+        
+        background: linear-gradient(-45deg, #fefcef, #bfc6c7, #52b3c0, #00cccc);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 10px;
     }
-  }
 
-  .section-title {
-    color: #058F8F;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 0.8rem;
-    text-align: left;
-    position: relative;
-    padding-bottom: 0.4rem;
-  }
-
-  .section-title::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 50px;
-    height: 2px;
-    background: #058F8F;
-    border-radius: 1px;
-  }
-
-  .section-block {
-    background: #FFFFFF;
-    padding: 1.2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: 1px solid #D1D5DB;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin-top: 0.8rem;
-    color: #333333;
-  }
-
-  th {
-    background: none;
-    color: #6B7280;
-    font-weight: 500;
-    padding: 0.4rem 0;
-    text-align: left;
-    border-bottom: 1px solid #D1D5DB;
-    font-size: 0.9rem;
-  }
-
-  td {
-    padding: 0.6rem 0;
-    text-align: left;
-    border-bottom: 1px solid #E5E7EB;
-    font-size: 0.9rem;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
-  }
-
-  .result-value {
-    color: #058F8F;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    padding-left: 0.5rem;
-  }
-
-  .copy-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-left: 0.5rem;
-    color: #058F8F;
-    font-size: 1rem;
-    transition: color 0.3s ease, transform 0.3s ease;
-    opacity: 0.7;
-  }
-
-  .copy-button:hover {
-    color: #00cccc;
-    transform: scale(1.1);
-    opacity: 1;
-  }
-
-  .total-row td {
-    border-top: 2px solid #058F8F;
-    font-weight: 700;
-    color: #333333;
-    padding-top: 0.8rem;
-    font-size: 1rem;
-  }
-
-  .total-row .result-value {
-    font-size: 1rem;
-    color: #058F8F;
-  }
-
-  .ganancia-container {
-    background: #FFFFFF;
-    padding: 1.5rem;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border: 1px solid #D1D5DB;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  @media (min-width: 768px) {
-    .ganancia-container {
-      grid-template-columns: 1fr 1fr;
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
-  }
 
-  .ganancia-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+    .estimaciones-container .form-container {
+        background-color: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(8px);
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        border-left: 3px solid var(--estimaciones-primary-color);
+        height: 80vh;
+        overflow-y: auto;
+        transition: all 0.3s ease;
+        scroll-behavior: smooth;
+    }
 
-  .ganancia-label {
-    color: #333333;
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-  }
+    .estimaciones-container .form-container:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
 
-  .ganancia-value {
-    color: #058F8F;
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1;
-    position: relative;
-    padding-bottom: 0.4rem;
-  }
+    .estimaciones-container .form-title {
+        color: var(--estimaciones-dark-color);
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+        margin-top: 0.5rem;
+        position: relative;
+        padding-bottom: 0.2rem;
+        text-align: center;
+        font-size: 1.4rem;
+    }
 
-  .ganancia-value::after {
-    content: "";
-    display: block;
-    width: 70%;
-    max-width: 120px;
-    height: 3px;
-    background: #058F8F;
-    margin: 0.4rem auto 0;
-    border-radius: 2px;
-  }
+    .estimaciones-container .form-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 2px;
+        background: var(--estimaciones-primary-color);
+        border-radius: 2px;
+    }
 
-  .ganancia-sub-value {
-    color: #6B7280;
-    font-size: 1rem;
-    font-weight: 400;
-    margin-top: 0.4rem;
-  }
+    .estimaciones-container .form-label {
+        font-weight: 600;
+        color: var(--estimaciones-dark-color);
+        margin-bottom: 0.2rem;
+        font-size: 0.8rem;
+    }
 
-  #cesion-derechos-section {
-    display: none;
-  }
+    .estimaciones-container .required-field::after {
+        content: " *";
+        color: var(--estimaciones-error-color);
+    }
 
-  #cesion-derechos-section.active {
-    display: block;
-    grid-column: 1 / -1;
-    margin-top: 1.5rem;
-  }
+    .estimaciones-container .section-title {
+        color: var(--estimaciones-dark-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-top: 0.8rem;
+        margin-bottom: 0.4rem;
+        position: relative;
+        padding-left: 0.6rem;
+    }
 
-  #cesion-derechos-section table {
-    font-size: 0.9rem;
-  }
+    .estimaciones-container .section-title::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 50%;
+        width: 3px;
+        background: var(--estimaciones-primary-color);
+        border-radius: 2px;
+    }
 
-  .toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #058F8F;
-    color: #FFFFFF;
-    padding: 0.7rem 1.2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 138, 138, 0.4);
-    opacity: 0;
-    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-    transform: translateY(30px);
-    z-index: 1000;
-    font-size: 0.85rem;
-  }
+    .estimaciones-container .btn-calculate {
+        background-color: var(--estimaciones-primary-color);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 0.4rem 1rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 204, 204, 0.2);
+    }
 
-  .toast.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    .estimaciones-container .btn-calculate:hover {
+        background-color: var(--estimaciones-secondary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 204, 204, 0.3);
+    }
 
-  .error-message {
-    color: #DC2626;
-    font-size: 0.85rem;
-    margin-top: 0.3rem;
-    display: none;
-  }
+    .estimaciones-container .btn-secondary {
+        background-color: var(--estimaciones-dark-color);
+        color: white;
+        font-weight: 500;
+        border-radius: 5px;
+        padding: 0.3rem 0.8rem;
+        transition: all 0.3s ease;
+    }
+
+    .estimaciones-container .btn-secondary:hover {
+        background-color: var(--estimaciones-secondary-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .estimaciones-container .map-container {
+        height: 80vh;
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        position: relative;
+        background-color: #e9ecef;
+    }
+
+    .estimaciones-container .map-container:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .estimaciones-container #map {
+        width: 100%;
+        height: 100%;
+        border: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .estimaciones-container .loading-map {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #bfc6c7;
+        text-align: center;
+        padding: 2rem;
+        background-color: rgba(0, 48, 53, 0.85);
+        z-index: 10;
+        opacity: 0;
+        animation: fadeIn 0.3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        to { opacity: 1; }
+    }
+
+    .estimaciones-container .loading-spinner {
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid #00CCCC;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .estimaciones-container .form-status-message {
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-align: center;
+        margin-top: 0.5rem;
+        padding: 0.4rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .estimaciones-container .form-status-message.success {
+        color: var(--estimaciones-success-color);
+        background-color: rgba(102, 204, 153, 0.1);
+    }
+
+    .estimaciones-container .form-status-message.error {
+        color: var(--estimaciones-error-color);
+        background-color: rgba(255, 107, 107, 0.1);
+    }
+
+    .estimaciones-container .form-control, 
+    .estimaciones-container .form-select {
+        border-radius: 5px;
+        padding: 0.4rem 0.7rem;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+    }
+
+    .estimaciones-container .form-control:focus, 
+    .estimaciones-container .form-select:focus {
+        border-color: var(--estimaciones-primary-color);
+        outline: none;
+        box-shadow: 0 0 0 0.15rem rgba(0, 204, 204, 0.25);
+        background: var(--estimaciones-light-color);
+    }
+
+    .estimaciones-container .invalid-feedback {
+        font-size: 0.7rem;
+        color: var(--estimaciones-error-color);
+    }
+
+    .estimaciones-container .animate-fade-in {
+        animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .estimaciones-container .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+    .estimaciones-container .container-fluid.py-2 {
+        margin-top: 30px; /* Aprox. 2cm (30px) - ajusta este valor según necesites */
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0px); }
+    }
+
+    .estimaciones-container .input-group-text {
+        background-color: var(--estimaciones-accent-color);
+        color: var(--estimaciones-dark-color);
+        border-radius: 5px 0 0 5px;
+        transition: all 0.3s ease;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .estimaciones-container .input-group:focus-within .input-group-text {
+        background-color: var(--estimaciones-primary-color);
+        color: white;
+    }
+
+    .estimaciones-container .loading-spinner-field {
+        display: none;
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .estimaciones-container .form-control.is-loading {
+        padding-right: 30px;
+    }
+
+    .estimaciones-container .pulse-animation {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(0, 204, 204, 0.7); }
+        70% { box-shadow: 0 0 0 6px rgba(0, 204, 204, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 204, 204, 0); }
+    }
+
+    .estimaciones-container .container-fluid {
+        padding: 0.5rem;
+    }
+
+    .estimaciones-container .hidden-field {
+        display: none;
+    }
 </style>
 
-<div class="calculator-page">
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <div class="col-12">
-        <div class="main-wrapper">
-          <header class="header-cotizacion">
-            <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
-          </header>
+<div class="estimaciones-container">
+    <div class="container-fluid py-2 animate-fade-in">
+        <div class="row g-2">
+            <!-- Formulario -->
+            <div class="col-lg-6">
+                <div class="form-container">
+                    <h1 class="form-title">Estimación de Propiedad</h1>
+                    <form method="POST" class="row g-2 needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Tipo de propiedad</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                <select id="tipo_propiedad" name="tipo_propiedad" class="form-select" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    <option value="Casa">Casa</option>
+                                    <option value="Departamento">Departamento</option>
+                                    <option value="Terreno">Terreno</option>
+                                </select>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Estado</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                <select class="form-control" id="estado" name="estado" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    {% for estado in estados %}
+                                    <option value="{{ estado.id_estado }}">{{ estado.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Alcaldía/Municipio</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-city"></i></span>
+                                <select class="form-control" id="municipio" name="municipio" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                </select>
+                                <div class="loading-spinner-field" id="municipio-spinner">
+                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Colonia</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
+                                <select id="colonia" name="colonia" class="form-control" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                </select>
+                                <div class="loading-spinner-field" id="colonia-spinner">
+                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Código Postal</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
+                                <select id="cp" name="cp" class="form-control" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                </select>
+                                <div class="invalid-feedback">Selecciona una opción válida.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Calle</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-road"></i></span>
+                                <input id="calle" name="calle" type="text" class="form-control" placeholder="Ej. Av. Revolución 123" required>
+                                <div class="invalid-feedback">Introduce una calle válida.</div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-1">
+                            <button type="button" id="btnUbicar" class="btn btn-secondary animate-float">
+                                <i class="fas fa-map-marker-alt me-2"></i> Ubicar en mapa
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            <span class="section-title">Características de la propiedad</span>
+                        </div>
+                        <div class="col-md-4 property-field">
+                            <label class="form-label required-field">Recámaras</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-bed"></i></span>
+                                <input id="recamaras" name="recamaras" type="number" class="form-control" min="0" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 property-field">
+                            <label class="form-label required-field">Sanitarios</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-bath"></i></span>
+                                <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" step="0.5" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 property-field">
+                            <label class="form-label required-field">Estacionamiento</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                <input id="estacionamiento" name="estacionamiento" type="number" class="form-control" min="0" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Comentarios adicionales</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-comment-alt"></i></span>
+                                <textarea id="comentarios" name="comentarios" class="form-control" rows="2" placeholder="Ej. Terraza, jardín, amenidades..."></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-1">
+                            <span class="section-title">Metraje</span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label required-field">Terreno (m²)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-vector-square"></i></span>
+                                <input id="terreno" name="terreno" type="number" class="form-control" min="0" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 property-field">
+                            <label class="form-label required-field">Construcción (m²)</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-home"></i></span>
+                                <input id="construccion" name="construccion" type="number" class="form-control" min="0" required>
+                                <div class="invalid-feedback">Campo requerido.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 property-field">
+                            <label class="form-label required-field">Estado de conservación</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-clipboard-check"></i></span>
+                                <select id="estado_conservacion" name="estado_conservacion" class="form-select" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    <option value="Muy bueno">Muy bueno</option>
+                                    <option value="Bueno">Bueno</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Malo">Malo</option>
+                                    <option value="Muy malo">Muy malo</option>
+                                </select>
+                                <div class="invalid-feedback">Selecciona un estado de conservación.</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div id="form-status" class="form-status-message error">
+                                <i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.
+                            </div>
+                        </div>
+                        <div class="col-12 text-end mt-2">
+                            <button id="btn-calcular" type="submit" class="btn btn-lg"
+                                style="background-color: var(--estimaciones-primary-color);
+                                    color: white;
+                                    border: none;
+                                    padding: 12px 24px;
+                                    border-radius: 10px;
+                                    font-weight: bold;
+                                    transition: all 0.2s ease;
+                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                                <i class="fas fa-calculator me-2"></i> Calcular valor
+                            </button>
+                        </div>
 
-          <form class="input-form-section row g-3 needs-validation" id="calculator-form" novalidate>
-            {% csrf_token %}
-            <div class="col-12 col-md-4">
-              <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
-              <select id="calcType" name="calcType" class="form-select" required>
-                <option value="sentencia" {% if calc_type == 'sentencia' %}selected{% endif %}>Sentencia</option>
-                <option value="adjudicado" {% if calc_type == 'adjudicado' %}selected{% endif %}>Adjudicado</option>
-                <option value="derechos_cobranza" {% if calc_type == 'derechos_cobranza' %}selected{% endif %}>Derechos de Cobranza</option>
-              </select>
-            </div>
-            <div class="col-12 col-md-4">
-              <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
-              <input type="text" id="valorComercial" name="valorComercial" value="0" class="form-control" required placeholder="Ingresa el precio">
-              <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
-            </div>
-            <div class="col-12 col-md-4">
-              <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
-              <input type="text" id="precioDeSesion" name="precioDeSesion" value="0" class="form-control" required placeholder="Ingresa el precio">
-              <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
-            </div>
-          </form>
+                        <script>
+                            const boton = document.getElementById("btn-calcular");
 
-          <div class="results-grid" id="results-grid-container">
-            <div id="descripcion-section" class="section-block">
-              <span class="section-title">DESCRIPCIÓN</span>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Valor Comercial</td>
-                    <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorComercial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Valor Judicial</td>
-                    <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorJudicial')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Honorarios</td>
-                    <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayHonorarios')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Cesión de Derechos</td>
-                    <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCession')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                            boton.addEventListener("mouseover", function () {
+                                this.style.backgroundColor = "var(--estimaciones-secondary-color)";
+                                this.style.transform = "scale(1.05)";
+                            });
 
-            <div id="parcialidades-section" class="section-block">
-              <span class="section-title">PARCIALIDADES</span>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>1er Pago (75%)</td>
-                    <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayPrimerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>2do Pago</td>
-                    <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displaySegundoPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>3er Pago (25%)</td>
-                    <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTercerPago')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr class="total-row">
-                    <td>PRECIO TOTAL:</td>
-                    <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayTotal')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                            boton.addEventListener("mouseout", function () {
+                                this.style.backgroundColor = "var(--estimaciones-primary-color)";
+                                this.style.transform = "scale(1)";
+                            });
 
-            <div id="cesion-derechos-section" class="section-block">
-              <span class="section-title">CESIÓN DE DERECHOS DE COBRANZA</span>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Valor Extrajudicial</td>
-                    <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayValorExt')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                  <tr>
-                    <td>Cotización (50%)</td>
-                    <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span><button class="copy-button" onclick="copyToClipboard('displayCotizacion')" title="Copiar valor"><i class="fas fa-copy"></i></button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+                            boton.addEventListener("mousedown", function () {
+                                this.style.backgroundColor = "#007777";
+                                this.style.transform = "scale(0.95)";
+                            });
 
-          <div id="ganancia-container" class="ganancia-container">
-            <div class="ganancia-item">
-              <span class="ganancia-label">GANANCIA</span>
-              <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
-              <button class="copy-button" onclick="copyToClipboard('displayGanancia')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-            </div>
-            <div class="ganancia-item">
-              <span class="ganancia-label">Costo de Compra</span>
-              <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
-              <button class="copy-button" onclick="copyToClipboard('displayCostoCompra')" title="Copiar valor"><i class="fas fa-copy"></i></button>
-            </div>
-          </div>
+                            boton.addEventListener("mouseup", function () {
+                                this.style.backgroundColor = "var(--estimaciones-secondary-color)";
+                                this.style.transform = "scale(1.05)";
+                                setTimeout(() => {
+                                    this.style.backgroundColor = "var(--estimaciones-primary-color)";
+                                    this.style.transform = "scale(1)";
+                                }, 200);
+                            });
 
-          <div id="toast" class="toast">¡Valor copiado!</div>
+                            document.getElementById('tipo_propiedad').addEventListener('change', function() {
+                                const propertyFields = document.querySelectorAll('.property-field');
+                                const isTerreno = this.value === 'Terreno';
+                                propertyFields.forEach(field => {
+                                    if (isTerreno) {
+                                        field.classList.add('hidden-field');
+                                        field.querySelector('input, select').removeAttribute('required');
+                                    } else {
+                                        field.classList.remove('hidden-field');
+                                        field.querySelector('input, select').setAttribute('required', '');
+                                    }
+                                });
+                                checkFormValidity();
+                            });
+                        </script>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="col-12 mt-2">
+                                    <div class="form-status-message {{ message.tags }}">
+                                        {{ message }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            <!-- Mapa -->
+            <div class="col-lg-6">
+                <div class="map-container">
+                    <div class="loading-map" id="loadingMap">
+                        <div class="loading-spinner"></div>
+                        <h3>Cargando mapa...</h3>
+                        <p>Por favor espera mientras se carga la ubicación</p>
+                    </div>
+                    <iframe id="map" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            title="Mapa de ubicación">
+                    </iframe>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
 <script>
-// Función para copiar al portapapeles
-function copyToClipboard(elementId) {
-  const element = document.getElementById(elementId);
-  let textToCopy = element.textContent.trim();
-  navigator.clipboard.writeText(textToCopy).then(() => {
-    const toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(() => {
-      toast.classList.remove('show');
-    }, 2000);
-  }).catch(err => {
-    console.error('Error al copiar: ', err);
-  });
-}
+    $(document).ready(function () {
+        // Inicializar tooltips
+        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
 
-// Función para limpiar y obtener un número float
-function getCleanNumber(value) {
-  if (typeof value !== 'string') return parseFloat(value) || 0;
-  return parseFloat(value.replace(/[^0-9.-]+/g, "")) || 0;
-}
+        // Validación del formulario en submit
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
 
-// Función para formatear números a moneda
-function formatCurrency(value) {
-  return new Intl.NumberFormat('es-MX', {
-    style: 'currency',
-    currency: 'MXN',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(value);
-}
+        // Validar campos requeridos en tiempo real
+        function checkFormValidity() {
+            const form = document.querySelector('.needs-validation');
+            const requiredFields = form.querySelectorAll('[required]');
+            let allValid = true;
 
-// Función para formatear porcentajes
-function formatPercentage(value) {
-  return new Intl.NumberFormat('es-MX', {
-    style: 'percent',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(value / 100);
-}
+            requiredFields.forEach(field => {
+                if (!field.value || field.value === '' || (field.tagName === 'SELECT' && field.value === '')) {
+                    allValid = false;
+                }
+            });
 
-// Función principal para calcular y actualizar resultados
-function calculateResults() {
-  const form = document.getElementById('calculator-form');
-  const calcType = document.getElementById('calcType').value;
-  const resultsGridContainer = document.getElementById('results-grid-container');
-  const descripcionSection = document.getElementById('descripcion-section');
-  const parcialidadesSection = document.getElementById('parcialidades-section');
-  const gananciaContainer = document.getElementById('ganancia-container');
-  const cesionDerechosSection = document.getElementById('cesion-derechos-section');
-  const valorComercialInput = document.getElementById('valorComercial');
-  const precioDeSesionInput = document.getElementById('precioDeSesion');
-  const valorComercialError = document.getElementById('valorComercialError');
-  const precioDeSesionError = document.getElementById('precioDeSesionError');
+            const statusDiv = $('#form-status');
+            if (allValid) {
+                statusDiv.html('<i class="fas fa-check-circle me-1"></i> ¡Todos los campos requeridos están completos!')
+                        .removeClass('error').addClass('success');
+            } else {
+                statusDiv.html('<i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.')
+                        .removeClass('success').addClass('error');
+            }
+        }
 
-  // Validar entradas
-  const valorComercialClean = getCleanNumber(valorComercialInput.value);
-  const precioDeSesionClean = getCleanNumber(precioDeSesionInput.value);
+        // Scroll automático al primer campo requerido vacío
+        function scrollToNextField(currentField) {
+            const form = document.querySelector('.form-container');
+            const fields = Array.from(form.querySelectorAll('input[required], select[required]'));
+            const calleIndex = fields.findIndex(field => field.id === 'calle');
+            const relevantFields = fields.slice(calleIndex);
+            const firstEmptyField = relevantFields.find(field => 
+                !field.value || 
+                (field.tagName === 'SELECT' && field.value === '') ||
+                (field.type === 'number' && field.value <= 0)
+            );
 
-  if (isNaN(valorComercialClean) || valorComercialClean < 0) {
-    valorComercialError.style.display = 'block';
-    return;
-  } else {
-    valorComercialError.style.display = 'none';
-  }
+            if (firstEmptyField && firstEmptyField !== currentField) {
+                setTimeout(() => {
+                    const offset = 20;
+                    const fieldPosition = firstEmptyField.getBoundingClientRect().top + form.scrollTop - form.getBoundingClientRect().top;
+                    form.scrollTo({
+                        top: fieldPosition - offset,
+                        behavior: 'smooth'
+                    });
+                    firstEmptyField.focus();
+                }, 100);
+            }
+        }
 
-  if (isNaN(precioDeSesionClean) || precioDeSesionClean < 0) {
-    precioDeSesionError.style.display = 'block';
-    return;
-  } else {
-    precioDeSesionError.style.display = 'none';
-  }
+        // Agregar eventos a los campos requeridos
+        const finalFields = ['calle', 'recamaras', 'sanitarios', 'estacionamiento', 'terreno', 'construccion', 'estado_conservacion'];
+        const requiredFields = document.querySelectorAll('input[required], select[required]');
+        requiredFields.forEach(field => {
+            field.addEventListener('change', function() {
+                checkFormValidity();
+                if (finalFields.includes(this.id)) {
+                    if (this.value && (this.type !== 'number' || this.value > 0)) {
+                        scrollToNextField(this);
+                    }
+                }
+            });
+        });
 
-  // Manejo de la visibilidad de las secciones
-  if (calcType === 'derechos_cobranza') {
-    descripcionSection.style.display = 'none';
-    parcialidadesSection.style.display = 'none';
-    gananciaContainer.style.display = 'none';
-    cesionDerechosSection.style.display = 'block';
-    cesionDerechosSection.classList.add('active');
-    resultsGridContainer.style.gridTemplateColumns = '1fr';
-  } else {
-    descripcionSection.style.display = 'block';
-    parcialidadesSection.style.display = 'block';
-    gananciaContainer.style.display = 'grid';
-    cesionDerechosSection.style.display = 'none';
-    cesionDerechosSection.classList.remove('active');
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      resultsGridContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-    } else {
-      resultsGridContainer.style.gridTemplateColumns = '1fr';
-    }
-  }
+        // Validar al cargar la página
+        checkFormValidity();
 
-  const formData = new FormData(form);
-  formData.set('valorComercial', valorComercialClean);
-  formData.set('precioDeSesion', precioDeSesionClean);
+        // Evento change para el selector de estado
+        $('#estado').on('change', function () {
+            const estadoId = $(this).val();
+            if (estadoId) {
+                $('#municipio-spinner').show();
+                $('#municipio').addClass('is-loading');
+                
+                $.ajax({
+                    url: '/obtener_municipios/',
+                    data: { 'estado_id': estadoId },
+                    success: function (data) {
+                        $('#municipio').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                        $.each(data, function (index, municipio) {
+                            $('#municipio').append(`<option value="${municipio.id_municipio}">${municipio.nombre}</option>`);
+                        });
+                        $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                        $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                        
+                        // Mostrar mapa del estado (sin cambiar el zoom)
+                        mostrarMapaEstado($('#estado option:selected').text());
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener municipios:', status, error);
+                    },
+                    complete: function() {
+                        $('#municipio-spinner').hide();
+                        $('#municipio').removeClass('is-loading');
+                    }
+                });
+            } else {
+                $('#municipio').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                // Volver al mapa de México si no hay estado seleccionado
+                inicializarMapaMexico();
+            }
+        });
 
-  fetch('{% url "honorarios_calculator" %}', {
-    method: 'POST',
-    body: formData,
-    headers: {
-      'X-Requested-With': 'XMLHttpRequest',
-      'X-CSRFToken': '{{ csrf_token }}'
-    }
-  })
-  .then(response => {
-    if (!response.ok) {
-      return response.json().then(errorData => {
-        throw new Error(errorData.error || 'Error en la solicitud al servidor');
-      });
-    }
-    return response.json();
-  })
-  .then(data => {
-    document.getElementById('displayValorComercial').textContent = data.valor_comercial;
-    document.getElementById('displayValorJudicial').textContent = data.valor_judicial;
-    document.getElementById('displayHonorarios').textContent = data.honorarios;
-    document.getElementById('displayCession').textContent = data.precio_de_sesion;
-    document.getElementById('displayPrimerPago').textContent = data.firma;
-    // Ajuste: Segundo pago usa precio_de_sesion para sentencia/adjudicado, cotizacion para derechos_cobranza
-    document.getElementById('displaySegundoPago').textContent = (calcType === 'derechos_cobranza') ? data.cotizacion : data.precio_de_sesion;
-    document.getElementById('displayTercerPago').textContent = data.entrega;
-    // Ajuste: Calcular el total como la suma de los tres pagos
-    const primerPago = getCleanNumber(data.firma);
-    const segundoPago = getCleanNumber((calcType === 'derechos_cobranza') ? data.cotizacion : data.precio_de_sesion);
-    const tercerPago = getCleanNumber(data.entrega);
-    const totalCalculado = primerPago + segundoPago + tercerPago;
-    document.getElementById('displayTotal').textContent = formatCurrency(totalCalculado);
-    document.getElementById('displayGanancia').textContent = data.ganancia;
-    document.getElementById('displayCostoCompra').textContent = data.porcentaje_vc;
-    document.getElementById('displayValorExt').textContent = data.valor_ext;
-    document.getElementById('displayCotizacion').textContent = data.cotizacion;
-  })
-  .catch(error => {
-    console.error('Error en la solicitud Fetch:', error);
-    const toast = document.getElementById('toast');
-    toast.textContent = 'Error al calcular. Intenta de nuevo.';
-    toast.style.background = '#DC2626';
-    toast.classList.add('show');
-    setTimeout(() => {
-      toast.classList.remove('show');
-      toast.style.background = '#058F8F';
-      toast.textContent = '¡Valor copiado!';
-    }, 3000);
-  });
-}
+        // Evento change para el selector de municipio
+        $('#municipio').on('change', function () {
+            const municipioId = $(this).val();
+            if (municipioId) {
+                $('#colonia-spinner').show();
+                $('#colonia').addClass('is-loading');
+                
+                $.ajax({
+                    url: '/obtener_colonias/',
+                    data: { 'municipio_id': municipioId },
+                    success: function (data) {
+                        $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                        $.each(data, function (index, colonia) {
+                            $('#colonia').append(`<option value="${colonia.id_colonia}">${colonia.nombre}</option>`);
+                        });
+                        $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                        
+                        // Mostrar mapa del municipio (sin cambiar el zoom)
+                        mostrarMapaMunicipio($('#municipio option:selected').text(), $('#estado option:selected').text());
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener colonias:', status, error);
+                        $('#colonia').empty().append('<option selected disabled value="">Error al cargar</option>');
+                    },
+                    complete: function() {
+                        $('#colonia-spinner').hide();
+                        $('#colonia').removeClass('is-loading');
+                    }
+                });
+            } else {
+                $('#colonia').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                // Volver al mapa del estado si no hay municipio seleccionado
+                mostrarMapaEstado($('#estado option:selected').text());
+            }
+        });
 
-// Función para formatear el input con comas mientras se escribe
-function formatNumberInput(input) {
-  input.addEventListener('input', function(e) {
-    let value = input.value.replace(/[^0-9.]/g, '');
-    let caretPos = input.selectionStart;
-    let originalLength = input.value.length;
+        // Evento change para el selector de colonia
+        $('#colonia').on('change', function () {
+            const coloniaId = $(this).val();
+            if (coloniaId) {
+                // Actualizar el mapa automáticamente al seleccionar una colonia
+                mostrarMapaColonia(
+                    $('#colonia option:selected').text(),
+                    $('#municipio option:selected').text(),
+                    $('#estado option:selected').text()
+                );
 
-    let parts = value.split('.');
-    if (parts.length > 2) {
-      value = parts[0] + '.' + parts.slice(1).join('');
-    }
+                $.ajax({
+                    url: '/obtener_codigos_postales/',
+                    data: { 'colonia_id': coloniaId },
+                    success: function (data) {
+                        $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                        $.each(data, function (index, cp) {
+                            $('#cp').append(`<option value="${cp.id_codigo_postal}">${cp.codigo}</option>`);
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener códigos postales:', status, error);
+                    }
+                });
+            } else {
+                $('#cp').empty().append('<option selected disabled value="">Seleccionar...</option>');
+                // Volver al mapa del municipio si no hay colonia seleccionada
+                mostrarMapaMunicipio($('#municipio option:selected').text(), $('#estado option:selected').text());
+            }
+        });
 
-    if (value === '' || value === '.') {
-      input.value = value;
-      calculateResults();
-      return;
-    }
+        // Evento change para el selector de código postal
+        $('#cp').on('change', function () {
+            const cpId = $(this).val();
+            if (cpId) {
+                $.ajax({
+                    url: '/obtener_datos_por_cp/',
+                    data: { 'codigo_postal': cpId },
+                    success: function (data) {
+                        if (data) {
+                            if (data.colonia && data.colonia.nombre) {
+                                $('#colonia').val(data.colonia.id_colonia).trigger('change');
+                            }
+                            if (data.municipio && data.municipio.nombre) {
+                                $('#municipio').val(data.municipio.id_municipio).trigger('change');
+                            }
+                            if (data.estado && data.estado.nombre) {
+                                $('#estado').val(data.estado.id_estado).trigger('change');
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener datos por CP:', status, error);
+                    }
+                });
+            }
+        });
 
-    let formattedValue = '';
-    if (value.includes('.')) {
-      let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      formattedValue = integerPart + '.' + (parts[1] || '');
-    } else {
-      formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
+        // Evento click para el botón "Ubicar en mapa"
+        $('#btnUbicar').click(function () {
+            const colonia = $('#colonia option:selected').text().trim();
+            const municipio = $('#municipio option:selected').text().trim();
+            const estado = $('#estado option:selected').text().trim();
+            const calle = $('#calle').val().trim();
+            
+            if (colonia && colonia !== "Seleccionar...") {
+                mostrarMapaColonia(colonia, municipio, estado);
+            } else if (municipio && municipio !== "Seleccionar...") {
+                mostrarMapaMunicipio(municipio, estado);
+            } else if (estado && estado !== "Seleccionar...") {
+                mostrarMapaEstado(estado);
+            } else {
+                inicializarMapaMexico();
+            }
+        });
 
-    input.value = formattedValue;
+        // Inicializar el mapa con México
+        inicializarMapaMexico();
 
-    let newLength = formattedValue.length;
-    let diff = newLength - originalLength;
-    input.setSelectionRange(caretPos + diff, caretPos + diff);
+        // Función para inicializar el mapa mostrando la República Mexicana
+        function inicializarMapaMexico() {
+            const mapFrame = document.getElementById('map');
+            const loadingMap = document.getElementById('loadingMap');
+            
+            loadingMap.style.display = 'flex';
+            mapFrame.style.opacity = '0.5';
+            
+            const defaultUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8000000!2d-102.5528!3d23.6345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zTcOpeGljbw!5e0!3m2!1ses!2smx!4v${Date.now()}&z=4`;
+            
+            mapFrame.src = defaultUrl;
+            mapFrame.onload = () => {
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+            };
+            mapFrame.onerror = () => {
+                console.error('Error al cargar el mapa:', defaultUrl);
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+                document.getElementById('form-status').innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Error al cargar el mapa. Por favor, intenta de nuevo.';
+            };
+        }
 
-    calculateResults();
-  });
+        // Función para mostrar mapa de un estado (sin zoom cercano)
+        function mostrarMapaEstado(estado) {
+            const mapFrame = document.getElementById('map');
+            const loadingMap = document.getElementById('loadingMap');
+            
+            loadingMap.style.display = 'flex';
+            mapFrame.style.opacity = '0.5';
 
-  let initialValue = getCleanNumber(input.value);
-  input.value = initialValue === 0 ? '0' : new Intl.NumberFormat('es-MX').format(initialValue);
-}
+            const estadoCoords = {
+                "Ciudad de México": "19.4326,-99.1332",
+                "Estado de México": "19.2833,-99.6535",
+                "Jalisco": "20.6668,-103.3918",
+                // ... (otros estados)
+            };
 
-// Ejecutar al cargar la página
-document.addEventListener("DOMContentLoaded", function () {
-  const valorComercialInput = document.getElementById('valorComercial');
-  const precioDeSesionInput = document.getElementById('precioDeSesion');
-  const calcTypeInput = document.getElementById('calcType');
+            const centerPoint = estadoCoords[estado] || '23.6345,-102.5528';
+            const query = `${estado}, México`;
+            const encodedQuery = encodeURIComponent(query);
+            
+            const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1000000!2d${centerPoint.split(',')[1]}!3d${centerPoint.split(',')[0]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${encodedQuery}!5e0!3m2!1ses!2smx!4v${Date.now()}&z=6`;
 
-  formatNumberInput(valorComercialInput);
-  formatNumberInput(precioDeSesionInput);
+            mapFrame.src = mapUrl;
+            mapFrame.onload = () => {
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+            };
+        }
 
-  calculateResults();
+        // Función para mostrar mapa de un municipio (sin zoom cercano)
+        function mostrarMapaMunicipio(municipio, estado) {
+            const mapFrame = document.getElementById('map');
+            const loadingMap = document.getElementById('loadingMap');
+            
+            loadingMap.style.display = 'flex';
+            mapFrame.style.opacity = '0.5';
 
-  if (calcTypeInput) {
-    calcTypeInput.addEventListener('change', calculateResults);
-  }
+            const esCDMX = estado === "Ciudad de México";
+            const prefijo = esCDMX ? "Alcaldía " : "Municipio ";
 
-  const form = document.getElementById('calculator-form');
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    calculateResults();
-  });
-});
+            const municipioCoords = {
+                "Ciudad de México": {
+                    "Álvaro Obregón": "19.3589,-99.2036",
+                    "Azcapotzalco": "19.4872,-99.1854",
+                    // ... (otros municipios de CDMX)
+                },
+                "Estado de México": {
+                    "Toluca": "19.2925,-99.6569",
+                    // ... (otros municipios de EdoMex)
+                }
+                // ... (otros estados)
+            };
+
+            const centerPoint = (municipioCoords[estado] && municipioCoords[estado][municipio]) ? 
+                municipioCoords[estado][municipio] : '23.6345,-102.5528';
+            const query = `${prefijo}${municipio}, ${estado}`;
+            const encodedQuery = encodeURIComponent(query);
+            
+            const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120000!2d${centerPoint.split(',')[1]}!3d${centerPoint.split(',')[0]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${encodedQuery}!5e0!3m2!1ses!2smx!4v${Date.now()}&z=11`;
+
+            mapFrame.src = mapUrl;
+            mapFrame.onload = () => {
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+            };
+        }
+
+        // Función para mostrar mapa de una colonia (con zoom cercano)
+        function mostrarMapaColonia(colonia, municipio, estado) {
+            const mapFrame = document.getElementById('map');
+            const loadingMap = document.getElementById('loadingMap');
+            
+            loadingMap.style.display = 'flex';
+            mapFrame.style.opacity = '0.5';
+
+            const esCDMX = estado === "Ciudad de México";
+            const prefijo = esCDMX ? "Alcaldía " : "Municipio ";
+
+            const coloniaCoords = {
+                "Ciudad de México": {
+                    "Álvaro Obregón": {
+                        "San Ángel": "19.3467,-99.1900",
+                        "Jardines del Pedregal": "19.3308,-99.2100"
+                    },
+                    "Benito Juárez": {
+                        "Del Valle": "19.3933,-99.1642"
+                    }
+                    // ... (otras colonias)
+                }
+                // ... (otros estados)
+            };
+
+            const centerPoint = (coloniaCoords[estado] && coloniaCoords[estado][municipio] && coloniaCoords[estado][municipio][colonia]) ? 
+                coloniaCoords[estado][municipio][colonia] : '23.6345,-102.5528';
+            const query = `${colonia}, ${prefijo}${municipio}, ${estado}`;
+            const encodedQuery = encodeURIComponent(query);
+            
+            const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5000!2d${centerPoint.split(',')[1]}!3d${centerPoint.split(',')[0]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${encodedQuery}!5e0!3m2!1ses!2smx!4v${Date.now()}&z=16`;
+
+            mapFrame.src = mapUrl;
+            mapFrame.onload = () => {
+                loadingMap.style.display = 'none';
+                mapFrame.style.opacity = '1';
+            };
+        }
+    });
 </script>
 {% endblock %}

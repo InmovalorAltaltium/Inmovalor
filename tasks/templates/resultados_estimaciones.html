@@ -31,6 +31,7 @@
                         "custom-hover": "0 12px 32px rgba(0,0,0,0.15)",
                         "neon-glow": "0 0 12px rgba(0, 204, 204, 0.5)",
                         "card-glow": "0 4px 16px rgba(0, 204, 204, 0.2)",
+                        "table-glow": "0 4px 12px rgba(0, 204, 204, 0.3)",
                     },
                     animation: {
                         "fade-in": "fadeIn 0.8s ease-out",
@@ -114,7 +115,7 @@
 
         .map-container {
             height: 100%;
-            min-height: 200px;
+            min-height: 160px;
             border-radius: 16px;
             overflow: hidden;
             position: relative;
@@ -166,20 +167,21 @@
         .value-pill {
             display: inline-flex;
             align-items: center;
-            padding: 0.3rem 1rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 9999px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 1rem;
             background: linear-gradient(45deg, #067c7c, #52b3c0);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 16px rgba(0, 204, 204, 0.4);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             backdrop-filter: blur(4px);
         }
 
         .value-pill:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 20px rgba(0, 204, 204, 0.5);
         }
 
         .button {
@@ -222,23 +224,97 @@
             transform: translateX(100%) rotate(45deg);
         }
 
-        .detail-item {
-            transition: background-color 0.3s ease;
-            border-radius: 8px;
+        .details-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 0.3rem;
+            background: #FFFFFF;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 204, 204, 0.3);
+            border: 1px solid rgba(0, 204, 204, 0.2);
         }
 
-        .detail-item:hover {
-            background-color: rgba(0, 204, 204, 0.1);
+        .details-table th {
+            background: linear-gradient(90deg, #003035, #008a8a);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 0.3rem 0.6rem;
+            text-align: left;
+            font-size: 0.85rem;
+            border-bottom: 2px solid #00cccc;
+        }
+
+        .details-table td {
+            padding: 0.3rem 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+            font-size: 0.85rem;
+            color: #333333;
+            transition: background-color 0.3s ease;
+        }
+
+        .details-table th.icon-column,
+        .details-table td.icon-column {
+            width: 10%;
+            text-align: center;
+            padding: 0.3rem;
+        }
+
+        .details-table th.feature-column,
+        .details-table td.feature-column {
+            width: 40%;
+        }
+
+        .details-table th.detail-column,
+        .details-table td.detail-column {
+            width: 50%;
+        }
+
+        .details-table tr:hover td {
+            background-color: rgba(0, 204, 204, 0.05);
+        }
+
+        .details-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .details-table th i {
+            margin-right: 0.3rem;
+        }
+
+        .details-table td i {
+            margin-right: 0;
+            color: #00cccc;
+        }
+
+        .details-table td {
+            font-weight: 500;
+        }
+
+        .values-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 160px;
+        }
+
+        .values-card h4 {
+            font-size: 0.95rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         @media (min-width: 640px) {
-            .map-container { min-height: 220px; }
-            .value-pill { font-size: 0.95rem; }
+            .map-container { min-height: 180px; }
+            .values-card { min-height: 180px; }
+            .value-pill { font-size: 1.1rem; }
         }
 
         @media (min-width: 1024px) {
-            .map-container { min-height: 250px; }
-            .value-pill { font-size: 1rem; }
+            .map-container { min-height: 200px; }
+            .values-card { min-height: 200px; }
+            .value-pill { font-size: 1.1rem; }
         }
 
         .hidden { display: none; }
@@ -435,7 +511,15 @@
             font-weight: 700;
             color: #333333;
             padding-top: 0.8rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            background-color: rgba(0, 204, 204, 0.1);
+            box-shadow: 0 0 8px rgba(0, 204, 204, 0.3);
+            text-align: center;
+        }
+
+        .total-row .copy-button {
+            font-size: 1.1rem;
+            margin-left: 0.5rem;
         }
 
         .ganancia-container {
@@ -528,7 +612,7 @@
         .results-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 0.75rem;
             margin-top: 2rem;
         }
 
@@ -601,8 +685,8 @@
                 </div>
 
                 <!-- Valores -->
-                <div class="card shadow-card-glow animate-slide-up animate-delay-2">
-                    <div class="space-y-4 p-4">
+                <div class="card shadow-card-glow animate-slide-up animate-delay-2 values-card">
+                    <div class="space-y-3 p-3">
                         <div class="bg-white/80 border border-secondary/20 rounded-lg p-3 backdrop-filter backdrop-blur">
                             <div class="flex items-center mb-2">
                                 <i class="fas fa-dollar-sign text-secondary mr-2 text-sm"></i>
@@ -632,43 +716,60 @@
 
                 <!-- Detalles de la Propiedad -->
                 <div class="card shadow-card-glow animate-slide-up animate-delay-3">
-                    <div class="p-4">
-                        <h4 class="font-semibold text-dark text-sm mb-3">Detalles de la Propiedad</h4>
+                    <div class="p-3">
+                        <h4 class="font-semibold text-dark text-base mb-3">Detalles de la Propiedad</h4>
                         <table class="details-table">
-                            <tr class="detail-item">
-                                <th><i class="fas fa-building text-accent mr-1 text-xs"></i> Tipo</th>
-                                <td>{{ propiedad.tipo_propiedad }}</td>
-                            </tr>
-                            {% if propiedad.tipo_propiedad != 'Terreno' %}
-                            <tr class="detail-item">
-                                <th><i class="fas fa-bed text-accent mr-1 text-xs"></i> Recámaras</th>
-                                <td>{{ propiedad.recamaras }}</td>
-                            </tr>
-                            <tr class="detail-item">
-                                <th><i class="fas fa-bath text-accent mr-1 text-xs"></i> Sanitarios</th>
-                                <td>{{ propiedad.sanitarios }}</td>
-                            </tr>
-                            <tr class="detail-item">
-                                <th><i class="fas fa-car text-accent mr-1 text-xs"></i> Estacionamiento</th>
-                                <td>{{ propiedad.estacionamiento }}</td>
-                            </tr>
-                            <tr class="detail-item">
-                                <th><i class="fas fa-ruler-combined text-accent mr-1 text-xs"></i> Construcción</th>
-                                <td>{{ propiedad.construccion }} m²</td>
-                            </tr>
-                            <tr class="detail-item">
-                                <th><i class="fas fa-home text-accent mr-1 text-xs"></i> Estado de Conservación</th>
-                                <td>{{ propiedad.estado_conservacion|default:"No especificado" }}</td>
-                            </tr>
-                            {% endif %}
-                            <tr class="detail-item">
-                                <th><i class="fas fa-vector-square text-accent mr-1 text-xs"></i> Terreno</th>
-                                <td>{{ propiedad.terreno }} m²</td>
-                            </tr>
-                            <tr class="detail-item">
-                                <th><i class="fas fa-comment text-accent mr-1 text-xs"></i> Comentarios</th>
-                                <td>{{ propiedad.comentarios|default:"Sin comentarios adicionales." }}</td>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th class="icon-column"></th>
+                                    <th class="feature-column">Característica</th>
+                                    <th class="detail-column">Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="detail-item">
+                                    <td class="icon-column"><i class="fas fa-building text-accent"></i></td>
+                                    <td class="feature-column">Tipo</td>
+                                    <td class="detail-column">{{ propiedad.tipo_propiedad }}</td>
+                                </tr>
+                                {% if propiedad.tipo_propiedad != 'Terreno' %}
+                                <tr class="detail-item">
+                                    <td class="icon-column"><i class="fas fa-bed text-accent"></i></td>
+                                    <td class="feature-column">Recámaras</td>
+                                    <td class="detail-column">{{ propiedad.recamaras }}</td>
+                                </tr>
+                                <tr class="detail-item">
+                                    <td class="icon-column"><i class="fas fa-bath text-accent"></i></td>
+                                    <td class="feature-column">Sanitarios</td>
+                                    <td class="detail-column">{{ propiedad.sanitarios }}</td>
+                                </tr>
+                                <tr class="detail-item">
+                                    <td class="icon-column"><i class="fas fa-car text-accent"></i></td>
+                                    <td class="feature-column">Estacionamiento</td>
+                                    <td class="detail-column">{{ propiedad.estacionamiento }}</td>
+                                </tr>
+                                <tr class="detail-item">
+                                    <td class="icon-column"><i class="fas fa-ruler-combined text-accent"></i></td>
+                                    <td class="feature-column">Construcción</td>
+                                    <td class="detail-column">{{ propiedad.construccion }} m²</td>
+                                </tr>
+                                <tr class="detail-item">
+                                    <td class="icon-column"><i class="fas fa-home text-accent"></i></td>
+                                    <td class="feature-column">Estado de Conservación</td>
+                                    <td class="detail-column">{{ propiedad.estado_conservacion|default:"No especificado" }}</td>
+                                </tr>
+                                {% endif %}
+                                <tr class="detail-item">
+                                    <td class="icon-column"><i class="fas fa-vector-square text-accent"></i></td>
+                                    <td class="feature-column">Terreno</td>
+                                    <td class="detail-column">{{ propiedad.terreno }} m²</td>
+                                </tr>
+                                <tr class="detail-item">
+                                    <td class="icon-column"><i class="fas fa-comment text-accent"></i></td>
+                                    <td class="feature-column">Comentarios</td>
+                                    <td class="detail-column">{{ propiedad.comentarios|default:"Sin comentarios adicionales." }}</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -719,7 +820,7 @@
                     </div>
                     <div>
                         <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
-                        <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="{{ propiedad.valor_comercial|floatformat:2 }}">
+                        <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="">
                         <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
                         <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
                     </div>
@@ -766,23 +867,27 @@
                             <tbody>
                                 <tr>
                                     <td>1er Pago (75%)</td>
+                                    <td>Propuesta Legal</td>
                                     <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span>
                                         <button class="copy-button" onclick="copyToClipboard('displayPrimerPago')"><i class="fas fa-copy"></i></button></td>
                                 </tr>
                                 <tr>
                                     <td>2do Pago</td>
+                                    <td>Cesión de derechos</td>
                                     <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span>
                                         <button class="copy-button" onclick="copyToClipboard('displaySegundoPago')"><i class="fas fa-copy"></i></button></td>
                                 </tr>
                                 <tr>
                                     <td>3er Pago (25%)</td>
+                                    <td>Entrega</td>
                                     <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span>
                                         <button class="copy-button" onclick="copyToClipboard('displayTercerPago')"><i class="fas fa-copy"></i></button></td>
                                 </tr>
                                 <tr class="total-row">
-                                    <td>PRECIO TOTAL:</td>
-                                    <td><span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span>
-                                        <button class="copy-button" onclick="copyToClipboard('displayTotal')"><i class="fas fa-copy"></i></button></td>
+                                    <td colspan="3">
+                                        PRECIO TOTAL: <span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span>
+                                        <button class="copy-button" onclick="copyToClipboard('displayTotal')"><i class="fas fa-copy"></i></button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -885,14 +990,25 @@
             document.querySelectorAll(".value-pill").forEach(pill => {
                 const rawValue = pill.getAttribute("data-value");
                 if (rawValue) {
-                    pill.textContent = "$" + Number(rawValue).toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    pill.textContent = formatCurrency(parseFloat(rawValue));
                 }
             });
 
             // Copiar al portapapeles
             window.copyToClipboard = function(elementId) {
-                const element = document.getElementById(elementId) || document.querySelector(`[data-value="${elementId.split('-')[1]}"]`);
-                const text = element.textContent || element.getAttribute("data-value");
+                let text;
+                const element = document.getElementById(elementId);
+                if (element) {
+                    text = element.textContent;
+                } else {
+                    const pill = document.querySelector(`[data-value="${elementId}"]`);
+                    if (pill) {
+                        const rawValue = pill.getAttribute("data-value");
+                        text = formatCurrency(parseFloat(rawValue));
+                    } else {
+                        text = elementId;
+                    }
+                }
                 navigator.clipboard.writeText(text).then(() => {
                     $('#toast').addClass('show');
                     setTimeout(() => $('#toast').removeClass('show'), 2000);
@@ -941,8 +1057,9 @@
             function calculateResults() {
                 const form = $('#calculator-form');
                 const calcType = $('#calcType').val();
-                const valorComercial = getCleanNumber($('#valorComercial').val());
+                const valorComercial = getCleanNumber($('#valorComercialHidden').val());
                 const precioDeSesion = getCleanNumber($('#precioDeSesion').val());
+                const valorComercialInput = $('#valorComercial');
                 const valorComercialError = $('#valorComercialError');
                 const precioDeSesionError = $('#precioDeSesionError');
                 const resultsGridContainer = $('#results-grid-container');
@@ -950,6 +1067,9 @@
                 const parcialidadesSection = $('#parcialidades-section');
                 const cesionDerechosSection = $('#cesion-derechos-section');
                 const gananciaContainer = $('#ganancia-container');
+
+                // Actualizar el campo de Valor Comercial con formato
+                valorComercialInput.val(formatCurrency(valorComercial));
 
                 if (isNaN(valorComercial) || valorComercial < 0) {
                     valorComercialError.show();
@@ -991,13 +1111,13 @@
                     contentType: false,
                     headers: { 'X-CSRFToken': '{{ csrf_token }}' },
                     success: function(data) {
-                        $('#displayValorComercial').text(data.valor_comercial);
-                        $('#displayValorJudicial').text(data.valor_judicial);
-                        $('#displayHonorarios').text(data.honorarios);
-                        $('#displayCession').text(data.precio_de_sesion);
-                        $('#displayPrimerPago').text(data.firma);
-                        $('#displaySegundoPago').text(data.segundo_pago || data.cotizacion || data.precio_de_sesion);
-                        $('#displayTercerPago').text(data.entrega);
+                        $('#displayValorComercial').text(formatCurrency(getCleanNumber(data.valor_comercial)));
+                        $('#displayValorJudicial').text(formatCurrency(getCleanNumber(data.valor_judicial)));
+                        $('#displayHonorarios').text(formatCurrency(getCleanNumber(data.honorarios)));
+                        $('#displayCession').text(formatCurrency(getCleanNumber(data.precio_de_sesion)));
+                        $('#displayPrimerPago').text(formatCurrency(getCleanNumber(data.firma)));
+                        $('#displaySegundoPago').text(formatCurrency(getCleanNumber(data.segundo_pago || data.cotizacion || data.precio_de_sesion)));
+                        $('#displayTercerPago').text(formatCurrency(getCleanNumber(data.entrega)));
                         $('#displayTotal').text(formatCurrency(
                             getCleanNumber(data.firma) +
                             getCleanNumber(data.segundo_pago || data.cotizacion || data.precio_de_sesion) +
@@ -1005,8 +1125,8 @@
                         ));
                         $('#displayGanancia').text(data.ganancia);
                         $('#displayCostoCompra').text(data.porcentaje_vc);
-                        $('#displayValorExt').text(data.valor_ext);
-                        $('#displayCotizacion').text(data.cotizacion);
+                        $('#displayValorExt').text(formatCurrency(getCleanNumber(data.valor_ext)));
+                        $('#displayCotizacion').text(formatCurrency(getCleanNumber(data.cotizacion)));
                     },
                     error: function(xhr, status, error) {
                         console.error('Error en AJAX:', status, error);
@@ -1024,7 +1144,10 @@
             const toggleHonorariosButton = document.getElementById('toggle-honorarios');
             const honorariosSection = document.getElementById('honorarios');
 
-            formatNumberInput(valorComercialInput, valorComercialHidden);
+            // Formatear valor inicial de Valor Comercial
+            const initialValorComercial = getCleanNumber(valorComercialHidden.value);
+            valorComercialInput.value = formatCurrency(initialValorComercial);
+
             formatNumberInput(precioDeSesionInput, precioDeSesionHidden);
             inicializarMapa();
             calculateResults();
