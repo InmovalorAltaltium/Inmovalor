@@ -404,149 +404,457 @@ def welcome(request):
     return render(request, "welcome.html", context)
 
 # Vistas de alcaldías
+
+                                            #BENITO JUAREZ
 @never_cache
 @login_required_custom
 def vista_benito_juarez(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Benito Juárez')
-    return render(request, 'alcaldias/benito.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Benito Juárez')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Benito Juárez.")
+            print("No se encontraron colonias para Benito Juárez.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Benito Juárez.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/benito.html', context)
 
+
+                                            #ALVARO ABREGON 
 @never_cache
 @login_required_custom
 def vista_alvaro(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Álvaro Obregón')
-    return render(request, 'alcaldias/alvaro.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Álvaro Obregón')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Álvaro Obregón.")
+            print("No se encontraron colonias para Álvaro Obregón.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Álvaro Obregón.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/alvaro.html', context)
 
+
+                                            #Coyoacán
 @never_cache
 @login_required_custom
 def vista_coyoacan(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Coyoacán')
-    return render(request, 'alcaldias/coyoacan.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Coyoacán')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Coyoacán.")
+            print("No se encontraron colonias para Coyoacán.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Coyoacán.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/coyoacan.html', context)
 
+                                                #Xochimilco
 @never_cache
 @login_required_custom
 def vista_xochimilco(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Xochimilco')
-    return render(request, 'alcaldias/xochimilco.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Xochimilco')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Xochimilco.")
+            print("No se encontraron colonias para Xochimilcon.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles paraXochimilco.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/xochimilco.html', context)
 
+                                        #Azcapotzalco
 @never_cache
 @login_required_custom
 def vista_azcapotzalco(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Azcapotzalco')
-    return render(request, 'alcaldias/azcapotzalco.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Azcapotzalco')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Azcapotzalco.")
+            print("No se encontraron colonias para Azcapotzalco.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Azcapotzalco.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/azcapotzalco.html', context)
 
+                                            #Cuajimalpa de Morelos
 @never_cache
 @login_required_custom
 def vista_cuajimalpa(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Cuajimalpa de Morelos')
-    return render(request, 'alcaldias/cuajimalpa.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Cuajimalpa De Morelos')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Cuajimalpa de Morelos.")
+            print("No se encontraron colonias para Cuajimalpa de Morelos.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Cuajimalpa de Morelos.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/cuajimalpa.html', context)
 
+                                                    #Cuauhtémoc
 @never_cache
 @login_required_custom
 def vista_cuauhtemoc(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Cuauhtémoc')
-    return render(request, 'alcaldias/cuauhtemoc.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Cuauhtémoc')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Cuauhtémoc.")
+            print("No se encontraron colonias para Cuauhtémoc.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Cuauhtémoc.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/cuauhtemoc.html', context)
 
+                                            #Miguel Hidalgo
 @never_cache
 @login_required_custom
 def vista_miguel(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Miguel Hidalgo')
-    return render(request, 'alcaldias/miguel.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Miguel Hidalgo')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Miguel Hidalgo.")
+            print("No se encontraron colonias para Miguel Hidalgo.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Miguel Hidalgo.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/miguel.html', context)
 
+                                            #Gustavo A. Madero  
 @never_cache
 @login_required_custom
 def vista_gustavo(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Gustavo A. Madero')
-    return render(request, 'alcaldias/gustavo.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Gustavo A. Madero')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Gustavo A. Madero.")
+            print("No se encontraron colonias para Gustavo A. Madero.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Gustavo A. Madero.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/gustavo.html', context)
 
+                                            #Iztacalco
 @never_cache
 @login_required_custom
 def vista_iztacalco(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Iztacalco')
-    return render(request, 'alcaldias/iztacalco.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Iztacalco')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Iztacalco.")
+            print("No se encontraron colonias para Iztacalco.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Iztacalco.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/iztacalco.html', context)
 
+                                                #Iztapalapa
 @never_cache
 @login_required_custom
 def vista_iztapalapa(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Iztapalapa')
-    return render(request, 'alcaldias/iztapalapa.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Iztapalapa')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Iztapalapa.")
+            print("No se encontraron colonias para Iztapalapa.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Iztapalapa.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/iztapalapa.html', context)
 
+                                            #La Magdalena Contreras
 @never_cache
 @login_required_custom
 def vista_magda(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='La Magdalena Contreras')
-    return render(request, 'alcaldias/magda.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='La Magdalena Contreras')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para La Magdalena Contreras.")
+            print("No se encontraron colonias para La Magdalena Contreras.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para La Magdalena Contreras.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/magda.html', context)
 
+
+                                            #Milpa Alta
 @never_cache
 @login_required_custom
 def vista_milpa(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Milpa Alta')
-    return render(request, 'alcaldias/milpa.html', {'datos': datos, 'usuario': usuario})
-
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Milpa Alta')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Milpa Alta.")
+            print("No se encontraron colonias para Milpa Alta.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Milpa Alta.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/milpa.html', context)
+                    
+                                            #Tláhuac
 @never_cache
 @login_required_custom
 def vista_tlahuac(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Tláhuac')
-    return render(request, 'alcaldias/tlahuac.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Tláhuac')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Tláhuac.")
+            print("No se encontraron colonias para Tláhuac.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Tláhuac.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/tlahuac.html', context)
 
+                                                #Tlalpan 
 @never_cache
 @login_required_custom
 def vista_tlalpan(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Tlalpan')
-    return render(request, 'alcaldias/tlalpan.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Tlalpan')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Tlalpan.")
+            print("No se encontraron colonias para Tlalpan.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Tlalpan.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/tlalpan.html', context)
 
+                                                  #Venustiano Carranza
 @never_cache
 @login_required_custom
 def vista_venustiano(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
+        messages.error(request, "Debes iniciar sesión para ver esta página.")
         return redirect('signin')
-    datos = AlcaldiaVistas.objects.filter(alcaldia__iexact='Venustiano Carranza')
-    return render(request, 'alcaldias/venustiano.html', {'datos': datos, 'usuario': usuario})
+    
+    try:
+        datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Venustiano Carranza')
+        if not datos.exists():
+            messages.warning(request, "No se encontraron colonias para Venustiano Carranza.")
+            print("No se encontraron colonias para Venustiano Carranza.")
+        else:
+            print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
+    except Exception as e:
+        datos = Colonias.objects.none()
+        messages.error(request, f"Error al cargar datos: {str(e)}")
+        print(f"Error: {str(e)}")
+    
+    context = {
+        'datos': datos,
+        'usuario': usuario,
+        'no_data_message': 'No hay datos disponibles para Venustiano Carranza.' if not datos.exists() else None
+    }
+    return render(request, 'alcaldias/venustiano.html', context)
 
 # Obtener municipios por estado (AJAX)
 @never_cache
