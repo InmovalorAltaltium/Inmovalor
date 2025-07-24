@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 <style>
-    /* Cambiamos las variables :root por variables específicas para estimaciones */
     .estimaciones-container {
         --estimaciones-primary-color: #00CCCC;
         --estimaciones-secondary-color: #009999;
@@ -252,7 +251,7 @@
         animation: float 3s ease-in-out infinite;
     }
     .estimaciones-container .container-fluid.py-2 {
-        margin-top: 30px; /* Aprox. 2cm (30px) - ajusta este valor según necesites */
+        margin-top: 30px;
     }
 
     @keyframes float {
@@ -408,8 +407,11 @@
                             <label class="form-label required-field">Sanitarios</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-bath"></i></span>
-                                <input id="sanitarios" name="sanitarios" type="number" class="form-control" min="0" step="0.5" required>
-                                <div class="invalid-feedback">Campo requerido.</div>
+                                <input id="sanitarios" name="sanitarios" type="text" class="form-control" required 
+                                       pattern="^[1-9]\d*(\.5)?$" 
+                                       title="Debe ser entero o medio baño (ej. 1, 1.5, 2). Mínimo 1 baño."
+                                       oninput="validateSanitarios(this)">
+                                <div class="invalid-feedback">Debe ser entero o medio baño (ej. 1, 1.5, 2). Mínimo 1 baño.</div>
                             </div>
                         </div>
                         <div class="col-md-4 property-field">
@@ -434,7 +436,7 @@
                             <label class="form-label required-field">Terreno (m²)</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-vector-square"></i></span>
-                                <input id="terreno" name="terreno" type="number" class="form-control" min="0" required>
+                                <input id="terreno" name="terreno" type="number" class="form-control" min="0" step="0.01" required>
                                 <div class="invalid-feedback">Campo requerido.</div>
                             </div>
                         </div>
@@ -442,7 +444,7 @@
                             <label class="form-label required-field">Construcción (m²)</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-home"></i></span>
-                                <input id="construccion" name="construccion" type="number" class="form-control" min="0" required>
+                                <input id="construccion" name="construccion" type="number" class="form-control" min="0" step="0.01" required>
                                 <div class="invalid-feedback">Campo requerido.</div>
                             </div>
                         </div>
@@ -521,6 +523,75 @@
                                 });
                                 checkFormValidity();
                             });
+
+                            function validateSanitarios(input) {
+                                let value = input.value.trim();
+                                
+                                // Permitir campo vacío temporalmente durante la edición
+                                if (value === '') {
+                                    input.setCustomValidity('');
+                                    return;
+                                }
+                                
+                                // Reemplazar comas por puntos para soportar diferentes formatos
+                                value = value.replace(',', '.');
+                                
+                                // Validar formato con expresión regular
+                                const sanitariosRegex = /^[1-9]\d*(\.5)?$/;
+                                if (!sanitariosRegex.test(value)) {
+                                    input.setCustomValidity('Formato inválido. Use enteros o .5 (ej. 1, 1.5, 2)');
+                                    return;
+                                }
+                                
+                                // Convertir a número para validaciones adicionales
+                                const numValue = parseFloat(value);
+                                
+                                // Validar mínimo 1 baño
+                                if (numValue < 1) {
+                                    input.setCustomValidity('Mínimo 1 baño completo');
+                                    return;
+                                }
+                                
+                                // Validar parte decimal
+                                const decimalPart = numValue % 1;
+                                if (decimalPart !== 0 && decimalPart !== 0.5) {
+                                    input.setCustomValidity('Solo se permiten medios baños (.5)');
+                                    return;
+                                }
+                                
+                                // Formatear el valor (opcional)
+                                input.value = value.includes('.') ? value : numValue.toString();
+                                
+                                // Todo correcto
+                                input.setCustomValidity('');
+                                checkFormValidity();
+                            }
+
+                            function checkFormValidity() {
+                                const form = document.querySelector('.needs-validation');
+                                const requiredFields = form.querySelectorAll('[required]');
+                                let allValid = true;
+
+                                requiredFields.forEach(field => {
+                                    if (!field.value || field.value === '' || (field.tagName === 'SELECT' && field.value === '')) {
+                                        allValid = false;
+                                    }
+                                });
+
+                                const statusDiv = document.getElementById('form-status');
+                                if (allValid) {
+                                    statusDiv.innerHTML = '<i class="fas fa-check-circle me-1"></i> ¡Todos los campos requeridos están completos!';
+                                    statusDiv.classList.remove('error');
+                                    statusDiv.classList.add('success');
+                                } else {
+                                    statusDiv.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.';
+                                    statusDiv.classList.remove('success');
+                                    statusDiv.classList.add('error');
+                                }
+                            }
+
+                            // Validar al cargar la página
+                            checkFormValidity();
                         </script>
                         {% if messages %}
                             {% for message in messages %}
@@ -580,28 +651,6 @@
             });
         })();
 
-        // Validar campos requeridos en tiempo real
-        function checkFormValidity() {
-            const form = document.querySelector('.needs-validation');
-            const requiredFields = form.querySelectorAll('[required]');
-            let allValid = true;
-
-            requiredFields.forEach(field => {
-                if (!field.value || field.value === '' || (field.tagName === 'SELECT' && field.value === '')) {
-                    allValid = false;
-                }
-            });
-
-            const statusDiv = $('#form-status');
-            if (allValid) {
-                statusDiv.html('<i class="fas fa-check-circle me-1"></i> ¡Todos los campos requeridos están completos!')
-                        .removeClass('error').addClass('success');
-            } else {
-                statusDiv.html('<i class="fas fa-exclamation-circle me-1"></i> Falta completar uno o más campos requeridos.')
-                        .removeClass('success').addClass('error');
-            }
-        }
-
         // Scroll automático al primer campo requerido vacío
         function scrollToNextField(currentField) {
             const form = document.querySelector('.form-container');
@@ -640,9 +689,6 @@
                 }
             });
         });
-
-        // Validar al cargar la página
-        checkFormValidity();
 
         // Evento change para el selector de estado
         $('#estado').on('change', function () {

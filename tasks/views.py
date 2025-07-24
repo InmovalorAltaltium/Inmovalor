@@ -89,6 +89,9 @@ def signout(request):
     request.session.flush()
     return redirect('signin')
 
+
+
+
 # Estimaciones de propiedades
 @never_cache
 @login_required_custom
@@ -331,6 +334,7 @@ def estimaciones(request):
         'usuario': usuario,
     }
     return render(request, 'estimaciones.html', context)
+
 
 @never_cache
 @login_required_custom
@@ -855,6 +859,7 @@ def vista_venustiano(request):
         'no_data_message': 'No hay datos disponibles para Venustiano Carranza.' if not datos.exists() else None
     }
     return render(request, 'alcaldias/venustiano.html', context)
+
 
 # Obtener municipios por estado (AJAX)
 @never_cache
