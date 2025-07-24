@@ -1228,27 +1228,36 @@ def gentelella_view(request, page):
         context['colonias'] = Colonias.objects.all()
         context['codigos_postales'] = CodigosPostales.objects.all()
 
-        if 'eliminar_individual' in request.GET and 'id_propiedad' in request.GET:
-            try:
-                propiedad_id = request.GET['id_propiedad']
-                propiedad = Propiedades.objects.get(id_propiedad=propiedad_id)
-                propiedad.delete()
-                messages.success(request, f"Propiedad con ID {propiedad_id} eliminada correctamente.")
-            except Propiedades.DoesNotExist:
-                messages.error(request, f"No se encontró la propiedad con ID {propiedad_id}.")
-            except Exception as e:
-                messages.error(request, f"Error al eliminar la propiedad: {str(e)}")
-            return redirect('gentelella_page', page='cal_estimaciones')
+        from django.db import connection
 
-        if 'eliminar' in request.GET:
-            try:
-                Propiedades.objects.all().delete()
-                with connection.cursor() as cursor:
+    if 'eliminar_individual' in request.GET and 'id_propiedad' in request.GET:
+        try:
+            propiedad_id = request.GET['id_propiedad']
+            propiedad = Propiedades.objects.get(id_propiedad=propiedad_id)
+            propiedad.delete()
+            messages.success(request, f"Propiedad con ID {propiedad_id} eliminada correctamente.")
+        except Propiedades.DoesNotExist:
+            messages.error(request, f"No se encontró la propiedad con ID {propiedad_id}.")
+        except Exception as e:
+            messages.error(request, f"Error al eliminar la propiedad: {str(e)}")
+        return redirect('gentelella_page', page='cal_estimaciones')
+
+    if 'eliminar' in request.GET:
+        try:
+            Propiedades.objects.all().delete()
+            with connection.cursor() as cursor:
+                # Detectar el tipo de base de datos
+                if connection.vendor == 'postgresql':
+                    cursor.execute("SELECT setval('propiedades_id_propiedad_seq', 1, false)")
+                elif connection.vendor == 'mysql':
                     cursor.execute("ALTER TABLE propiedades AUTO_INCREMENT = 1")
-                messages.success(request, "Todas las propiedades han sido eliminadas y los IDs reiniciados a 1.")
-            except Exception as e:
-                messages.error(request, f"Error al eliminar propiedades o reiniciar IDs: {str(e)}")
-            return redirect('gentelella_page', page='cal_estimaciones')
+                else:
+                    messages.error(request, "Base de datos no soportada para reiniciar IDs.")
+                    return redirect('gentelella_page', page='cal_estimaciones')
+            messages.success(request, "Todas las propiedades han sido eliminadas y los IDs reiniciados a 1.")
+        except Exception as e:
+            messages.error(request, f"Error al eliminar propiedades o reiniciar IDs: {str(e)}")
+        return redirect('gentelella_page', page='cal_estimaciones')
 
     elif page == "cal_usuarios":
         try:
