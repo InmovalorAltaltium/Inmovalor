@@ -104,103 +104,21 @@ def estimaciones(request):
     if 'generar_reporte_individual' in request.GET and 'id_propiedad' in request.GET:
         try:
             propiedad_id = request.GET['id_propiedad']
-            propiedad = Propiedades.objects.get(id_propiedad=propiedad_id)
-
-            usuario_nombre = usuario.username if usuario else "Usuario invitado"
-            usuario_correo = usuario.email if usuario else "correo@invitado.com"
-
+            # Simulación simplificada para probar PDF
             response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = f'attachment; filename="reporte_propiedad_{propiedad_id}.pdf"'
+            response['Content-Disposition'] = f'attachment; filename="test_pdf_{propiedad_id}.pdf"'
 
             pdf = FPDF(orientation='L')
             pdf.add_page()
             pdf.set_auto_page_break(False)
-
-            # Encabezado
-            logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo.png')
-            # if os.path.exists(logo_path):
-            #     pdf.image(logo_path, x=120, y=10, w=40)
-            pdf.set_xy(10, 10)
-            pdf.set_font("Arial", 'B', 12)
-            pdf.cell(100, 8, "Altaltium Real Estate Solutions", ln=True, align='L')
-            pdf.set_font("Arial", '', 10)
-            pdf.cell(100, 6, f"Usuario: {usuario_nombre}", ln=True, align='L')
-            pdf.cell(100, 6, f"Correo: {usuario_correo}", ln=True, align='L')
-            pdf.ln(5)
-
-            # Valores aproximados
-            pdf.set_xy(10, 40)
-            pdf.set_font("Arial", '', 10)
-            pdf.cell(90, 6, f"Valor Comercial Aproximado: ${propiedad.valor_comercial or 'N/A'}", ln=True, align='L')
-            pdf.cell(90, 6, f"Valor Judicial Aproximado: ${propiedad.valor_judicial or 'N/A'}", ln=True, align='L')
-
-            # Mapa
-            mapa_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'mapa.png')
-            # if os.path.exists(mapa_path):
-            #     pdf.image(mapa_path, x=110, y=30, w=180)
-
-            # Título principal
-            pdf.set_xy(10, 25)
-            pdf.set_text_color(0, 66, 156)
-            pdf.set_font("Arial", 'B', 14)
-            pdf.cell(0, 10, "Resultados de Estimación de Propiedad", ln=True, align='C')
-            pdf.ln(15)
-
-            # Descripción del Inmueble
-            pdf.set_xy(10, 90)
-            pdf.set_text_color(0, 66, 156)
-            pdf.set_font("Arial", 'B', 12)
-            pdf.cell(0, 10, "Descripción del Inmueble", ln=True)
+            pdf.set_font("Arial", 'B', 16)
+            pdf.cell(40, 10, "Prueba de PDF en Render", ln=True)
             pdf.ln(10)
+            pdf.cell(40, 10, "Esto es una prueba básica.", ln=True)
 
-            # Dirección
-            pdf.set_xy(10, 110)
-            pdf.set_text_color(0, 66, 156)
-            pdf.set_font("Arial", 'B', 10)
-            pdf.cell(90, 8, "Dirección", ln=True, align='L')
-            pdf.set_text_color(0, 0, 0)
-            pdf.set_font("Arial", '', 10)
-            pdf.set_x(10)
-            pdf.cell(90, 6, "Calle:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.calle or 'N/A'}", ln=True)
-            pdf.cell(90, 6, "Colonia:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.id_colonia.nombre if propiedad.id_colonia else 'Sin colonia'}", ln=True)
-            pdf.cell(90, 6, "Delegación:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.id_municipio.nombre if propiedad.id_municipio else 'Sin municipio'}", ln=True)
-            pdf.cell(90, 6, "Estado:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.id_estado.nombre if propiedad.id_estado else 'Sin estado'}", ln=True)
-
-            # Características
-            pdf.set_xy(110, 110)
-            pdf.set_text_color(0, 66, 156)
-            pdf.set_font("Arial", 'B', 10)
-            pdf.cell(90, 8, "Características", ln=True, align='L')
-            pdf.set_text_color(0, 0, 0)
-            pdf.set_font("Arial", '', 10)
-            pdf.set_x(110)
-            pdf.cell(90, 6, "Terreno:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.terreno or 'N/A'} m2", ln=True)
-            pdf.cell(90, 6, "Construcción:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.construccion or 'N/A'} m2", ln=True)
-            pdf.cell(90, 6, "Recámaras:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.recamaras or 'N/A'}", ln=True)
-            pdf.cell(90, 6, "Sanitarios:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.sanitarios or 'N/A'}", ln=True)
-            pdf.cell(90, 6, "Estacionamiento:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.estacionamiento or 'N/A'}", ln=True)
-
-            # Información adicional
-            pdf.set_xy(210, 110)
-            pdf.set_text_color(0, 66, 156)
-            pdf.set_font("Arial", 'B', 10)
-            pdf.cell(90, 8, "Información adicional", ln=True, align='L')
-            pdf.set_text_color(0, 0, 0)
-            pdf.set_font("Arial", '', 10)
-            pdf.set_x(210)
-            pdf.cell(90, 6, "Comentarios:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.comentarios or 'N/A'}", ln=True)
-            pdf.cell(90, 6, "Estado de conservación:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.estado_conservacion or 'Muy bueno'}", ln=True)
+            # Depuración: Enviar mensaje al log
+            import sys
+            print("Generando PDF con longitud:", len(pdf.output(dest='S')), file=sys.stderr)
 
             response.write(pdf.output(dest='S'))
             return response
