@@ -89,8 +89,17 @@ def signout(request):
     request.session.flush()
     return redirect('signin')
 
+#inicio de calculadora estimaciones 
 
 
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.cache import never_cache
+from fpdf import FPDF
+import os
+from django.conf import settings
+from .models import Usuarios, Propiedades, Estados, Municipios, Colonias, CodigosPostales, AlcaldiaVistas
+from django.contrib import messages
 
 # Estimaciones de propiedades
 @never_cache
@@ -119,24 +128,28 @@ def estimaciones(request):
             logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo.png')
             if os.path.exists(logo_path):
                 pdf.image(logo_path, x=120, y=10, w=40)
+            else:
+                print(f"Advertencia: El archivo {logo_path} no se encontró.")
             pdf.set_xy(10, 10)
             pdf.set_font("Arial", 'B', 12)
             pdf.cell(100, 8, "Altaltium Real Estate Solutions", ln=True, align='L')
             pdf.set_font("Arial", '', 10)
-            pdf.cell(100, 6, f"Usuario: {usuario_nombre}", ln=True, align='L')
-            pdf.cell(100, 6, f"Correo: {usuario_correo}", ln=True, align='L')
+            pdf.cell(100, 6, f"Usuario: {str(usuario_nombre)}", ln=True, align='L')
+            pdf.cell(100, 6, f"Correo: {str(usuario_correo)}", ln=True, align='L')
             pdf.ln(5)
 
             # Valores aproximados
             pdf.set_xy(10, 40)
             pdf.set_font("Arial", '', 10)
-            pdf.cell(90, 6, f"Valor Comercial Aproximado: ${propiedad.valor_comercial or 'N/A'}", ln=True, align='L')
-            pdf.cell(90, 6, f"Valor Judicial Aproximado: ${propiedad.valor_judicial or 'N/A'}", ln=True, align='L')
+            pdf.cell(90, 6, f"Valor Comercial Aproximado: ${str(propiedad.valor_comercial or 'N/A')}", ln=True, align='L')
+            pdf.cell(90, 6, f"Valor Judicial Aproximado: ${str(propiedad.valor_judicial or 'N/A')}", ln=True, align='L')
 
             # Mapa
             mapa_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'mapa.png')
             if os.path.exists(mapa_path):
                 pdf.image(mapa_path, x=110, y=30, w=180)
+            else:
+                print(f"Advertencia: El archivo {mapa_path} no se encontró.")
 
             # Título principal
             pdf.set_xy(10, 25)
@@ -161,13 +174,13 @@ def estimaciones(request):
             pdf.set_font("Arial", '', 10)
             pdf.set_x(10)
             pdf.cell(90, 6, "Calle:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.calle or 'N/A'}", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.calle or 'N/A')}", ln=True)
             pdf.cell(90, 6, "Colonia:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.id_colonia.nombre if propiedad.id_colonia else 'Sin colonia'}", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.id_colonia.nombre if propiedad.id_colonia else 'Sin colonia')}", ln=True)
             pdf.cell(90, 6, "Delegación:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.id_municipio.nombre if propiedad.id_municipio else 'Sin municipio'}", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.id_municipio.nombre if propiedad.id_municipio else 'Sin municipio')}", ln=True)
             pdf.cell(90, 6, "Estado:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.id_estado.nombre if propiedad.id_estado else 'Sin estado'}", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.id_estado.nombre if propiedad.id_estado else 'Sin estado')}", ln=True)
 
             # Características
             pdf.set_xy(110, 110)
@@ -178,15 +191,15 @@ def estimaciones(request):
             pdf.set_font("Arial", '', 10)
             pdf.set_x(110)
             pdf.cell(90, 6, "Terreno:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.terreno or 'N/A'} m2", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.terreno or 'N/A')} m2", ln=True)
             pdf.cell(90, 6, "Construcción:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.construccion or 'N/A'} m2", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.construccion or 'N/A')} m2", ln=True)
             pdf.cell(90, 6, "Recámaras:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.recamaras or 'N/A'}", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.recamaras or 'N/A')}", ln=True)
             pdf.cell(90, 6, "Sanitarios:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.sanitarios or 'N/A'}", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.sanitarios or 'N/A')}", ln=True)
             pdf.cell(90, 6, "Estacionamiento:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.estacionamiento or 'N/A'}", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.estacionamiento or 'N/A')}", ln=True)
 
             # Información adicional
             pdf.set_xy(210, 110)
@@ -197,11 +210,11 @@ def estimaciones(request):
             pdf.set_font("Arial", '', 10)
             pdf.set_x(210)
             pdf.cell(90, 6, "Comentarios:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.comentarios or 'N/A'}", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.comentarios or 'N/A')}", ln=True)
             pdf.cell(90, 6, "Estado de conservación:", ln=True)
-            pdf.cell(90, 6, f"{propiedad.estado_conservacion or 'Muy bueno'}", ln=True)
+            pdf.cell(90, 6, f"{str(propiedad.estado_conservacion or 'Muy bueno')}", ln=True)
 
-            response.write(pdf.output(dest='S').encode('latin-1'))
+            response.write(pdf.output(dest='S'))
             return response
         except Propiedades.DoesNotExist:
             return HttpResponse("Propiedad no encontrada", status=404)
@@ -334,6 +347,9 @@ def estimaciones(request):
         'usuario': usuario,
     }
     return render(request, 'estimaciones.html', context)
+
+
+#fin de calculadora estimaciones
 
 
 @never_cache
@@ -1228,27 +1244,27 @@ def gentelella_view(request, page):
         context['colonias'] = Colonias.objects.all()
         context['codigos_postales'] = CodigosPostales.objects.all()
 
-    if 'eliminar_individual' in request.GET and 'id_propiedad' in request.GET:
-        try:
-            propiedad_id = request.GET['id_propiedad']
-            propiedad = Propiedades.objects.get(id_propiedad=propiedad_id)
-            propiedad.delete()
-            messages.success(request, f"Propiedad con ID {propiedad_id} eliminada correctamente.")
-        except Propiedades.DoesNotExist:
-            messages.error(request, f"No se encontró la propiedad con ID {propiedad_id}.")
-        except Exception as e:
-            messages.error(request, f"Error al eliminar la propiedad: {str(e)}")
-        return redirect('gentelella_page', page='cal_estimaciones')
+        if 'eliminar_individual' in request.GET and 'id_propiedad' in request.GET:
+            try:
+                propiedad_id = request.GET['id_propiedad']
+                propiedad = Propiedades.objects.get(id_propiedad=propiedad_id)
+                propiedad.delete()
+                messages.success(request, f"Propiedad con ID {propiedad_id} eliminada correctamente.")
+            except Propiedades.DoesNotExist:
+                messages.error(request, f"No se encontró la propiedad con ID {propiedad_id}.")
+            except Exception as e:
+                messages.error(request, f"Error al eliminar la propiedad: {str(e)}")
+            return redirect('gentelella_page', page='cal_estimaciones')
 
-    if 'eliminar' in request.GET:
-        try:
-            Propiedades.objects.all().delete()
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT setval('propiedades_id_propiedad_seq', 1, false)")
-            messages.success(request, "Todas las propiedades han sido eliminadas y los IDs reiniciados a 1.")
-        except Exception as e:
-            messages.error(request, f"Error al eliminar propiedades o reiniciar IDs: {str(e)}")
-        return redirect('gentelella_page', page='cal_estimaciones')
+        if 'eliminar' in request.GET:
+            try:
+                Propiedades.objects.all().delete()
+                with connection.cursor() as cursor:
+                    cursor.execute("ALTER TABLE propiedades AUTO_INCREMENT = 1")
+                messages.success(request, "Todas las propiedades han sido eliminadas y los IDs reiniciados a 1.")
+            except Exception as e:
+                messages.error(request, f"Error al eliminar propiedades o reiniciar IDs: {str(e)}")
+            return redirect('gentelella_page', page='cal_estimaciones')
 
     elif page == "cal_usuarios":
         try:
