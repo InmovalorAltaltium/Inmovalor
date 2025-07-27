@@ -91,9 +91,6 @@ def signout(request):
 
 
 #inicio esticamciones
-
-
-# Estimaciones de propiedades
 @never_cache
 @login_required_custom
 def estimaciones(request):
@@ -104,7 +101,6 @@ def estimaciones(request):
     if 'generar_reporte_individual' in request.GET and 'id_propiedad' in request.GET:
         try:
             propiedad_id = request.GET['id_propiedad']
-            # Simulación simplificada para probar PDF con fpdf2
             response = HttpResponse(content_type='application/pdf')
             response['Content-Disposition'] = f'attachment; filename="test_pdf_{propiedad_id}.pdf"'
 
@@ -112,19 +108,12 @@ def estimaciones(request):
             pdf = FPDF(orientation='L')
             pdf.add_page()
             pdf.set_auto_page_break(False)
-            # Usa una fuente básica disponible en fpdf2
-            pdf.add_font('DejaVu', '', 'DejaVuSansCondensed.ttf', uni=True)  # Asegúrate de tener la fuente
-            pdf.set_font('DejaVu', '', 16)
+            pdf.set_font('Helvetica', '', 16)  # Usar fuente estándar
             pdf.cell(40, 10, "Prueba de PDF en Render", ln=True)
             pdf.ln(10)
             pdf.cell(40, 10, "Esto es una prueba básica con fpdf2.", ln=True)
 
-            # Depuración detallada
-            import sys
-            pdf_content = pdf.output(dest='S').encode('latin-1')  # Forzar codificación
-            print("FPDF2 inicializado correctamente", file=sys.stderr)
-            print("Longitud del PDF:", len(pdf_content), file=sys.stderr)
-
+            pdf_content = pdf.output(dest='S').encode('latin-1')
             response.write(pdf_content)
             return response
         except Exception as e:
