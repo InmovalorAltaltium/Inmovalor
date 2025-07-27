@@ -102,22 +102,16 @@ def estimaciones(request):
     if 'generar_reporte_individual' in request.GET and 'id_propiedad' in request.GET:
         try:
             propiedad_id = request.GET['id_propiedad']
-            response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = f'attachment; filename="test_pdf_{propiedad_id}.pdf"'
-
-            from fpdf import FPDF
-            pdf = FPDF(orientation='L')
+            buffer = io.BytesIO()
+            pdf = FPDF(orientation='P', format='A4')  # Formato básico A4, orientación vertical
             pdf.add_page()
-            pdf.set_auto_page_break(False)
-            pdf.set_font('Helvetica', '', 16)
-            pdf.cell(40, 10, "Prueba de PDF en Render", ln=True)
-            pdf.ln(10)
-            pdf.cell(40, 10, "Esto es una prueba básica con fpdf2.", ln=True)
+            pdf.set_font('Helvetica', '', 12)  # Fuente básica
+            pdf.cell(0, 10, "PDF de prueba", 0, 1, 'C')  # Título centrado
+            pdf.cell(0, 10, "Esto es un PDF básico para descargar.", 0, 1)  # Texto simple
 
-            pdf_content = pdf.output(dest='S')
-            import sys
-            print("PDF generado, longitud:", len(pdf_content), file=sys.stderr)
-            response.write(pdf_content)
+            pdf.output(buffer)
+            buffer.seek(0)
+            response = FileResponse(buffer, as_attachment=True, filename=f"test_pdf_{propiedad_id}.pdf")
             return response
         except Exception as e:
             import sys
