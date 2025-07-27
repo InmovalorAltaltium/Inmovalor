@@ -104,28 +104,33 @@ def estimaciones(request):
     if 'generar_reporte_individual' in request.GET and 'id_propiedad' in request.GET:
         try:
             propiedad_id = request.GET['id_propiedad']
-            # Simulación simplificada para probar PDF
+            # Simulación simplificada para probar PDF con fpdf2
             response = HttpResponse(content_type='application/pdf')
             response['Content-Disposition'] = f'attachment; filename="test_pdf_{propiedad_id}.pdf"'
 
+            from fpdf import FPDF
             pdf = FPDF(orientation='L')
             pdf.add_page()
             pdf.set_auto_page_break(False)
-            pdf.set_font("Arial", 'B', 16)
+            # Usa una fuente básica disponible en fpdf2
+            pdf.add_font('DejaVu', '', 'DejaVuSansCondensed.ttf', uni=True)  # Asegúrate de tener la fuente
+            pdf.set_font('DejaVu', '', 16)
             pdf.cell(40, 10, "Prueba de PDF en Render", ln=True)
             pdf.ln(10)
-            pdf.cell(40, 10, "Esto es una prueba básica.", ln=True)
+            pdf.cell(40, 10, "Esto es una prueba básica con fpdf2.", ln=True)
 
-            # Depuración: Enviar mensaje al log
+            # Depuración detallada
             import sys
-            print("Generando PDF con longitud:", len(pdf.output(dest='S')), file=sys.stderr)
+            pdf_content = pdf.output(dest='S').encode('latin-1')  # Forzar codificación
+            print("FPDF2 inicializado correctamente", file=sys.stderr)
+            print("Longitud del PDF:", len(pdf_content), file=sys.stderr)
 
-            response.write(pdf.output(dest='S'))
+            response.write(pdf_content)
             return response
-        except Propiedades.DoesNotExist:
-            return HttpResponse("Propiedad no encontrada", status=404)
         except Exception as e:
-            return HttpResponse(f"Error: {str(e)}", status=500)
+            import sys
+            print("Error en generación de PDF:", str(e), file=sys.stderr)
+            return HttpResponse(f"Error al generar PDF: {str(e)}", status=500)
 
     if request.method == 'POST':
         tipo_propiedad = request.POST.get('tipo_propiedad')
