@@ -118,8 +118,8 @@ def estimaciones(request):
 
             # Encabezado
             logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo.png')
-            if os.path.exists(logo_path):
-                pdf.image(logo_path, x=120, y=10, w=40)
+            # if os.path.exists(logo_path):
+            #     pdf.image(logo_path, x=120, y=10, w=40)
             pdf.set_xy(10, 10)
             pdf.set_font("Arial", 'B', 12)
             pdf.cell(100, 8, "Altaltium Real Estate Solutions", ln=True, align='L')
@@ -136,8 +136,8 @@ def estimaciones(request):
 
             # Mapa
             mapa_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'mapa.png')
-            if os.path.exists(mapa_path):
-                pdf.image(mapa_path, x=110, y=30, w=180)
+            # if os.path.exists(mapa_path):
+            #     pdf.image(mapa_path, x=110, y=30, w=180)
 
             # Título principal
             pdf.set_xy(10, 25)
