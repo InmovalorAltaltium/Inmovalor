@@ -113,7 +113,8 @@ def estimaciones(request):
             pdf.ln(10)
             pdf.cell(40, 10, "Esto es una prueba básica con fpdf2.", ln=True)
 
-            pdf_content = pdf.output(dest='S').encode('latin-1')
+            # Corrección: Eliminar .encode('latin-1')
+            pdf_content = pdf.output(dest='S')  # Devuelve un bytearray
             response.write(pdf_content)
             return response
         except Exception as e:
@@ -121,6 +122,7 @@ def estimaciones(request):
             print("Error en generación de PDF:", str(e), file=sys.stderr)
             return HttpResponse(f"Error al generar PDF: {str(e)}", status=500)
 
+    # Resto del código sin cambios...
     if request.method == 'POST':
         tipo_propiedad = request.POST.get('tipo_propiedad')
         calle = request.POST.get('calle')
