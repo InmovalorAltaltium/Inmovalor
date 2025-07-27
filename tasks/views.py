@@ -91,6 +91,7 @@ def signout(request):
 
 
 #inicio esticamciones
+
 @never_cache
 @login_required_custom
 def estimaciones(request):
@@ -108,13 +109,14 @@ def estimaciones(request):
             pdf = FPDF(orientation='L')
             pdf.add_page()
             pdf.set_auto_page_break(False)
-            pdf.set_font('Helvetica', '', 16)  # Usar fuente estándar
+            pdf.set_font('Helvetica', '', 16)
             pdf.cell(40, 10, "Prueba de PDF en Render", ln=True)
             pdf.ln(10)
             pdf.cell(40, 10, "Esto es una prueba básica con fpdf2.", ln=True)
 
-            # Corrección: Eliminar .encode('latin-1')
-            pdf_content = pdf.output(dest='S')  # Devuelve un bytearray
+            pdf_content = pdf.output(dest='S')
+            import sys
+            print("PDF generado, longitud:", len(pdf_content), file=sys.stderr)
             response.write(pdf_content)
             return response
         except Exception as e:
@@ -122,7 +124,6 @@ def estimaciones(request):
             print("Error en generación de PDF:", str(e), file=sys.stderr)
             return HttpResponse(f"Error al generar PDF: {str(e)}", status=500)
 
-    # Resto del código sin cambios...
     if request.method == 'POST':
         tipo_propiedad = request.POST.get('tipo_propiedad')
         calle = request.POST.get('calle')
