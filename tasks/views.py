@@ -5,11 +5,12 @@ from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.db import IntegrityError, connection
-from django.http import Http404, JsonResponse, HttpResponse
+from django.http import Http404, JsonResponse, HttpResponse, FileResponse
 from .models import Estados, Municipios, Colonias, CodigosPostales, AlcaldiaVistas, Propiedades, GraficaAlcaldia, Usuarios
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
+from .decorators import login_required_custom  # Asegúrate de que este archivo exista
 import json
 import matplotlib
 matplotlib.use('Agg')  # Usa un backend que no requiere interfaz gráfica
@@ -103,11 +104,11 @@ def estimaciones(request):
         try:
             propiedad_id = request.GET['id_propiedad']
             buffer = io.BytesIO()
-            pdf = FPDF(orientation='P', format='A4')  # Formato básico A4, orientación vertical
+            pdf = FPDF(orientation='P', format='A4')
             pdf.add_page()
-            pdf.set_font('Helvetica', '', 12)  # Fuente básica
-            pdf.cell(0, 10, "PDF de prueba", 0, 1, 'C')  # Título centrado
-            pdf.cell(0, 10, "Esto es un PDF básico para descargar.", 0, 1)  # Texto simple
+            pdf.set_font('Helvetica', '', 12)
+            pdf.cell(0, 10, "PDF de prueba", 0, 1, 'C')
+            pdf.cell(0, 10, "Esto es un PDF básico para descargar.", 0, 1)
 
             pdf.output(buffer)
             buffer.seek(0)
@@ -244,6 +245,7 @@ def estimaciones(request):
         'usuario': usuario,
     }
     return render(request, 'estimaciones.html', context)
+
 
 #fin estimaciones
 
