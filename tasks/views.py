@@ -103,7 +103,7 @@ def estimaciones(request):
     if 'generar_reporte_individual' in request.GET and 'id_propiedad' in request.GET:
         try:
             propiedad_id = request.GET['id_propiedad']
-            buffer = io.BytesIO()
+            buffer = BytesIO()  # Uso explícito de BytesIO
             pdf = FPDF(orientation='P', format='A4')
             pdf.add_page()
             pdf.set_font('Helvetica', '', 12)
@@ -113,6 +113,8 @@ def estimaciones(request):
             pdf.output(buffer)
             buffer.seek(0)
             response = FileResponse(buffer, as_attachment=True, filename=f"test_pdf_{propiedad_id}.pdf")
+            import sys
+            print("PDF generado, longitud:", buffer.getbuffer().nbytes, file=sys.stderr)
             return response
         except Exception as e:
             import sys
