@@ -10,7 +10,6 @@ from .models import Estados, Municipios, Colonias, CodigosPostales, AlcaldiaVist
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
-from .decorators import login_required_custom  # Asegúrate de que este archivo exista
 import json
 import matplotlib
 matplotlib.use('Agg')  # Usa un backend que no requiere interfaz gráfica
@@ -100,26 +99,21 @@ def estimaciones(request):
     if not usuario:
         return redirect('signin')
 
-    if 'generar_reporte_individual' in request.GET and 'id_propiedad' in request.GET:
+    # Manejo de reportes (redirigir a mostrar_resultado)
+    if 'generar_reporte_individual' in request.GET or 'generar_reporte_completo' in request.GET:
+        propiedad_id = request.GET.get('id_propiedad')
+        if not propiedad_id:
+            messages.error(request, "No se proporcionó un ID de propiedad válido.")
+            return redirect('estimaciones')
         try:
-            propiedad_id = request.GET['id_propiedad']
-            buffer = BytesIO()  # Uso explícito de BytesIO
-            pdf = FPDF(orientation='P', format='A4')
-            pdf.add_page()
-            pdf.set_font('Helvetica', '', 12)
-            pdf.cell(0, 10, "PDF de prueba", 0, 1, 'C')
-            pdf.cell(0, 10, "Esto es un PDF básico para descargar.", 0, 1)
-
-            pdf.output(buffer)
-            buffer.seek(0)
-            response = FileResponse(buffer, as_attachment=True, filename=f"test_pdf_{propiedad_id}.pdf")
-            import sys
-            print("PDF generado, longitud:", buffer.getbuffer().nbytes, file=sys.stderr)
-            return response
-        except Exception as e:
-            import sys
-            print("Error en generación de PDF:", str(e), file=sys.stderr)
-            return HttpResponse(f"Error al generar PDF: {str(e)}", status=500)
+            propiedad_id = int(propiedad_id)
+            if not Propiedades.objects.filter(id_propiedad=propiedad_id).exists():
+                messages.error(request, "La propiedad especificada no existe.")
+                return redirect('estimaciones')
+            return redirect('mostrar_resultado', propiedad_id=propiedad_id)
+        except ValueError:
+            messages.error(request, "El ID de propiedad no es válido.")
+            return redirect('estimaciones')
 
     if request.method == 'POST':
         tipo_propiedad = request.POST.get('tipo_propiedad')
@@ -247,7 +241,6 @@ def estimaciones(request):
         'usuario': usuario,
     }
     return render(request, 'estimaciones.html', context)
-
 
 #fin estimaciones
 
