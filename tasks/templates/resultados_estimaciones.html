@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inmovalor | Resultados de Evaluación</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -228,10 +226,30 @@
             width: calc(100% - 250px);
         }
 
-        @media (max-width: 768px) {
+        .toggle-sidebar {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1100;
+            background: #008a8a;
+            color: #ffffff;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 896px) {
             .sidebar {
-                transform: translateX(-100%);
                 width: 250px;
+                transform: translateX(-100%);
+                z-index: 1000;
             }
             .sidebar.active {
                 transform: translateX(0);
@@ -241,17 +259,7 @@
                 width: 100%;
             }
             .toggle-sidebar {
-                display: block;
-                position: fixed;
-                top: 1rem;
-                left: 1rem;
-                z-index: 1100;
-                background: #008a8a;
-                color: #ffffff;
-                padding: 0.5rem;
-                border-radius: 8px;
-                border: none;
-                cursor: pointer;
+                display: flex;
             }
             .sidebar h1, 
             .sidebar a span, 
@@ -261,6 +269,9 @@
             .sidebar a i, 
             .sidebar button i {
                 margin-right: 0.5rem;
+            }
+            .sidebar-toggle {
+                display: none;
             }
         }
 
@@ -443,7 +454,7 @@
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 896px) {
             .values-grid {
                 grid-template-columns: 1fr;
             }
@@ -496,7 +507,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease;
-            z-index: 1000;
+            z-index: 1200;
         }
 
         .toast.show {
@@ -512,6 +523,7 @@
             margin-bottom: 1rem;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(0, 204, 204, 0.1);
+            z-index: 500;
         }
 
         .error-card {
@@ -524,35 +536,38 @@
 
         #honorarios {
             background: #E6ECEF;
-            padding: 2rem 0;
+            padding: 1rem 0.5rem;
             border-top: 1px solid #e5e7eb;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .main-wrapper {
             background: #F8FAFA;
-            padding: 1.5rem;
-            border-radius: 12px;
+            padding: 1rem;
+            border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 1500px;
-            width: 95%;
-            margin: 1rem auto;
+            max-width: 100%;
+            width: 100%;
+            margin: 0.5rem auto;
             border: 1px solid #D1D5DB;
+            box-sizing: border-box;
         }
 
         .header-cotizacion {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.3rem;
             border-bottom: 2px solid #067c7c;
         }
 
         .main-title {
             color: #333333;
-            font-size: 1.9rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             text-align: center;
             font-family: 'Poppins', sans-serif;
         }
@@ -563,17 +578,20 @@
 
         .input-form-section {
             background: #FFFFFF;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
         .form-label {
             font-weight: 500;
             color: #4B5563;
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.2rem;
         }
 
         .required-field::after {
@@ -586,10 +604,12 @@
             background: #F9FAFB;
             border: 1px solid #D1D5DB;
             color: #333333;
-            padding: 0.5rem 0.7rem;
+            padding: 0.4rem 0.6rem;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .form-control::placeholder {
@@ -600,30 +620,33 @@
         .form-select:focus {
             border-color: #067c7c;
             outline: none;
-            box-shadow: 0 0 0 0.25rem rgba(0, 204, 204, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(0, 204, 204, 0.25);
             background: #FFFFFF;
         }
 
         .results-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
 
-        @media (min-width: 768px) {
-            .results-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-            }
+        .section-block {
+            background: #FFFFFF;
+            padding: 0.75rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #D1D5DB;
+            overflow-x: auto;
         }
 
         .section-title {
             color: #067c7c;
             font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
             text-align: left;
-            padding-bottom: 0.4rem;
+            padding-bottom: 0.3rem;
             position: relative;
         }
 
@@ -632,42 +655,37 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 50px;
+            width: 40px;
             height: 2px;
             background: #067c7c;
             border-radius: 1px;
-        }
-
-        .section-block {
-            background: #FFFFFF;
-            padding: 1.2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border: 1px solid #D1D5DB;
         }
 
         table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            margin-top: 0.8rem;
+            margin-top: 0.5rem;
             color: #333333;
+            font-size: 0.8rem;
+            table-layout: auto;
         }
 
         th {
             background: linear-gradient(90deg, #003035, #008a8a);
             color: #ffffff;
             font-weight: 600;
-            padding: 0.4rem;
+            padding: 0.3rem;
             text-align: left;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         td {
-            padding: 0.6rem 0.4rem;
+            padding: 0.4rem 0.3rem;
             text-align: left;
             border-bottom: 1px solid #E5E7EB;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
         }
 
         tr:last-child td {
@@ -677,16 +695,16 @@
         .result-value {
             color: #067c7c;
             font-weight: 600;
-            padding-left: 0.5rem;
+            padding-left: 0.3rem;
         }
 
         .copy-button {
             background: none;
             border: none;
             cursor: pointer;
-            margin-left: 0.5rem;
+            margin-left: 0.3rem;
             color: #067c7c;
-            font-size: 1rem;
+            font-size: 0.8rem;
             transition: color 0.3s ease, transform 0.3s ease;
             opacity: 0.7;
         }
@@ -701,34 +719,28 @@
             border-top: 2px solid #067c7c;
             font-weight: 700;
             color: #333333;
-            padding-top: 0.8rem;
-            font-size: 1.1rem;
+            padding-top: 0.6rem;
+            font-size: 0.9rem;
             background-color: rgba(0, 204, 204, 0.1);
             box-shadow: 0 0 8px rgba(0, 204, 204, 0.3);
             text-align: center;
         }
 
         .total-row .copy-button {
-            font-size: 1.1rem;
-            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            margin-left: 0.3rem;
         }
 
         .ganancia-container {
             background: #FFFFFF;
-            padding: 1.5rem;
-            border-radius: 12px;
+            padding: 0.75rem;
+            border-radius: 6px;
             text-align: center;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border: 1px solid #D1D5DB;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .ganancia-container { 
-                grid-template-columns: 1fr 1fr; 
-            }
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
         .ganancia-item {
@@ -739,28 +751,28 @@
 
         .ganancia-label {
             color: #333333;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 500;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
 
         .ganancia-value {
             color: #067c7c;
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             line-height: 1;
-            padding-bottom: 0.4rem;
+            padding-bottom: 0.3rem;
             position: relative;
         }
 
         .ganancia-value::after {
             content: "";
             display: block;
-            width: 70%;
-            max-width: 120px;
-            height: 3px;
+            width: 50%;
+            max-width: 100px;
+            height: 2px;
             background: #067c7c;
-            margin: 0.4rem auto 0;
+            margin: 0.3rem auto 0;
             border-radius: 2px;
         }
 
@@ -770,14 +782,13 @@
 
         #cesion-derechos-section.active {
             display: block;
-            grid-column: 1 / -1;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
         }
 
         .error-message {
             color: #DC2626;
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
+            font-size: 0.75rem;
+            margin-top: 0.2rem;
             display: none;
         }
 
@@ -802,47 +813,123 @@
         #generate-report.hidden, #generate-complete-report.hidden {
             display: none;
         }
+
+        @media (min-width: 896px) {
+            .input-form-section {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.75rem;
+            }
+            .results-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            .ganancia-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            #cesion-derechos-section.active {
+                grid-column: 1 / -1;
+            }
+            .main-wrapper {
+                padding: 1.5rem;
+                max-width: 1500px;
+            }
+            .header-cotizacion {
+                margin-bottom: 1.5rem;
+                padding-bottom: 0.5rem;
+            }
+            .main-title {
+                font-size: 1.9rem;
+                letter-spacing: 2px;
+            }
+            .section-title {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+                padding-bottom: 0.4rem;
+            }
+            .section-block {
+                padding: 1.2rem;
+            }
+            .ganancia-container {
+                padding: 1.5rem;
+            }
+            .ganancia-value {
+                font-size: 2.5rem;
+            }
+            table {
+                font-size: 0.9rem;
+            }
+            th, td {
+                padding: 0.6rem 0.4rem;
+            }
+            .copy-button {
+                font-size: 1rem;
+                margin-left: 0.5rem;
+            }
+            .total-row td {
+                font-size: 1.1rem;
+                padding-top: 0.8rem;
+            }
+            .total-row .copy-button {
+                font-size: 1.1rem;
+                margin-left: 0.5rem;
+            }
+            #honorarios {
+                padding: 2rem 0;
+            }
+        }
+
+        @media (max-width: 896px) {
+            .section-block {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            table {
+                min-width: 300px;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Toast global -->
     <div id="toast" class="toast"></div>
 
+    <!-- Botón para toggle en móviles -->
+    <button class="toggle-sidebar" aria-label="Abrir menú de navegación">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <!-- Sidebar -->
     <nav class="sidebar">
         <div class="logo-icon">
             <i class="fas fa-home"></i>
         </div>
-        <h1 class="animate-slide-up">
-            Inmovalor
-        </h1>
+        <h1 class="animate-slide-up">Inmovalor</h1>
         <div class="nav-container">
             <a href="{% url 'estimaciones' %}" class="animate-slide-up">
                 <i class="fas fa-arrow-left"></i>
                 <span>Nueva Evaluación</span>
             </a>
-            <a href="{% url 'estimaciones' %}?generar_reporte_individual=1&id_propiedad={{ propiedad.id_propiedad }}" id="generate-report" class="animate-slide-up">
+            <a href="{% url 'reporte_individual' propiedad.id_propiedad %}" id="generate-report" class="animate-slide-up">
                 <i class="fa fa-file-pdf"></i>
-                <span>Generar Reporte</span>
+                <span>Reporte Estimación</span>
             </a>
             <button id="toggle-honorarios" class="animate-slide-up" aria-expanded="false">
                 <i class="fas fa-calculator"></i>
                 <span>Cálculo de Honorarios</span>
             </button>
-            <a href="{% url 'estimaciones' %}?generar_reporte_completo=1&id_propiedad={{ propiedad.id_propiedad }}" id="generate-complete-report" class="animate-slide-up hidden">
+            <a href="{% url 'reporte_completo' propiedad.id_propiedad %}" id="generate-complete-report" class="animate-slide-up hidden">
                 <i class="fa fa-file-pdf"></i>
-                <span>Generar Reporte Completo</span>
+                <span>Reporte Completo</span>
             </a>
         </div>
-        <button class="sidebar-toggle" id="toggle-sidebar">
+        <button class="sidebar-toggle" id="toggle-sidebar" aria-label="Expandir menú">
             <i class="fas fa-chevron-right"></i>
         </button>
     </nav>
-
-    <!-- Botón para toggle en móviles -->
-    <button class="toggle-sidebar hidden">
-        <i class="fas fa-bars"></i>
-    </button>
 
     <!-- Contenido Principal -->
     <main class="main-content">
@@ -851,16 +938,14 @@
             <div class="flex items-center">
                 <i class="fas fa-map-marker-alt text-accent mr-3 text-xl"></i>
                 <div>
-                    <p class="font-semibold text-dark text-base">{{ propiedad.calle }}, {{ propiedad.id_colonia.nombre }}</p>
-                    <p class="text-gray text-sm">{{ propiedad.id_municipio.nombre }}, {{ propiedad.id_estado.nombre }} (CP: {{ propiedad.id_codigo_postal.codigo }})</p>
+                    <p class="font-semibold text-dark text-base">{{ propiedad.calle|escape }}, {{ propiedad.id_colonia.nombre|escape }}</p>
+                    <p class="text-gray text-sm">{{ propiedad.id_municipio.nombre|escape }}, {{ propiedad.id_estado.nombre|escape }} (CP: {{ propiedad.id_codigo_postal.codigo|escape }})</p>
                 </div>
             </div>
         </div>
 
         <!-- Título Principal -->
-        <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6 animate-fade-in">
-            Resultados de Evaluación
-        </h2>
+        <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6 animate-fade-in">Resultados de Evaluación</h2>
 
         {% if messages %}
         {% for message in messages %}
@@ -879,8 +964,8 @@
             <div class="card animate-slide-up">
                 <h3 class="section-title">Valor Comercial Aproximado</h3>
                 <div class="flex items-center">
-                    <span class="value-pill" id="valorComercialPill" data-value="{{ propiedad.valor_comercial|floatformat:2 }}">{{ propiedad.valor_comercial|floatformat:2 }}</span>
-                    <button class="copy-button" onclick="copyToClipboard(document.getElementById('valorComercialPill').textContent, '¡Valor copiado!')">
+                    <span class="value-pill" id="valorComercialPill" data-value="{{ propiedad.valor_comercial|default:'0.00'|floatformat:2 }}">{{ propiedad.valor_comercial|default:'$0.00'|floatformat:2 }}</span>
+                    <button class="copy-button" aria-label="Copiar valor comercial" onclick="copyToClipboard(document.getElementById('valorComercialPill').textContent, '¡Valor copiado!')">
                         <i class="fas fa-copy"></i>
                     </button>
                 </div>
@@ -888,8 +973,8 @@
             <div class="card animate-slide-up">
                 <h3 class="section-title">Valor Judicial Aproximado</h3>
                 <div class="flex items-center">
-                    <span class="value-pill" id="valorJudicialPill" data-value="{{ propiedad.valor_judicial|floatformat:2 }}">{{ propiedad.valor_judicial|floatformat:2 }}</span>
-                    <button class="copy-button" onclick="copyToClipboard(document.getElementById('valorJudicialPill').textContent, '¡Valor copiado!')">
+                    <span class="value-pill" id="valorJudicialPill" data-value="{{ propiedad.valor_judicial|default:'0.00'|floatformat:2 }}">{{ propiedad.valor_judicial|default:'$0.00'|floatformat:2 }}</span>
+                    <button class="copy-button" aria-label="Copiar valor judicial" onclick="copyToClipboard(document.getElementById('valorJudicialPill').textContent, '¡Valor copiado!')">
                         <i class="fas fa-copy"></i>
                     </button>
                 </div>
@@ -915,48 +1000,55 @@
             <div class="card animate-slide-up">
                 <h3 class="section-title">Detalles de la Propiedad</h3>
                 <table class="details-table">
+                    <thead class="sr-only">
+                        <tr>
+                            <th scope="col">Ícono</th>
+                            <th scope="col">Característica</th>
+                            <th scope="col">Valor</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         <tr>
                             <td><i class="fas fa-building"></i></td>
                             <td class="feature-column">Tipo</td>
-                            <td>{{ propiedad.tipo_propiedad }}</td>
+                            <td>{{ propiedad.tipo_propiedad|escape }}</td>
                         </tr>
                         {% if propiedad.tipo_propiedad != 'Terreno' %}
                         <tr>
                             <td><i class="fas fa-bed"></i></td>
                             <td class="feature-column">Recámaras</td>
-                            <td>{{ propiedad.recamaras }}</td>
+                            <td>{{ propiedad.recamaras|escape }}</td>
                         </tr>
                         <tr>
                             <td><i class="fas fa-bath"></i></td>
                             <td class="feature-column">Sanitarios</td>
-                            <td>{{ propiedad.sanitarios }}</td>
+                            <td>{{ propiedad.sanitarios|escape }}</td>
                         </tr>
                         <tr>
                             <td><i class="fas fa-car"></i></td>
                             <td class="feature-column">Estacionamiento</td>
-                            <td>{{ propiedad.estacionamiento }}</td>
+                            <td>{{ propiedad.estacionamiento|escape }}</td>
                         </tr>
                         <tr>
                             <td><i class="fas fa-ruler-combined"></i></td>
                             <td class="feature-column">Construcción</td>
-                            <td>{{ propiedad.construccion }} m²</td>
+                            <td>{{ propiedad.construccion|escape }} m²</td>
                         </tr>
                         <tr>
                             <td><i class="fas fa-home"></i></td>
                             <td class="feature-column">Estado de Conservación</td>
-                            <td>{{ propiedad.estado_conservacion|default:"No especificado" }}</td>
+                            <td>{{ propiedad.estado_conservacion|default:"No especificado"|escape }}</td>
                         </tr>
                         {% endif %}
                         <tr>
                             <td><i class="fas fa-vector-square"></i></td>
                             <td class="feature-column">Terreno</td>
-                            <td>{{ propiedad.terreno }} m²</td>
+                            <td>{{ propiedad.terreno|escape }} m²</td>
                         </tr>
                         <tr>
                             <td><i class="fas fa-comment"></i></td>
                             <td class="feature-column">Comentarios</td>
-                            <td>{{ propiedad.comentarios|default:"Sin comentarios adicionales." }}</td>
+                            <td>{{ propiedad.comentarios|default:"Sin comentarios adicionales."|escape }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -975,13 +1067,13 @@
 
         <!-- Calculadora de Honorarios -->
         <section id="honorarios" class="hidden fade">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="container mx-auto px-2 sm:px-4">
                 <div class="main-wrapper">
                     <header class="header-cotizacion">
                         <h1 class="main-title"><span class="calc-text">CALCULADORA</span> DE HONORARIOS</h1>
                     </header>
 
-                    <form class="input-form-section grid grid-cols-1 md:grid-cols-3 gap-4" id="calculator-form" novalidate>
+                    <form class="input-form-section" id="calculator-form" novalidate>
                         {% csrf_token %}
                         <div>
                             <label for="calcType" class="form-label required-field">Tipo de Cálculo</label>
@@ -993,14 +1085,14 @@
                         </div>
                         <div>
                             <label for="valorComercial" class="form-label required-field">Valor Comercial $</label>
-                            <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="">
-                            <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default_if_none:'0.00' }}">
+                            <input type="text" id="valorComercial" name="valorComercialDisplay" class="form-control" readonly value="{{ valor_comercial|default:'$0.00' }}">
+                            <input type="hidden" id="valorComercialHidden" name="valorComercial" value="{{ propiedad.valor_comercial|default:'0.00' }}">
                             <div class="error-message" id="valorComercialError">Por favor, ingresa un valor numérico válido.</div>
                         </div>
                         <div>
                             <label for="precioDeSesion" class="form-label required-field">Precio de Cesión $</label>
-                            <input type="text" id="precioDeSesion" name="precioDeSesion" class="form-control" value="0.00" required placeholder="Ingresa el precio">
-                            <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion" value="0.00">
+                            <input type="text" id="precioDeSesion" name="precioDeSesion" class="form-control" value="{{ precio_de_sesion|default:'0.00' }}" required placeholder="Ingresa el precio">
+                            <input type="hidden" id="precioDeSesionHidden" name="precioDeSesion" value="{{ precio_de_sesion|default:'0.00' }}">
                             <div class="error-message" id="precioDeSesionError">Por favor, ingresa un valor numérico válido.</div>
                         </div>
                     </form>
@@ -1013,7 +1105,7 @@
                                     <tr>
                                         <td>Valor Comercial</td>
                                         <td><span class="result-value" id="displayValorComercial">{{ valor_comercial|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayValorComercial').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar valor comercial" onclick="copyToClipboard(document.getElementById('displayValorComercial').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1021,7 +1113,7 @@
                                     <tr>
                                         <td>Valor Judicial</td>
                                         <td><span class="result-value" id="displayValorJudicial">{{ valor_judicial|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayValorJudicial').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar valor judicial" onclick="copyToClipboard(document.getElementById('displayValorJudicial').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1029,7 +1121,7 @@
                                     <tr>
                                         <td>Honorarios</td>
                                         <td><span class="result-value" id="displayHonorarios">{{ honorarios|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayHonorarios').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar honorarios" onclick="copyToClipboard(document.getElementById('displayHonorarios').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1037,7 +1129,7 @@
                                     <tr>
                                         <td>Cesión de Derechos</td>
                                         <td><span class="result-value" id="displayCession">{{ precio_de_sesion|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayCession').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar cesión de derechos" onclick="copyToClipboard(document.getElementById('displayCession').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1054,7 +1146,7 @@
                                         <td>1er Pago (75%)</td>
                                         <td>Propuesta Legal</td>
                                         <td><span class="result-value" id="displayPrimerPago">{{ firma|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayPrimerPago').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar primer pago" onclick="copyToClipboard(document.getElementById('displayPrimerPago').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1063,7 +1155,7 @@
                                         <td>2do Pago</td>
                                         <td>Cesión de derechos</td>
                                         <td><span class="result-value" id="displaySegundoPago">{{ precio_de_sesion|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displaySegundoPago').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar segundo pago" onclick="copyToClipboard(document.getElementById('displaySegundoPago').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1072,7 +1164,7 @@
                                         <td>3er Pago (25%)</td>
                                         <td>Entrega</td>
                                         <td><span class="result-value" id="displayTercerPago">{{ entrega|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayTercerPago').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar tercer pago" onclick="copyToClipboard(document.getElementById('displayTercerPago').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1080,7 +1172,7 @@
                                     <tr class="total-row">
                                         <td colspan="3">
                                             PRECIO TOTAL: <span class="result-value" id="displayTotal">{{ total|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayTotal').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar precio total" onclick="copyToClipboard(document.getElementById('displayTotal').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1096,7 +1188,7 @@
                                     <tr>
                                         <td>Valor Extrajudicial</td>
                                         <td><span class="result-value" id="displayValorExt">{{ valor_ext|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayValorExt').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar valor extrajudicial" onclick="copyToClipboard(document.getElementById('displayValorExt').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1104,7 +1196,7 @@
                                     <tr>
                                         <td>Cotización (50%)</td>
                                         <td><span class="result-value" id="displayCotizacion">{{ cotizacion|default:'$0.00' }}</span>
-                                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayCotizacion').textContent, '¡Valor copiado!')">
+                                            <button class="copy-button" aria-label="Copiar cotización" onclick="copyToClipboard(document.getElementById('displayCotizacion').textContent, '¡Valor copiado!')">
                                                 <i class="fas fa-copy"></i>
                                             </button>
                                         </td>
@@ -1118,14 +1210,14 @@
                         <div class="ganancia-item">
                             <span class="ganancia-label">GANANCIA</span>
                             <span class="ganancia-value" id="displayGanancia">{{ ganancia|default:'0.00%' }}</span>
-                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayGanancia').textContent, '¡Valor copiado!')">
+                            <button class="copy-button" aria-label="Copiar ganancia" onclick="copyToClipboard(document.getElementById('displayGanancia').textContent, '¡Valor copiado!')">
                                 <i class="fas fa-copy"></i>
                             </button>
                         </div>
                         <div class="ganancia-item">
                             <span class="ganancia-label">Costo de Compra</span>
                             <span class="ganancia-value" id="displayCostoCompra">{{ porcentaje_vc|default:'0.00%' }}</span>
-                            <button class="copy-button" onclick="copyToClipboard(document.getElementById('displayCostoCompra').textContent, '¡Valor copiado!')">
+                            <button class="copy-button" aria-label="Copiar costo de compra" onclick="copyToClipboard(document.getElementById('displayCostoCompra').textContent, '¡Valor copiado!')">
                                 <i class="fas fa-copy"></i>
                             </button>
                         </div>
@@ -1137,116 +1229,52 @@
         <!-- Footer -->
         <footer class="bg-primary text-white py-4 mt-8">
             <div class="container mx-auto px-4 text-center">
-                <p class="text-sm text-lightgray animate-fade-in">
-                    © 2025 Inmovalor. Todos los derechos reservados.
-                </p>
+                <p class="text-sm text-lightgray animate-fade-in">© 2025 Inmovalor. Todos los derechos reservados.</p>
             </div>
         </footer>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Funciones para generar PDFs
-        async function generatePDF(reportType) {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({
-                orientation: 'portrait',
-                unit: 'px',
-                format: 'a4'
-            });
-
-            // Ocultar elementos no necesarios en el PDF
-            const sidebar = document.querySelector('.sidebar');
-            const toast = document.querySelector('#toast');
-            const copyButtons = document.querySelectorAll('.copy-button');
-            sidebar.style.display = 'none';
-            toast.style.display = 'none';
-            copyButtons.forEach(button => button.style.display = 'none');
-
-            try {
-                // Esperar a que el mapa se cargue
-                const mapFrame = document.getElementById('map');
-                await new Promise((resolve, reject) => {
-                    mapFrame.onload = resolve;
-                    mapFrame.onerror = () => reject(new Error('No se pudo cargar el mapa'));
-                    if (mapFrame.src) resolve(); // Si ya está cargado
-                });
-
-                // Capturar la sección de evaluación
-                const evaluationSection = document.querySelector('.main-content');
-                const canvasEval = await html2canvas(evaluationSection, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    windowWidth: evaluationSection.scrollWidth,
-                    windowHeight: evaluationSection.scrollHeight,
-                    logging: true // Habilita el registro para depuración
-                });
-                const imgDataEval = canvasEval.toDataURL('image/png');
-                const imgWidth = pdf.internal.pageSize.getWidth();
-                let imgHeight = (canvasEval.height * imgWidth) / canvasEval.width;
-                const pageHeight = pdf.internal.pageSize.getHeight();
-
-                // Asegurar que la imagen encaje en una página A4
-                if (imgHeight > pageHeight) {
-                    imgHeight = pageHeight;
-                }
-                pdf.addImage(imgDataEval, 'PNG', 0, 0, imgWidth, imgHeight);
-
-                // Capturar la sección de honorarios para el reporte completo
-                if (reportType === 'complete' && !document.getElementById('honorarios').classList.contains('hidden')) {
-                    pdf.addPage();
-                    const calculatorSection = document.getElementById('honorarios');
-                    const canvasCalc = await html2canvas(calculatorSection, {
-                        scale: 2,
-                        useCORS: true,
-                        backgroundColor: '#ffffff',
-                        windowWidth: calculatorSection.scrollWidth,
-                        windowHeight: calculatorSection.scrollHeight,
-                        logging: true
-                    });
-                    const imgDataCalc = canvasCalc.toDataURL('image/png');
-                    let calcHeight = (canvasCalc.height * imgWidth) / canvasCalc.width;
-                    if (calcHeight > pageHeight) {
-                        calcHeight = pageHeight;
-                    }
-                    pdf.addImage(imgDataCalc, 'PNG', 0, 0, imgWidth, calcHeight);
-                }
-
-                // Guardar el PDF
-                const filename = reportType === 'evaluation' ? 'Reporte_Evaluacion.pdf' : 'Reporte_Completo.pdf';
-                pdf.save(filename);
-            } catch (error) {
-                console.error('Error al generar el PDF:', error);
-                $('#toast').text(`Error al generar el PDF: ${error.message || 'Intenta de nuevo.'}`).css('background', '#DC2626').addClass('show');
-                setTimeout(() => $('#toast').removeClass('show'), 3000);
-            } finally {
-                // Restaurar elementos ocultos
-                sidebar.style.display = '';
-                toast.style.display = '';
-                copyButtons.forEach(button => button.style.display = '');
-            }
-        }
-
         $(document).ready(function () {
             // Toggle sidebar en móviles
-            $('.toggle-sidebar').click(function() {
-                $('.sidebar').toggleClass('hidden active');
+            $('.toggle-sidebar').on('click', function() {
+                console.log('Toggle sidebar clicked at', new Date().toLocaleTimeString());
+                $('.sidebar').toggleClass('active');
+                $(this).find('i').toggleClass('fa-bars fa-times');
             });
 
-            // Toggle sidebar expandida
-            $('#toggle-sidebar').click(function() {
+            // Toggle sidebar expandida en pantallas grandes
+            $('#toggle-sidebar').on('click', function() {
+                console.log('Sidebar toggle clicked (desktop)');
                 $('.sidebar').toggleClass('expanded');
                 $(this).find('i').toggleClass('fa-chevron-right fa-chevron-left');
+            });
+
+            // Cerrar sidebar al hacer clic fuera en móviles
+            $(document).on('click', function(event) {
+                if (window.innerWidth <= 896 && $('.sidebar').hasClass('active') && 
+                    !$(event.target).closest('.sidebar').length && 
+                    !$(event.target).closest('.toggle-sidebar').length) {
+                    console.log('Clicked outside sidebar, closing');
+                    $('.sidebar').removeClass('active');
+                    $('.toggle-sidebar i').removeClass('fa-times').addClass('fa-bars');
+                }
             });
 
             // Inicializar mapa
             function inicializarMapa() {
                 const mapFrame = document.getElementById('map');
                 const loadingMap = document.getElementById('loadingMap');
-                const address = "{{ propiedad.calle }}, {{ propiedad.id_colonia.nombre }}, {{ propiedad.id_municipio.nombre }}, {{ propiedad.id_estado.nombre }}";
-                const esCDMX = "{{ propiedad.id_estado.nombre }}" === "Ciudad de México";
-                const prefijo = esCDMX ? "Alcaldía " : "Municipio ";
+                const address = "{{ propiedad.calle|escapejs }}, {{ propiedad.id_colonia.nombre|escapejs }}, {{ propiedad.id_municipio.nombre|escapejs }}, {{ propiedad.id_estado.nombre|escapejs }}".trim();
+                const isCDMX = "{{ propiedad.id_estado.nombre|escapejs }}" === "Ciudad de México";
+                const prefix = isCDMX ? "Alcaldía " : "Municipio ";
+
+                if (!address || address === ',,,') {
+                    $('#map').replaceWith('<p class="text-red-600">No se pudo cargar el mapa: Dirección incompleta</p>');
+                    $('#loadingMap').hide();
+                    return;
+                }
 
                 loadingMap.style.display = 'flex';
                 mapFrame.style.opacity = '0.5';
@@ -1263,11 +1291,11 @@
                     }
                 };
 
-                const centerPoint = (coloniaCoords["{{ propiedad.id_estado.nombre }}"] && 
-                                    coloniaCoords["{{ propiedad.id_estado.nombre }}"]["{{ propiedad.id_municipio.nombre }}"] && 
-                                    coloniaCoords["{{ propiedad.id_estado.nombre }}"]["{{ propiedad.id_municipio.nombre }}"]["{{ propiedad.id_colonia.nombre }}"]) ? 
-                                    coloniaCoords["{{ propiedad.id_estado.nombre }}"]["{{ propiedad.id_municipio.nombre }}"]["{{ propiedad.id_colonia.nombre }}"] : '23.6345,-102.5528';
-                const query = encodeURIComponent(`${address}`);
+                const centerPoint = (coloniaCoords["{{ propiedad.id_estado.nombre|escapejs }}"] && 
+                                    coloniaCoords["{{ propiedad.id_estado.nombre|escapejs }}"]["{{ propiedad.id_municipio.nombre|escapejs }}"] && 
+                                    coloniaCoords["{{ propiedad.id_estado.nombre|escapejs }}"]["{{ propiedad.id_municipio.nombre|escapejs }}"]["{{ propiedad.id_colonia.nombre|escapejs }}"]) ? 
+                                    coloniaCoords["{{ propiedad.id_estado.nombre|escapejs }}"]["{{ propiedad.id_municipio.nombre|escapejs }}"]["{{ propiedad.id_colonia.nombre|escapejs }}"] : '23.6345,-102.5528';
+                const query = encodeURIComponent(address);
                 const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5000!2d${centerPoint.split(',')[1]}!3d${centerPoint.split(',')[0]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${query}!5e0!3m2!1ses!2smx!4v${Date.now()}&z=16`;
 
                 mapFrame.src = mapUrl;
@@ -1284,21 +1312,12 @@
                 };
             }
 
-            // Formatear números en value-pill
-            document.querySelectorAll(".value-pill").forEach(pill => {
-                const rawValue = pill.getAttribute("data-value");
-                if (rawValue) {
-                    pill.textContent = formatCurrency(parseFloat(rawValue));
-                }
-            });
-
             // Copiar al portapapeles
             window.copyToClipboard = function(value, message) {
                 let textToCopy = value;
                 if (!isNaN(parseFloat(value)) && !value.includes('%')) {
                     textToCopy = formatCurrency(parseFloat(value));
-                }
-                else if (value.includes('%')) {
+                } else if (value.includes('%')) {
                     textToCopy = value;
                 }
 
@@ -1310,7 +1329,7 @@
                     console.error('Error al copiar:', err);
                     const toast = $('#toast');
                     toast.text('Error al copiar. Intenta de nuevo.').css('background', '#DC2626').addClass('show');
-                    setTimeout(() => toast.removeClass('show'), 3000);
+                    setTimeout(() => $('#toast').removeClass('show'), 3000);
                 });
             };
 
@@ -1390,7 +1409,7 @@
                     parcialidadesSection.show();
                     gananciaContainer.show();
                     cesionDerechosSection.hide().removeClass('active');
-                    resultsGridContainer.css('grid-template-columns', window.matchMedia("(min-width: 768px)").matches ? 'repeat(2, 1fr)' : '1fr');
+                    resultsGridContainer.css('grid-template-columns', window.matchMedia("(min-width: 896px)").matches ? 'repeat(2, 1fr)' : '1fr');
                 }
 
                 const formData = new FormData(form[0]);
@@ -1444,6 +1463,19 @@
             const initialValorComercial = getCleanNumber(valorComercialHidden.value);
             valorComercialInput.value = formatCurrency(initialValorComercial);
 
+            // Formatear valores en value-pill
+            document.querySelectorAll(".value-pill").forEach(pill => {
+                const rawValue = pill.getAttribute("data-value");
+                if (rawValue && !isNaN(parseFloat(rawValue))) {
+                    pill.textContent = formatCurrency(parseFloat(rawValue));
+                }
+            });
+
+            // Asegurar estado inicial: calculadora oculta, "Generar Reporte" visible, "Generar Reporte Completo" oculto
+            honorariosSection.classList.add('hidden');
+            generateReportButton.classList.remove('hidden');
+            generateCompleteReportButton.classList.add('hidden');
+
             formatNumberInput(precioDeSesionInput, precioDeSesionHidden);
             inicializarMapa();
             calculateResults();
@@ -1455,30 +1487,27 @@
             });
 
             toggleHonorariosButton.addEventListener('click', function() {
-                honorariosSection.classList.toggle('hidden');
-                const isHidden = honorariosSection.classList.contains('hidden');
+                const isHidden = honorariosSection.classList.toggle('hidden');
+                console.log('Calculadora toggled, visible:', !isHidden); // Para depuración
                 this.innerHTML = isHidden ?
                     '<i class="fas fa-calculator"></i> <span>Cálculo de Honorarios</span>' :
                     '<i class="fas fa-calculator"></i> <span>Ocultar Cálculo</span>';
                 this.setAttribute('aria-expanded', !isHidden);
+
+                // Controlar visibilidad de los botones de reporte
                 generateReportButton.classList.toggle('hidden', !isHidden);
                 generateCompleteReportButton.classList.toggle('hidden', isHidden);
+
                 if (!isHidden) {
                     calculateResults();
                     honorariosSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-            });
 
-            // Generar Reporte de Evaluación
-            $('#generate-report').click(function(e) {
-                e.preventDefault();
-                generatePDF('evaluation');
-            });
-
-            // Generar Reporte Completo
-            $('#generate-complete-report').click(function(e) {
-                e.preventDefault();
-                generatePDF('complete');
+                // Cerrar sidebar en móviles después de interactuar con honorarios
+                if (window.innerWidth <= 896) {
+                    $('.sidebar').removeClass('active');
+                    $('.toggle-sidebar i').removeClass('fa-times').addClass('fa-bars');
+                }
             });
         });
     </script>

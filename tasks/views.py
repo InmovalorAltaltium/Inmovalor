@@ -1,6 +1,5 @@
 from django.db.models import Avg, Count
 from django.urls import reverse
-from fpdf import FPDF
 from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -10,13 +9,17 @@ from .models import Estados, Municipios, Colonias, CodigosPostales, AlcaldiaVist
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from io import BytesIO
 import json
 import matplotlib
 matplotlib.use('Agg')  # Usa un backend que no requiere interfaz gráfica
 import matplotlib.pyplot as plt
 import os
 import base64
-from io import BytesIO
+import datetime
+
 
 # Decorador para verificar si es admin
 def admin_required(view_func):
@@ -89,31 +92,131 @@ def signout(request):
     request.session.flush()
     return redirect('signin')
 
+# Generar Reporte Individual
+@never_cache
+@login_required_custom
+def reporte_individual(request, propiedad_id):
+    usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
+    if not usuario:
+        return redirect('signin')
 
-#inicio esticamciones
+    try:
+        propiedad = Propiedades.objects.get(id_propiedad=propiedad_id)
+        fecha_actual = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        
+        # Formatear valores monetarios
+        valor_comercial = "${:,.2f}".format(float(propiedad.valor_comercial or 0))
+        valor_judicial = "${:,.2f}".format(float(propiedad.valor_judicial or 0))
+        
+        context = {
+            'propiedad': propiedad,
+            'usuario': usuario,
+            'fecha_actual': fecha_actual,
+            'valor_comercial': valor_comercial,
+            'valor_judicial': valor_judicial,
+        }
+        
+        # Renderizar el template HTML
+        html_string = render_to_string('reporte_individual.html', context)
+        
+        # Generar el PDF con WeasyPrint
+        buffer = BytesIO()
+        HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(buffer)
+        buffer.seek(0)
+        
+        # Retornar el archivo PDF como respuesta
+        response = FileResponse(buffer, as_attachment=True, filename=f"reporte_individual_{propiedad_id}.pdf")
+        return response
+        
+    except Propiedades.DoesNotExist:
+        messages.error(request, "La propiedad no existe.")
+        return redirect('estimaciones')
+    except Exception as e:
+        import sys
+        print("Error en generación de PDF:", str(e), file=sys.stderr)
+        messages.error(request, f"Error al generar el PDF: {str(e)}")
+        return redirect('mostrar_resultado', propiedad_id=propiedad_id)
 
+# Generar Reporte Completo
+@never_cache
+@login_required_custom
+def generar_reporte_completo(request, propiedad_id):
+    usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
+    if not usuario:
+        return redirect('signin')
+
+    try:
+        propiedad = Propiedades.objects.get(id_propiedad=propiedad_id)
+        fecha_actual = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        
+        # Obtener datos de la calculadora de honorarios
+        calc_type = request.GET.get('calc_type', 'sentencia')
+        valor_comercial = float(propiedad.valor_comercial or 0)
+        precio_de_sesion = float(request.GET.get('precio_de_sesion', 0))
+        
+        honorarios = calcular_honorarios(calc_type, valor_comercial, precio_de_sesion)
+        pago_unico = honorarios * 0.9
+        firma = honorarios * 0.75
+        segundo_pago = precio_de_sesion
+        entrega = honorarios * 0.25
+        total = firma + segundo_pago + entrega
+        valor_ext = valor_comercial
+        cotizacion = valor_ext * 0.5
+        costo_total = precio_de_sesion + honorarios
+        porcentaje_vc = safe_divide(costo_total, valor_comercial)
+        ganancia = safe_divide(valor_comercial - costo_total, valor_comercial)
+        valor_judicial = (2 / 3) * valor_comercial
+
+        # Formatear valores monetarios y porcentajes
+        context = {
+            'propiedad': propiedad,
+            'usuario': usuario,
+            'fecha_actual': fecha_actual,
+            'valor_comercial': "${:,.2f}".format(valor_comercial),
+            'valor_judicial': "${:,.2f}".format(valor_judicial),
+            'mostrar_calculadora': True,
+            'calc_type': calc_type,
+            'honorarios': "${:,.2f}".format(honorarios),
+            'pago_unico': "${:,.2f}".format(pago_unico),
+            'firma': "${:,.2f}".format(firma),
+            'segundo_pago': "${:,.2f}".format(segundo_pago),
+            'entrega': "${:,.2f}".format(entrega),
+            'total': "${:,.2f}".format(total),
+            'valor_ext': "${:,.2f}".format(valor_ext),
+            'cotizacion': "${:,.2f}".format(cotizacion),
+            'costo_total': "${:,.2f}".format(costo_total),
+            'porcentaje_vc': "{:.2f}%".format(porcentaje_vc),
+            'ganancia': "{:.2f}%".format(ganancia),
+        }
+        
+        # Renderizar el template HTML
+        html_string = render_to_string('reporte_completo.html', context)
+        
+        # Generar el PDF con WeasyPrint
+        buffer = BytesIO()
+        HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf(buffer)
+        buffer.seek(0)
+        
+        # Retornar el archivo PDF como respuesta
+        response = FileResponse(buffer, as_attachment=True, filename=f"reporte_completo_{propiedad_id}.pdf")
+        return response
+        
+    except Propiedades.DoesNotExist:
+        messages.error(request, "La propiedad no existe.")
+        return redirect('estimaciones')
+    except Exception as e:
+        import sys
+        print("Error en generación de PDF:", str(e), file=sys.stderr)
+        messages.error(request, f"Error al generar el PDF: {str(e)}")
+        return redirect('mostrar_resultado', propiedad_id=propiedad_id)
+
+# Inicio estimaciones
 @never_cache
 @login_required_custom
 def estimaciones(request):
     usuario = Usuarios.objects.filter(id=request.session.get('usuario_id')).first()
     if not usuario:
         return redirect('signin')
-
-    # Manejo de reportes (redirigir a mostrar_resultado)
-    if 'generar_reporte_individual' in request.GET or 'generar_reporte_completo' in request.GET:
-        propiedad_id = request.GET.get('id_propiedad')
-        if not propiedad_id:
-            messages.error(request, "No se proporcionó un ID de propiedad válido.")
-            return redirect('estimaciones')
-        try:
-            propiedad_id = int(propiedad_id)
-            if not Propiedades.objects.filter(id_propiedad=propiedad_id).exists():
-                messages.error(request, "La propiedad especificada no existe.")
-                return redirect('estimaciones')
-            return redirect('mostrar_resultado', propiedad_id=propiedad_id)
-        except ValueError:
-            messages.error(request, "El ID de propiedad no es válido.")
-            return redirect('estimaciones')
 
     if request.method == 'POST':
         tipo_propiedad = request.POST.get('tipo_propiedad')
@@ -242,9 +345,7 @@ def estimaciones(request):
     }
     return render(request, 'estimaciones.html', context)
 
-#fin estimaciones
-
-
+# Fin estimaciones
 
 @never_cache
 @login_required_custom
@@ -319,7 +420,7 @@ def welcome(request):
 
 # Vistas de alcaldías
 
-                                            #BENITO JUAREZ
+# Benito Juárez
 @never_cache
 @login_required_custom
 def vista_benito_juarez(request):
@@ -347,8 +448,7 @@ def vista_benito_juarez(request):
     }
     return render(request, 'alcaldias/benito.html', context)
 
-
-                                            #ALVARO ABREGON 
+# Álvaro Obregón 
 @never_cache
 @login_required_custom
 def vista_alvaro(request):
@@ -376,8 +476,7 @@ def vista_alvaro(request):
     }
     return render(request, 'alcaldias/alvaro.html', context)
 
-
-                                            #Coyoacán
+# Coyoacán
 @never_cache
 @login_required_custom
 def vista_coyoacan(request):
@@ -405,7 +504,7 @@ def vista_coyoacan(request):
     }
     return render(request, 'alcaldias/coyoacan.html', context)
 
-                                                #Xochimilco
+# Xochimilco
 @never_cache
 @login_required_custom
 def vista_xochimilco(request):
@@ -418,7 +517,7 @@ def vista_xochimilco(request):
         datos = Colonias.objects.select_related('id_municipio', 'id_estado').filter(id_municipio__nombre__iexact='Xochimilco')
         if not datos.exists():
             messages.warning(request, "No se encontraron colonias para Xochimilco.")
-            print("No se encontraron colonias para Xochimilcon.")
+            print("No se encontraron colonias para Xochimilco.")
         else:
             print(f"Colonias encontradas: {list(datos.values('id_colonia', 'nombre', 'promedio_precio', 'zona', 'id_estado__nombre', 'id_municipio__nombre'))}")
     except Exception as e:
@@ -429,11 +528,11 @@ def vista_xochimilco(request):
     context = {
         'datos': datos,
         'usuario': usuario,
-        'no_data_message': 'No hay datos disponibles paraXochimilco.' if not datos.exists() else None
+        'no_data_message': 'No hay datos disponibles para Xochimilco.' if not datos.exists() else None
     }
     return render(request, 'alcaldias/xochimilco.html', context)
 
-                                        #Azcapotzalco
+# Azcapotzalco
 @never_cache
 @login_required_custom
 def vista_azcapotzalco(request):
@@ -461,7 +560,7 @@ def vista_azcapotzalco(request):
     }
     return render(request, 'alcaldias/azcapotzalco.html', context)
 
-                                            #Cuajimalpa de Morelos
+# Cuajimalpa de Morelos
 @never_cache
 @login_required_custom
 def vista_cuajimalpa(request):
@@ -489,7 +588,7 @@ def vista_cuajimalpa(request):
     }
     return render(request, 'alcaldias/cuajimalpa.html', context)
 
-                                                    #Cuauhtémoc
+# Cuauhtémoc
 @never_cache
 @login_required_custom
 def vista_cuauhtemoc(request):
@@ -517,7 +616,7 @@ def vista_cuauhtemoc(request):
     }
     return render(request, 'alcaldias/cuauhtemoc.html', context)
 
-                                            #Miguel Hidalgo
+# Miguel Hidalgo
 @never_cache
 @login_required_custom
 def vista_miguel(request):
@@ -545,7 +644,7 @@ def vista_miguel(request):
     }
     return render(request, 'alcaldias/miguel.html', context)
 
-                                            #Gustavo A. Madero  
+# Gustavo A. Madero  
 @never_cache
 @login_required_custom
 def vista_gustavo(request):
@@ -573,7 +672,7 @@ def vista_gustavo(request):
     }
     return render(request, 'alcaldias/gustavo.html', context)
 
-                                            #Iztacalco
+# Iztacalco
 @never_cache
 @login_required_custom
 def vista_iztacalco(request):
@@ -601,7 +700,7 @@ def vista_iztacalco(request):
     }
     return render(request, 'alcaldias/iztacalco.html', context)
 
-                                                #Iztapalapa
+# Iztapalapa
 @never_cache
 @login_required_custom
 def vista_iztapalapa(request):
@@ -629,7 +728,7 @@ def vista_iztapalapa(request):
     }
     return render(request, 'alcaldias/iztapalapa.html', context)
 
-                                            #La Magdalena Contreras
+# La Magdalena Contreras
 @never_cache
 @login_required_custom
 def vista_magda(request):
@@ -657,8 +756,7 @@ def vista_magda(request):
     }
     return render(request, 'alcaldias/magda.html', context)
 
-
-                                            #Milpa Alta
+# Milpa Alta
 @never_cache
 @login_required_custom
 def vista_milpa(request):
@@ -686,7 +784,7 @@ def vista_milpa(request):
     }
     return render(request, 'alcaldias/milpa.html', context)
                     
-                                            #Tláhuac
+# Tláhuac
 @never_cache
 @login_required_custom
 def vista_tlahuac(request):
@@ -714,7 +812,7 @@ def vista_tlahuac(request):
     }
     return render(request, 'alcaldias/tlahuac.html', context)
 
-                                                #Tlalpan 
+# Tlalpan 
 @never_cache
 @login_required_custom
 def vista_tlalpan(request):
@@ -742,7 +840,7 @@ def vista_tlalpan(request):
     }
     return render(request, 'alcaldias/tlalpan.html', context)
 
-                                                  #Venustiano Carranza
+# Venustiano Carranza
 @never_cache
 @login_required_custom
 def vista_venustiano(request):
@@ -769,7 +867,6 @@ def vista_venustiano(request):
         'no_data_message': 'No hay datos disponibles para Venustiano Carranza.' if not datos.exists() else None
     }
     return render(request, 'alcaldias/venustiano.html', context)
-
 
 # Obtener municipios por estado (AJAX)
 @never_cache
@@ -1300,8 +1397,6 @@ def gentelella_view(request, page):
                 messages.error(request, "Faltan datos obligatorios para crear la vista.")
             return redirect('gentelella_page', page='cal_vista_usuarios')
 
-        context.update({'vistas': vistas})
-
     elif page == "editar_vistas_alcaldia":
         if 'editar' in request.GET:
             try:
@@ -1474,6 +1569,3 @@ def honorarios_calculator(request):
             return JsonResponse(context_json)
 
     return render(request, 'honorarios.html', context)
-
-
-
