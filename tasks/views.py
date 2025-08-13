@@ -152,8 +152,17 @@ def generar_reporte_completo(request, propiedad_id):
         # Obtener datos de la calculadora de honorarios
         calc_type = request.GET.get('calc_type', 'sentencia')
         valor_comercial = float(propiedad.valor_comercial or 0)
-        precio_de_sesion = float(request.GET.get('precio_de_sesion', 0))
         
+        # Validar precio_de_sesion
+        try:
+            precio_de_sesion = float(request.GET.get('precio_de_sesion', 0))
+            if precio_de_sesion == 0:
+                precio_de_sesion = valor_comercial * 0.3  # Valor por defecto: 30% del valor comercial
+                print(f"Advertencia: precio_de_sesion no proporcionado, usando valor por defecto: {precio_de_sesion}")
+        except ValueError:
+            precio_de_sesion = valor_comercial * 0.3  # Valor por defecto: 30% del valor comercial
+            print(f"Error: precio_de_sesion no válido, usando valor por defecto: {precio_de_sesion}")
+
         honorarios = calcular_honorarios(calc_type, valor_comercial, precio_de_sesion)
         pago_unico = honorarios * 0.9
         firma = honorarios * 0.75
@@ -163,9 +172,13 @@ def generar_reporte_completo(request, propiedad_id):
         valor_ext = valor_comercial
         cotizacion = valor_ext * 0.5
         costo_total = precio_de_sesion + honorarios
-        porcentaje_vc = safe_divide(costo_total, valor_comercial)
-        ganancia = safe_divide(valor_comercial - costo_total, valor_comercial)
+        porcentaje_vc = safe_divide(costo_total, valor_comercial) * 100
+        ganancia = safe_divide(valor_comercial - costo_total, valor_comercial) * 100
         valor_judicial = (2 / 3) * valor_comercial
+
+        # Depuración
+        print(f"precio_de_sesion: {precio_de_sesion}")
+        print(f"segundo_pago: {segundo_pago}")
 
         # Formatear valores monetarios y porcentajes
         context = {
@@ -187,6 +200,7 @@ def generar_reporte_completo(request, propiedad_id):
             'costo_total': "${:,.2f}".format(costo_total),
             'porcentaje_vc': "{:.2f}%".format(porcentaje_vc),
             'ganancia': "{:.2f}%".format(ganancia),
+            'precio_de_sesion': "${:,.2f}".format(precio_de_sesion),
         }
         
         # Renderizar el template HTML
@@ -209,7 +223,7 @@ def generar_reporte_completo(request, propiedad_id):
         print("Error en generación de PDF:", str(e), file=sys.stderr)
         messages.error(request, f"Error al generar el PDF: {str(e)}")
         return redirect('mostrar_resultado', propiedad_id=propiedad_id)
-
+    
 # Inicio estimaciones
 @never_cache
 @login_required_custom
