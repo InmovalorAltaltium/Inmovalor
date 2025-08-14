@@ -989,7 +989,7 @@
                 <div class="map-container">
                     <div class="loading-map" id="loadingMap">
                         <div class="loading-spinner"></div>
-                        <h3>Cargando mapa....</h3>
+                        <h3>Cargando mapa...</h3>
                         <p>Por favor espera mientras se carga la ubicación</p>
                     </div>
                     <iframe id="map" allowfullscreen="" loading="lazy" title="Mapa de ubicación"></iframe>
@@ -1440,6 +1440,11 @@
                         $('#displayCostoCompra').text(data.porcentaje_vc);
                         $('#displayValorExt').text(formatCurrency(getCleanNumber(data.valor_ext)));
                         $('#displayCotizacion').text(formatCurrency(getCleanNumber(data.cotizacion)));
+
+                        // Actualizar el enlace de reporte completo con calcType y precioDeSesion
+                        const reportUrl = `{% url 'reporte_completo' propiedad.id_propiedad %}?calc_type=${encodeURIComponent(calcType)}&precioDeSesion=${encodeURIComponent(precioDeSesion)}`;
+                        $('#generate-complete-report').attr('href', reportUrl);
+                        console.log('Updated generate-complete-report href:', reportUrl); // Para depuración
                     },
                     error: function(xhr, status, error) {
                         console.error('Error en AJAX:', status, error);

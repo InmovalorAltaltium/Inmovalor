@@ -92,6 +92,10 @@ def signout(request):
     request.session.flush()
     return redirect('signin')
 
+
+
+
+
 # Generar Reporte Individual
 @never_cache
 @login_required_custom
@@ -153,32 +157,40 @@ def generar_reporte_completo(request, propiedad_id):
         calc_type = request.GET.get('calc_type', 'sentencia')
         valor_comercial = float(propiedad.valor_comercial or 0)
         
-        # Validar precio_de_sesion
+        # Precio de sesión ingresado por el usuario, prefiriendo POST sobre GET
+        precio_de_sesion_str = request.POST.get('precioDeSesion') or request.GET.get('precioDeSesion')
         try:
-            precio_de_sesion = float(request.GET.get('precio_de_sesion', 0))
-            if precio_de_sesion == 0:
-                precio_de_sesion = valor_comercial * 0.3  # Valor por defecto: 30% del valor comercial
-                print(f"Advertencia: precio_de_sesion no proporcionado, usando valor por defecto: {precio_de_sesion}")
-        except ValueError:
-            precio_de_sesion = valor_comercial * 0.3  # Valor por defecto: 30% del valor comercial
-            print(f"Error: precio_de_sesion no válido, usando valor por defecto: {precio_de_sesion}")
-
+            # Limpiar el valor: quitar $, comas, espacios
+            if precio_de_sesion_str:
+                precio_de_sesion_str = precio_de_sesion_str.replace('$', '').replace(',', '').strip()
+            precio_de_sesion = float(precio_de_sesion_str) if precio_de_sesion_str else 0.0
+        except (ValueError, TypeError) as e:
+            precio_de_sesion = 0.0
+            print(f"Error al convertir precioDeSesion '{precio_de_sesion_str}' a float: {str(e)}")
+        
+        # Cesión de derechos y segundo pago idénticos al precio de sesión
+        cesion_derechos = precio_de_sesion
+        segundo_pago = precio_de_sesion
+        
+        # Depuración: Imprimir valores recibidos
+        print(f"POST: {request.POST}")
+        print(f"GET: {request.GET}")
+        print(f"precio_de_sesion: {precio_de_sesion}, cesion_derechos: {cesion_derechos}, segundo_pago: {segundo_pago}")
+        
+        # Calcular honorarios
         honorarios = calcular_honorarios(calc_type, valor_comercial, precio_de_sesion)
+        
+        # Cálculos adicionales
         pago_unico = honorarios * 0.9
         firma = honorarios * 0.75
-        segundo_pago = precio_de_sesion
         entrega = honorarios * 0.25
-        total = firma + segundo_pago + entrega
+        total = firma + cesion_derechos + entrega
         valor_ext = valor_comercial
         cotizacion = valor_ext * 0.5
         costo_total = precio_de_sesion + honorarios
-        porcentaje_vc = safe_divide(costo_total, valor_comercial) * 100
-        ganancia = safe_divide(valor_comercial - costo_total, valor_comercial) * 100
+        porcentaje_vc = safe_divide(costo_total, valor_comercial)
+        ganancia = safe_divide(valor_comercial - costo_total, valor_comercial)
         valor_judicial = (2 / 3) * valor_comercial
-
-        # Depuración
-        print(f"precio_de_sesion: {precio_de_sesion}")
-        print(f"segundo_pago: {segundo_pago}")
 
         # Formatear valores monetarios y porcentajes
         context = {
@@ -189,6 +201,8 @@ def generar_reporte_completo(request, propiedad_id):
             'valor_judicial': "${:,.2f}".format(valor_judicial),
             'mostrar_calculadora': True,
             'calc_type': calc_type,
+            'precio_de_sesion': "${:,.2f}".format(precio_de_sesion),
+            'cesion_derechos': "${:,.2f}".format(cesion_derechos),
             'honorarios': "${:,.2f}".format(honorarios),
             'pago_unico': "${:,.2f}".format(pago_unico),
             'firma': "${:,.2f}".format(firma),
@@ -200,7 +214,6 @@ def generar_reporte_completo(request, propiedad_id):
             'costo_total': "${:,.2f}".format(costo_total),
             'porcentaje_vc': "{:.2f}%".format(porcentaje_vc),
             'ganancia': "{:.2f}%".format(ganancia),
-            'precio_de_sesion': "${:,.2f}".format(precio_de_sesion),
         }
         
         # Renderizar el template HTML
@@ -220,10 +233,14 @@ def generar_reporte_completo(request, propiedad_id):
         return redirect('estimaciones')
     except Exception as e:
         import sys
-        print("Error en generación de PDF:", str(e), file=sys.stderr)
+        print(f"Error en generación de PDF: {str(e)}", file=sys.stderr)
         messages.error(request, f"Error al generar el PDF: {str(e)}")
         return redirect('mostrar_resultado', propiedad_id=propiedad_id)
     
+
+
+
+
 # Inicio estimaciones
 @never_cache
 @login_required_custom
